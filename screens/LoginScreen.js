@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import InputOutline from "react-native-input-outline";
@@ -43,6 +43,7 @@ export default function LoginScreen() {
             onChangeText={(password) => setPassword(password)}
             value={password}
           />
+          <Text style={styles.smalltext}>Mot de passe oublié ?</Text>
           <Button title="Se connecter" type="solid" buttonStyle={styles.button} />
         </View>
         <View style={styles.signup}>
@@ -120,6 +121,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#0773A3",
   },
+  smalltext: {
+    fontFamily: "Montserrat_400Regular",
+    fontStyle: "italic",
+    fontSize: 13,
+    color: "#0773A3",
+    marginTop: 5,
+  },
   button: {
     marginTop: 20,
     backgroundColor: "#0773A3",
@@ -127,7 +135,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 40,
-    width: 180,
+    width: 220,
     marginTop: 20,
   },
   labeldropdown: {
@@ -146,6 +154,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFEFA",
     color: "#0773A3",
     height: 40,
-    width: 180,
+    width: 220,
   },
 });
