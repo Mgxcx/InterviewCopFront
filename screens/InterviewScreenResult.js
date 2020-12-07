@@ -3,17 +3,11 @@ import { StyleSheet, View, Text } from "react-native";
 import { Button } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
 
-function InterviewScreen1({ navigation }) {
+function InterviewScreenResult() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}> Hello it's InterviewScreen1 !</Text>
-      <Button
-        icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFE" />}
-        onPress={() => {
-          navigation.navigate("InterviewScreen2");
-        }}
-        buttonStyle={styles.sendbutton}
-      />
+      <Text style={styles.text}> Hello it's InterviewScreenResult !</Text>
+      <Button icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFE" />} buttonStyle={styles.sendbutton} />
     </View>
   );
 }
@@ -32,4 +26,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InterviewScreen1;
+export default InterviewScreenResult;
