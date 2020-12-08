@@ -51,6 +51,7 @@ function LoginScreen({ navigation, onSubmitUsername }) {
 
     if (body.result === true) {
       setUserExists(true);
+      onSubmitUsername(signUpUsername);
     } else {
       setErrorsSignup(body.error);
     }
@@ -70,6 +71,7 @@ function LoginScreen({ navigation, onSubmitUsername }) {
 
     if (body.result === true) {
       setUserExists(true);
+      onSubmitUsername(signInUsername);
     } else {
       setErrorsSignin(body.error);
     }
@@ -135,7 +137,6 @@ function LoginScreen({ navigation, onSubmitUsername }) {
             buttonStyle={styles.button}
             onPress={() => {
               handleSubmitSignin();
-              onSubmitUsername(signInUsername);
             }}
           />
         </View>
@@ -201,7 +202,6 @@ function LoginScreen({ navigation, onSubmitUsername }) {
             buttonStyle={styles.button}
             onPress={() => {
               handleSubmitSignup();
-              onSubmitUsername(signUpUsername);
             }}
           />
         </View>
