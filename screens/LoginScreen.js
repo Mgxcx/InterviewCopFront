@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {Picker, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import InputOutline from 'react-native-input-outline';
 import { AppLoading } from 'expo';
+import {Picker} from '@react-native-picker/picker';
 import { useFonts, Montserrat_400Regular, Montserrat_500Medium, Montserrat_700Bold, } from '@expo-google-fonts/montserrat'
 
 
@@ -52,7 +53,8 @@ export default function LoginScreen(){
       <Picker
         selectedValue={secretQuestion}
         style={{ width: '80%', marginBottom:-25 }}
-        onValueChange={itemValue => setSecretQuestion({ question: itemValue })}>
+        onValueChange={itemValue => setSecretQuestion(itemValue)}
+        >
         <Picker.Item label="Quel est le nom de votre premier animal de compagnie?" value="Quel est le nom de votre premier animal de compagnie?" />
         <Picker.Item label="Quelle est la date de naissance de votre mère?" value="Quelle est la date de naissance de votre mère?" />
       </Picker>
