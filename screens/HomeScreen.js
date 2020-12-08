@@ -9,16 +9,23 @@ import {
 } from "@expo-google-fonts/montserrat";
 
 function HomeScreen({ navigation }) {
+  const logo = require("../assets/MikeChickenRight.png");
   return (
     <View style={styles.container}>
-      <Text style={styles.text}> Hello it's ScreenHome !</Text>
+      <Header
+        barStyle="light-content"
+        leftComponent={<Image source={logo} style={styles.logo} />}
+        centerComponent={<Text style={styles.title}>InterviewCop</Text>}
+        containerStyle={styles.topbar}
+      />
+      <Text style={styles.title}> Hello Username !</Text>
       <Button
         title="GO !"
         titleStyle={styles.textbutton}
         onPress={() => {
           navigation.navigate("Interview");
         }}
-        buttonStyle={styles.sendbutton}
+        buttonStyle={styles.button}
       />
       <Button
         title="Des conseils !"
@@ -26,7 +33,7 @@ function HomeScreen({ navigation }) {
         onPress={() => {
           navigation.navigate("Advices");
         }}
-        buttonStyle={styles.sendbutton}
+        buttonStyle={styles.button}
       />
     </View>
   );
@@ -39,20 +46,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 50,
   },
+  title: {
+    color: "#FFFEFA",
+    fontFamily: "Montserrat_700Bold",
+    fontSize: 22,
+  },
   textbutton: {
     color: "#FFFEFE",
     fontFamily: "Montserrat_500Medium",
     fontWeight: "600",
-    fontSize: 24,
+    fontSize: 16,
     lineHeight: 29,
     alignItems: "center",
     textAlign: "center",
     letterSpacing: 0.75,
   },
-  sendbutton: {
+  button: {
+    marginTop: 20,
     backgroundColor: "#0773A3",
-    borderRadius: 20,
-    marginTop: 10,
+    borderRadius: 15,
+    width: 140,
   },
 });
 

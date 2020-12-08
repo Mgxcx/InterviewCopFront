@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Button } from "react-native-elements";
+import { StyleSheet, Text, View, Image } from "react-native";
+import { Button, Header } from "react-native-elements";
 import InputOutline from "react-native-input-outline";
 import { AppLoading } from "expo";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -17,6 +17,7 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
   const [secretQuestion, setSecretQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+  const logo = require("../assets/MikeChickenRight.png");
 
   let [fontsLoaded] = useFonts({
     Montserrat_500Medium,
@@ -29,6 +30,12 @@ export default function LoginScreen() {
   } else {
     return (
       <View style={styles.container}>
+        <Header
+          barStyle="light-content"
+          leftComponent={<Image source={logo} style={styles.logo} />}
+          centerComponent={<Text style={styles.title}>InterviewCop</Text>}
+          containerStyle={styles.topbar}
+        />
         <View style={styles.signin}>
           <Text style={styles.text}>Déjà un compte ?</Text>
           <InputOutline
@@ -50,7 +57,7 @@ export default function LoginScreen() {
           />
 
           <Text style={styles.smalltext}>Mot de passe oublié ?</Text>
-          <Button title="Se connecter" type="solid" buttonStyle={styles.button} />
+          <Button title="Se connecter" titleStyle={styles.textbutton} type="solid" buttonStyle={styles.button} />
         </View>
 
         <View style={styles.signup}>
@@ -100,7 +107,7 @@ export default function LoginScreen() {
             onChangeText={(answer) => setAnswer(answer)}
             value={answer}
           />
-          <Button title="Se connecter" type="solid" buttonStyle={styles.button} />
+          <Button title="Se connecter" titleStyle={styles.textbutton} type="solid" buttonStyle={styles.button} />
         </View>
       </View>
     );
@@ -113,7 +120,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#FFFEFA",
-    padding: 50,
   },
   signin: {
     flex: 2.3,
@@ -122,6 +128,20 @@ const styles = StyleSheet.create({
   signup: {
     flex: 3,
     alignItems: "center",
+  },
+  topbar: {
+    backgroundColor: "#0773A3",
+    marginBottom: 10,
+  },
+  title: {
+    color: "#FFFEFA",
+    fontFamily: "Montserrat_700Bold",
+    fontSize: 22,
+  },
+  logo: {
+    width: 20,
+    height: 35,
+    marginLeft: 70,
   },
   text: {
     fontFamily: "Montserrat_500Medium",
@@ -135,10 +155,20 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   button: {
-    marginTop: 20,
+    marginTop: 10,
     backgroundColor: "#0773A3",
     borderRadius: 15,
     width: 140,
+  },
+  textbutton: {
+    color: "#FFFEFE",
+    fontFamily: "Montserrat_500Medium",
+    fontWeight: "600",
+    fontSize: 16,
+    lineHeight: 29,
+    alignItems: "center",
+    textAlign: "center",
+    letterSpacing: 0.75,
   },
   containerdropdown: {
     height: 40,
