@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import InputOutline from "react-native-input-outline";
@@ -12,19 +12,90 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 
-export default function LoginScreen() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function LoginScreen({ navigation }) {
+  //états liés au Sign-Up
+  const [signUpUsername, setSignUpUsername] = useState('')
+  const [signUpPassword, setSignUpPassword] = useState('')
   const [secretQuestion, setSecretQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+  const [listErrorsSignup, setErrorsSignup] = useState([])    //les messages d'erreur sont transmis par le Back
 
+  //états liés au Sign-In
+  const [signInUsername, setSignInUsername] = useState('')
+  const [signInPassword, setSignInPassword] = useState('')
+  const [listErrorsSignin, setErrorsSignin] = useState([])    //les messages d'erreur sont transmis par le Back
+
+  
+  const [userExists, setUserExists] = useState(false)   //état lié à la vérification de l'existence du user dans la BDD 
+
+  //pour gérer les polices expo-google-fonts
   let [fontsLoaded] = useFonts({
     Montserrat_500Medium,
     Montserrat_400Regular,
     Montserrat_400Regular_Italic,
     Montserrat_700Bold,
   });
-  if (!fontsLoaded) {
+
+  //Process SignUp : se déclenche via le bouton connecter du "pas encore de compte?"
+  //interroge la BDD via le Back, le Back vérifie que le user est bien créé dans la BDD et renvoie un message d'erreur le cas échéant
+  const handleSubmitSignup = async () => {
+    const urlBack = "http://192.168.1.16:3000"      //URL A METTRE A JOUR AVEC L'URL D'HEROKU
+    const data = await fetch(`${urlBack}/sign-up`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: `usernameFromFront=${signUpUsername}&passwordFromFront=${signUpPassword}&secret_question=${secretQuestion}&secret_question_answer=${answer}`
+    })
+
+    const body = await data.json()
+
+    if(body.result === true){
+      setUserExists(true)
+      
+    } else {
+      setErrorsSignup(body.error)
+    }
+
+  }
+
+  //Process SignIn : se déclenche via le bouton connecter du "déjà un compte?"
+  //interroge la BDD via le Back, le Back vérifie que le user existe dans la BDD et renvoie un message d'erreur le cas échéant
+  const handleSubmitSignin = async () => {
+    const urlBack = "http://192.168.1.16:3000"      //URL A METTRE A JOUR AVEC L'URL D'HEROKU
+    const data = await fetch(`${urlBack}/sign-in`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: `usernameFromFront=${signInUsername}&passwordFromFront=${signInPassword}`
+    })
+
+    const body = await data.json()
+
+    if(body.result === true){
+      setUserExists(true)      
+    }  else {
+      setErrorsSignin(body.error)
+    }
+
+  }
+
+  //déclenche la redirection vers HomeScreen si le SignIn ou le SignUp a bien réussi
+  useEffect(()=>{
+    if(userExists){
+      navigation.navigate("PagesTab");
+    }
+  }, [userExists])
+
+
+  //affichage des erreurs liées au SignIn
+  const tabErrorsSignin = listErrorsSignin.map((error,i) => {
+    return(<Text>{error}</Text>)
+  })
+
+  //affichage des erreurs liées au SignUp
+  const tabErrorsSignup = listErrorsSignup.map((error,i) => {
+    return(<Text>{error}</Text>)
+  })
+
+  if (!fontsLoaded) {     //mécanique pour attendre que les polices soient chargées avant de générer le screen
     return <AppLoading />;
   } else {
     return (
@@ -36,8 +107,8 @@ export default function LoginScreen() {
             focusedColor="#0773A3"
             defaultColor="#4FA2C7"
             style={styles.input}
-            onChangeText={(username) => setUsername(username)}
-            value={username}
+            onChangeText={(username) => setSignInUsername(username)}
+            value={signInUsername}
           />
 
           <InputOutline
@@ -45,12 +116,15 @@ export default function LoginScreen() {
             focusedColor="#0773A3"
             defaultColor="#4FA2C7"
             style={styles.input}
-            value={password}
-            onChangeText={(password) => setPassword(password)}
+            value={signInPassword}
+            onChangeText={(password) => setSignInPassword(password)}
           />
 
           <Text style={styles.smalltext}>Mot de passe oublié ?</Text>
-          <Button title="Se connecter" type="solid" buttonStyle={styles.button} />
+
+          {tabErrorsSignin}
+
+          <Button title="Se connecter" type="solid" buttonStyle={styles.button} onPress={() => handleSubmitSignin()} />
         </View>
 
         <View style={styles.signup}>
@@ -60,16 +134,16 @@ export default function LoginScreen() {
             focusedColor="#0773A3"
             defaultColor="#4FA2C7"
             style={styles.input}
-            onChangeText={(username) => setUsername(username)}
-            value={username}
+            onChangeText={(username) => setSignUpUsername(username)}
+            value={signUpUsername}
           />
           <InputOutline
             placeholder="Mot de passe"
             focusedColor="#0773A3"
             defaultColor="#4FA2C7"
             style={styles.input}
-            onChangeText={(password) => setPassword(password)}
-            value={password}
+            onChangeText={(password) => setSignUpPassword(password)}
+            value={signUpPassword}
           />
           <DropDownPicker
             items={[
@@ -81,6 +155,10 @@ export default function LoginScreen() {
                 label: "Quelle est la date de naissance de votre mère?",
                 value: "Quelle est la date de naissance de votre mère?",
               },
+              {
+                label: "Quel est votre plat favori?",
+                value: "Quel est votre plat favori?",
+              }
             ]}
             defaultIndex={0}
             placeholder="Choisissez une question secrète"
@@ -100,7 +178,10 @@ export default function LoginScreen() {
             onChangeText={(answer) => setAnswer(answer)}
             value={answer}
           />
-          <Button title="Se connecter" type="solid" buttonStyle={styles.button} />
+
+          {tabErrorsSignup}
+
+          <Button title="Se connecter" type="solid" buttonStyle={styles.button} onPress={() => handleSubmitSignup()} />
         </View>
       </View>
     );
