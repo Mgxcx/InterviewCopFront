@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import InputOutline from "react-native-input-outline";
+import OutlineInput from "react-native-outline-input";
 import { AppLoading } from "expo";
 import DropDownPicker from "react-native-dropdown-picker";
 import {
   useFonts,
   Montserrat_400Regular,
   Montserrat_500Medium,
+  Montserrat_400Regular_Italic,
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 
@@ -19,6 +21,9 @@ export default function LoginScreen() {
 
   let [fontsLoaded] = useFonts({
     Montserrat_500Medium,
+    Montserrat_400Regular,
+    Montserrat_400Regular_Italic,
+    Montserrat_700Bold,
   });
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -35,17 +40,20 @@ export default function LoginScreen() {
             onChangeText={(username) => setUsername(username)}
             value={username}
           />
+
           <InputOutline
-            placeholder="Mot de passe"
+            placeholder="Username"
             focusedColor="#0773A3"
             defaultColor="#4FA2C7"
             style={styles.input}
-            onChangeText={(password) => setPassword(password)}
             value={password}
+            onChangeText={(password) => setPassword(password)}
           />
+
           <Text style={styles.smalltext}>Mot de passe oublié ?</Text>
           <Button title="Se connecter" type="solid" buttonStyle={styles.button} />
         </View>
+
         <View style={styles.signup}>
           <Text style={styles.text}>Pas encore de compte ?</Text>
           <InputOutline
@@ -79,7 +87,7 @@ export default function LoginScreen() {
             placeholder="Choisissez une question secrète"
             style={styles.colordropdown}
             dropDownStyle={styles.colordropdown}
-            containerStyle={styles.dropdown}
+            containerStyle={styles.containerdropdown}
             labelStyle={styles.labeldropdown}
             onChangeItem={(item) => setSecretQuestion(item.value)}
             value={secretQuestion}
@@ -105,8 +113,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    padding: 50,
     backgroundColor: "#FFFEFA",
+    padding: 50,
   },
   signin: {
     flex: 2.3,
@@ -122,8 +130,7 @@ const styles = StyleSheet.create({
     color: "#0773A3",
   },
   smalltext: {
-    fontFamily: "Montserrat_400Regular",
-    fontStyle: "italic",
+    fontFamily: "Montserrat_400Regular_Italic",
     fontSize: 13,
     color: "#0773A3",
     marginTop: 5,
@@ -132,8 +139,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: "#0773A3",
     borderRadius: 15,
+    width: 140,
   },
-  dropdown: {
+  containerdropdown: {
     height: 40,
     width: 220,
     marginTop: 20,
