@@ -35,7 +35,7 @@ function HomeScreen({ navigation }) {
         <Image source={image} style={styles.image} />
         <Text style={styles.text}> InterviewCop vous entraîne à passer des entretiens d'embauche. </Text>
         <Button
-          title="GO !"
+          title="Go !"
           titleStyle={styles.textbutton}
           onPress={() => {
             navigation.navigate("Interview");
