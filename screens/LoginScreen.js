@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import InputOutline from "react-native-input-outline";
-import OutlineInput from "react-native-outline-input";
 import { AppLoading } from "expo";
 import DropDownPicker from "react-native-dropdown-picker";
 import {
@@ -42,7 +41,7 @@ export default function LoginScreen() {
           />
 
           <InputOutline
-            placeholder="Username"
+            placeholder="Mot de passe"
             focusedColor="#0773A3"
             defaultColor="#4FA2C7"
             style={styles.input}
