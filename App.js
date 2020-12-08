@@ -63,7 +63,7 @@ const PagesTab = () => {
           } else if (route.name === "Advices") {
             iconName = "readme";
           } else if (route.name === "Shop") {
-            iconName = "store-alt";
+            iconName = "store";
           }
 
           // You can return any component that you like here!

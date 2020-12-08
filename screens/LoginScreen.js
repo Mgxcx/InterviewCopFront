@@ -12,7 +12,7 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [secretQuestion, setSecretQuestion] = useState("");
@@ -57,7 +57,15 @@ export default function LoginScreen() {
           />
 
           <Text style={styles.smalltext}>Mot de passe oublié ?</Text>
-          <Button title="Se connecter" titleStyle={styles.textbutton} type="solid" buttonStyle={styles.button} />
+          <Button
+            title="Se connecter"
+            titleStyle={styles.textbutton}
+            type="solid"
+            buttonStyle={styles.button}
+            onPress={() => {
+              navigation.navigate("PagesTab");
+            }}
+          />
         </View>
 
         <View style={styles.signup}>
