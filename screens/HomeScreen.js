@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { Button, Header } from "react-native-elements";
 import { AppLoading } from "expo";
+import { connect } from "react-redux";
 import {
   useFonts,
   Montserrat_400Regular,
@@ -10,7 +11,7 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 
-function HomeScreen({ navigation }) {
+function HomeScreen({ navigation, username }) {
   const logo = require("../assets/MikeChickenRight.png");
   const image = require("../assets/MikeChickenLeft.png");
 
@@ -31,7 +32,7 @@ function HomeScreen({ navigation }) {
           centerComponent={<Text style={styles.title}>InterviewCop</Text>}
           containerStyle={styles.topbar}
         />
-        <Text style={styles.title2}> Bienvenue Username !</Text>
+        <Text style={styles.title2}> Bienvenue {username} !</Text>
         <Image source={image} style={styles.image} />
         <Text style={styles.text}> InterviewCop vous entraîne à passer des entretiens d'embauche. </Text>
         <Button
@@ -53,6 +54,10 @@ function HomeScreen({ navigation }) {
       </View>
     );
   }
+}
+
+function mapStateToProps(state) {
+  return { username: state.username };
 }
 
 const styles = StyleSheet.create({
@@ -113,4 +118,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default connect(mapStateToProps, null)(HomeScreen);

@@ -4,6 +4,7 @@ import { Button, Header } from "react-native-elements";
 import InputOutline from "react-native-input-outline";
 import { AppLoading } from "expo";
 import DropDownPicker from "react-native-dropdown-picker";
+import { connect } from "react-redux";
 import {
   useFonts,
   Montserrat_400Regular,
@@ -12,7 +13,7 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 
-export default function LoginScreen({ navigation }) {
+function LoginScreen({ navigation, onSubmitUsername }) {
   //états liés au Sign-Up
   const [signUpUsername, setSignUpUsername] = useState("");
   const [signUpPassword, setSignUpPassword] = useState("");
@@ -39,7 +40,7 @@ export default function LoginScreen({ navigation }) {
   //Process SignUp : se déclenche via le bouton connecter du "pas encore de compte?"
   //interroge la BDD via le Back, le Back vérifie que le user est bien créé dans la BDD et renvoie un message d'erreur le cas échéant
   const handleSubmitSignup = async () => {
-    const urlBack = "http://192.168.1.16:3000"; //URL A METTRE A JOUR AVEC L'URL D'HEROKU
+    const urlBack = "http://192.168.1.20:3000"; //URL A METTRE A JOUR AVEC L'URL D'HEROKU
     const data = await fetch(`${urlBack}/sign-up`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -58,7 +59,7 @@ export default function LoginScreen({ navigation }) {
   //Process SignIn : se déclenche via le bouton connecter du "déjà un compte?"
   //interroge la BDD via le Back, le Back vérifie que le user existe dans la BDD et renvoie un message d'erreur le cas échéant
   const handleSubmitSignin = async () => {
-    const urlBack = "http://192.168.1.16:3000"; //URL A METTRE A JOUR AVEC L'URL D'HEROKU
+    const urlBack = "http://192.168.1.20:3000"; //URL A METTRE A JOUR AVEC L'URL D'HEROKU
     const data = await fetch(`${urlBack}/sign-in`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -132,7 +133,10 @@ export default function LoginScreen({ navigation }) {
             titleStyle={styles.textbutton}
             type="solid"
             buttonStyle={styles.button}
-            onPress={() => handleSubmitSignin()}
+            onPress={() => {
+              handleSubmitSignin();
+              onSubmitUsername(signInUsername);
+            }}
           />
         </View>
 
@@ -195,12 +199,23 @@ export default function LoginScreen({ navigation }) {
             titleStyle={styles.textbutton}
             type="solid"
             buttonStyle={styles.button}
-            onPress={() => handleSubmitSignup()}
+            onPress={() => {
+              handleSubmitSignup();
+              onSubmitUsername(signUpUsername);
+            }}
           />
         </View>
       </View>
     );
   }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onSubmitUsername: function (username) {
+      dispatch({ type: "saveUsername", username });
+    },
+  };
 }
 
 const styles = StyleSheet.create({
@@ -283,3 +298,5 @@ const styles = StyleSheet.create({
     width: 220,
   },
 });
+
+export default connect(null, mapDispatchToProps)(LoginScreen);

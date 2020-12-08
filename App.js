@@ -22,6 +22,12 @@ import InterviewScreen9 from "./screens/InterviewScreen9";
 import InterviewScreen10 from "./screens/InterviewScreen10";
 import InterviewScreenResult from "./screens/InterviewScreenResult";
 
+import username from "./reducers/username.reducer";
+import { Provider } from "react-redux";
+import { createStore, combineReducers } from "redux";
+
+const store = createStore(combineReducers({ username }));
+
 LogBox.ignoreAllLogs();
 
 const Tab = createBottomTabNavigator();
@@ -89,11 +95,13 @@ const PagesTab = () => {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen name="PagesTab" component={PagesTab} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
+          <Stack.Screen name="PagesTab" component={PagesTab} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
