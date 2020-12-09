@@ -13,21 +13,17 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 
-function LoginScreen({ navigation, onSubmitUsername }) {
-  //états liés au Sign-Up
-  const [signUpUsername, setSignUpUsername] = useState("");
-  const [signUpPassword, setSignUpPassword] = useState("");
+function PasswordRecoveryScreen({ navigation, onSubmitUsername }) {
+  //états liés à l'utilisateur
+  const [username, setUsername] = useState("");
   const [secretQuestion, setSecretQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const logo = require("../assets/MikeChickenRight.png");
-  const [listErrorsSignup, setErrorsSignup] = useState([]); //les messages d'erreur sont transmis par le Back
+  const [listErrorsPasswordRecovery, setErrorsPasswordRecovery] = useState([]); //les messages d'erreur sont transmis par le Back
+  const [listErrorsNewPassword, setErrorsNewPassword] = useState([]); //les messages d'erreur sont transmis par le Back
 
-  //états liés au Sign-In
-  const [signInUsername, setSignInUsername] = useState("");
-  const [signInPassword, setSignInPassword] = useState("");
-  const [listErrorsSignin, setErrorsSignin] = useState([]); //les messages d'erreur sont transmis par le Back
-
-  const [userExists, setUserExists] = useState(false); //état lié à la vérification de l'existence du user dans la BDD
+  const [userQuestionAndAnswer, setUserQuestionAndAnswer] = useState(false); //état lié à la vérification de la question secrète choisie et la réponse du user dans la BDD
+  const [newPassword, setNewPassword] = useState("");
 
   //pour gérer les polices expo-google-fonts
   let [fontsLoaded] = useFonts({
@@ -37,60 +33,76 @@ function LoginScreen({ navigation, onSubmitUsername }) {
     Montserrat_700Bold,
   });
 
-  const urlBack = "https://interviewcoptest.herokuapp.com"; //URL A METTRE A JOUR AVEC L'URL D'HEROKU
+  const urlBack = "https://interviewcoptest.herokuapp.com";
 
-  //Process SignUp : se déclenche via le bouton connecter du "pas encore de compte?"
-  //interroge la BDD via le Back, le Back vérifie que le user est bien créé dans la BDD et renvoie un message d'erreur le cas échéant
-  const handleSubmitSignup = async () => {
-    const data = await fetch(`${urlBack}/sign-up`, {
+  //Process PasswordRecovery : se déclenche via le bouton valider de la récupération de mot de passe
+  //interroge la BDD via le Back, le Back vérifie que la question secrète choisie et la réponse correspondent au User et renvoie un message d'erreur le cas échéant
+  const handleSubmitPasswordRecovery = async () => {
+    const data = await fetch(`${urlBack}/password-recovery`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `usernameFromFront=${signUpUsername}&passwordFromFront=${signUpPassword}&secret_question=${secretQuestion}&secret_question_answer=${answer}`,
+      body: `usernameFromFront=${username}&secret_questionFromFront=${secretQuestion}&secret_question_answerFromFront=${answer}`,
     });
 
     const body = await data.json();
 
     if (body.result === true) {
-      setUserExists(true);
-      onSubmitUsername(signUpUsername);
+      setUserQuestionAndAnswer(true);
     } else {
-      setErrorsSignup(body.error);
+      setErrorsPasswordRecovery(body.error);
     }
   };
+  let newPasswordView;
+  if (userQuestionAndAnswer) {
+    newPasswordView = (
+      <View style={styles.newpassword}>
+        <InputOutline
+          placeholder="New Password"
+          focusedColor="#0773A3"
+          defaultColor="#4FA2C7"
+          style={styles.input}
+          onChangeText={(newPassword) => setNewPassword(newPassword)}
+          value={newPassword}
+        />
+        <Button
+          title="Valider"
+          titleStyle={styles.textbutton}
+          type="solid"
+          buttonStyle={styles.button}
+          onPress={() => {
+            handleSubmitNewPassword();
+          }}
+        />
+      </View>
+    );
+  }
 
-  //Process SignIn : se déclenche via le bouton connecter du "déjà un compte?"
-  //interroge la BDD via le Back, le Back vérifie que le user existe dans la BDD et renvoie un message d'erreur le cas échéant
-  const handleSubmitSignin = async () => {
-    const data = await fetch(`${urlBack}/sign-in`, {
+  //Process NewPassword : se déclenche via le bouton valider du nouveau mot de passe
+  //modifie le password de la BDD via le Back
+  const handleSubmitNewPassword = async () => {
+    const data = await fetch(`${urlBack}/new-password`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `usernameFromFront=${signInUsername}&passwordFromFront=${signInPassword}`,
+      body: `usernameFromFront=${username}&newPasswordFromFront=${newPassword}`,
     });
 
     const body = await data.json();
 
     if (body.result === true) {
-      setUserExists(true);
-      onSubmitUsername(signInUsername);
-    } else {
-      setErrorsSignin(body.error);
-    }
-  };
-
-  //déclenche la redirection vers HomeScreen si le SignIn ou le SignUp a bien réussi
-  useEffect(() => {
-    if (userExists) {
+      onSubmitUsername(username);
       navigation.navigate("PagesTab");
+    } else {
+      setErrorsNewPassword(body.error);
     }
-  }, [userExists]);
+  };
 
-  //affichage des erreurs liées au SignIn
-  const tabErrorsSignin = listErrorsSignin.map((error, i) => {
+  //affichage des erreurs liées au Password Recovery
+  const tabErrorsPasswordRecovery = listErrorsPasswordRecovery.map((error, i) => {
     return <Text key={i}>{error}</Text>;
   });
 
-  //affichage des erreurs liées au SignUp
-  const tabErrorsSignup = listErrorsSignup.map((error, i) => {
+  //affichage des erreurs liées au New Password
+  const tabErrorsNewPassword = listErrorsNewPassword.map((error, i) => {
     return <Text key={i}>{error}</Text>;
   });
 
@@ -106,66 +118,18 @@ function LoginScreen({ navigation, onSubmitUsername }) {
           centerComponent={<Text style={styles.title}>InterviewCop</Text>}
           containerStyle={styles.topbar}
         />
-        <View style={styles.signin}>
-          <Text style={styles.text}>Déjà un compte ?</Text>
+        <View style={styles.passwordrecovery}>
+          <Text style={styles.title2}>Récupération du mot de passe</Text>
+
           <InputOutline
             placeholder="Username"
             focusedColor="#0773A3"
             defaultColor="#4FA2C7"
             style={styles.input}
-            onChangeText={(username) => setSignInUsername(username)}
-            value={signInUsername}
+            onChangeText={(username) => setUsername(username)}
+            value={username}
           />
 
-          <InputOutline
-            placeholder="Mot de passe"
-            focusedColor="#0773A3"
-            defaultColor="#4FA2C7"
-            style={styles.input}
-            value={signInPassword}
-            onChangeText={(password) => setSignInPassword(password)}
-          />
-
-          <Text
-            style={styles.smalltext}
-            onPress={() => {
-              navigation.navigate("PasswordRecovery");
-            }}
-          >
-            Mot de passe oublié ?
-          </Text>
-
-          {tabErrorsSignin}
-
-          <Button
-            title="Se connecter"
-            titleStyle={styles.textbutton}
-            type="solid"
-            buttonStyle={styles.button}
-            onPress={() => {
-              handleSubmitSignin();
-            }}
-          />
-        </View>
-
-        <View style={styles.signup}>
-          <Text style={styles.text}>Pas encore de compte ?</Text>
-          <InputOutline
-            placeholder="Username"
-            focusedColor="#0773A3"
-            defaultColor="#4FA2C7"
-            style={styles.input}
-            onChangeText={(username) => setSignUpUsername(username)}
-            value={signUpUsername}
-          />
-          <InputOutline
-            placeholder="Mot de passe"
-            focusedColor="#0773A3"
-            defaultColor="#4FA2C7"
-            style={styles.input}
-            onChangeText={(password) => setSignUpPassword(password)}
-            value={signUpPassword}
-          />
           <DropDownPicker
             items={[
               {
@@ -200,18 +164,20 @@ function LoginScreen({ navigation, onSubmitUsername }) {
             value={answer}
           />
 
-          {tabErrorsSignup}
+          {tabErrorsPasswordRecovery}
 
           <Button
-            title="Se connecter"
+            title="Valider"
             titleStyle={styles.textbutton}
             type="solid"
             buttonStyle={styles.button}
             onPress={() => {
-              handleSubmitSignup();
+              handleSubmitPasswordRecovery();
             }}
           />
         </View>
+        {newPasswordView}
+        {tabErrorsNewPassword}
       </View>
     );
   }
@@ -232,12 +198,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#FFFEFA",
   },
-  signin: {
-    flex: 2.3,
+  passwordrecovery: {
+    flex: 3,
     alignItems: "center",
   },
-  signup: {
-    flex: 3,
+  newpassword: {
+    flex: 2.3,
     alignItems: "center",
   },
   topbar: {
@@ -249,6 +215,13 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat_700Bold",
     fontSize: 22,
   },
+  title2: {
+    color: "#0773A3",
+    fontFamily: "Montserrat_700Bold",
+    fontSize: 22,
+    marginTop: 30,
+    marginBottom: 10,
+  },
   logo: {
     width: 20,
     height: 35,
@@ -256,17 +229,11 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: "Montserrat_500Medium",
-    fontSize: 20,
+    fontSize: 18,
     color: "#0773A3",
-  },
-  smalltext: {
-    fontFamily: "Montserrat_400Regular_Italic",
-    fontSize: 13,
-    color: "#0773A3",
-    marginTop: 5,
   },
   button: {
-    marginTop: 10,
+    marginTop: 20,
     backgroundColor: "#0773A3",
     borderRadius: 15,
     width: 140,
@@ -306,4 +273,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, mapDispatchToProps)(LoginScreen);
+export default connect(null, mapDispatchToProps)(PasswordRecoveryScreen);
