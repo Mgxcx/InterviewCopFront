@@ -20,7 +20,7 @@ function InterviewScreenHome({ navigation, username }) {
   const [job, setJob] = useState("");
   const [jobexp, setJobexp] = useState("");
   const [salary, setSalary] = useState("");
-  const [department, setDepartment] = useState("");
+  const [county, setCounty] = useState("");
 
   //pour gérer les polices expo-google-fonts
   let [fontsLoaded] = useFonts({
@@ -93,7 +93,7 @@ function InterviewScreenHome({ navigation, username }) {
             focusedColor="#0773A3"
             defaultColor="#4FA2C7"
             style={styles.input}
-            onChangeText={(department) => setDepartment(department)}
+            onChangeText={(county) => setCounty(county)}
             value={department}
           />
           <Button
