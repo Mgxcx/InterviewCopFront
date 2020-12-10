@@ -18,9 +18,10 @@ import { moderateScale } from "react-native-size-matters";
 function InterviewScreenHome({ navigation, username }) {
   const image = require("../assets/MikeChickenLeft.png");
   const [job, setJob] = useState("");
-  const [jobexp, setJobexp] = useState("");
+  const [experience, setExperience] = useState("");
   const [salary, setSalary] = useState("");
   const [county, setCounty] = useState("");
+  const [listErrorsNewInformation, setListErrorsNewInformation] = useState([]); //les messages d'erreur sont transmis par le Back
 
   //pour gérer les polices expo-google-fonts
   let [fontsLoaded] = useFonts({
@@ -28,6 +29,31 @@ function InterviewScreenHome({ navigation, username }) {
     Montserrat_400Regular,
     Montserrat_400Regular_Italic,
     Montserrat_700Bold,
+  });
+
+  const urlBack = "https://interviewcoptest.herokuapp.com";
+
+  //Process NewInformation : se déclenche via le bouton "suivant" après les inputs des nouvelles informations
+  //ajoute ou modifie les données du user relatives à son métier, son expérience, son salaire et son département dans la BDD via le Back
+  const handleSubmitNewInformation = async () => {
+    const data = await fetch(`${urlBack}/update-userdata`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `usernameFromFront=${username}&jobFromFront=${job}&experienceFromFront=${experience}&salaryFromFront=${salary}&countyFromFront=${county}`,
+    });
+
+    const body = await data.json();
+
+    if (body.result === true) {
+      navigation.navigate("InterviewScreen");
+    } else {
+      setListErrorsNewInformation(body.error);
+    }
+  };
+
+  //affichage des erreurs liées aux nouvelles informations (ou informations à modifier) du user à stocker dans la BDD
+  const tabErrorsNewInformation = listErrorsNewInformation.map((error, i) => {
+    return <Text key={i}>{error}</Text>;
   });
 
   if (!fontsLoaded) {
@@ -45,7 +71,8 @@ function InterviewScreenHome({ navigation, username }) {
           <View style={[styles.bubble, styles.bubbleOut]}>
             <View style={[styles.balloon, { backgroundColor: "#0773A3" }]}>
               <Text style={styles.text}>
-                Bonjour, {username} ! Ravi de vous rencontrer ! Vous allez devoir répondre à une série de 10 questions !{" "}
+                Bonjour, {username} ! {"\n"} Ravi de vous voir !{"\n"}
+                Vous allez devoir répondre à une série de 10 questions !
               </Text>
               <View style={[styles.arrowContainer, styles.arrowRightContainer]}>
                 <Svg
@@ -77,8 +104,8 @@ function InterviewScreenHome({ navigation, username }) {
             focusedColor="#0773A3"
             defaultColor="#4FA2C7"
             style={styles.input}
-            onChangeText={(jobexp) => setJobexp(jobexp)}
-            value={jobexp}
+            onChangeText={(experience) => setExperience(experience)}
+            value={experience}
           />
           <InputOutline
             placeholder="Salaire souhaité"
@@ -94,12 +121,13 @@ function InterviewScreenHome({ navigation, username }) {
             defaultColor="#4FA2C7"
             style={styles.input}
             onChangeText={(county) => setCounty(county)}
-            value={department}
+            value={county}
           />
+          {tabErrorsNewInformation}
           <Button
             icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFE" />}
             onPress={() => {
-              navigation.navigate("InterviewScreen1");
+              handleSubmitNewInformation();
             }}
             buttonStyle={styles.button}
           />
@@ -152,7 +180,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   button: {
-    marginTop: 20,
+    marginTop: 10,
     backgroundColor: "#0773A3",
     borderRadius: 15,
     width: 60,

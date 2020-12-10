@@ -20,12 +20,12 @@ function LoginScreen({ navigation, onSubmitUsername }) {
   const [secretQuestion, setSecretQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const logo = require("../assets/MikeChickenRight.png");
-  const [listErrorsSignup, setErrorsSignup] = useState([]); //les messages d'erreur sont transmis par le Back
+  const [listErrorsSignup, setListErrorsSignup] = useState([]); //les messages d'erreur sont transmis par le Back
 
   //états liés au Sign-In
   const [signInUsername, setSignInUsername] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
-  const [listErrorsSignin, setErrorsSignin] = useState([]); //les messages d'erreur sont transmis par le Back
+  const [listErrorsSignin, setListErrorsSignin] = useState([]); //les messages d'erreur sont transmis par le Back
 
   const [userExists, setUserExists] = useState(false); //état lié à la vérification de l'existence du user dans la BDD
 
@@ -54,7 +54,7 @@ function LoginScreen({ navigation, onSubmitUsername }) {
       setUserExists(true);
       onSubmitUsername(signUpUsername);
     } else {
-      setErrorsSignup(body.error);
+      setListErrorsSignup(body.error);
     }
   };
 
@@ -73,7 +73,7 @@ function LoginScreen({ navigation, onSubmitUsername }) {
       setUserExists(true);
       onSubmitUsername(signInUsername);
     } else {
-      setErrorsSignin(body.error);
+      setListErrorsSignin(body.error);
     }
   };
 

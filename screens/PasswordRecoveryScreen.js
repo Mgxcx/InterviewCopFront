@@ -19,8 +19,8 @@ function PasswordRecoveryScreen({ navigation, onSubmitUsername }) {
   const [secretQuestion, setSecretQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const logo = require("../assets/MikeChickenRight.png");
-  const [listErrorsPasswordRecovery, setErrorsPasswordRecovery] = useState([]); //les messages d'erreur sont transmis par le Back
-  const [listErrorsNewPassword, setErrorsNewPassword] = useState([]); //les messages d'erreur sont transmis par le Back
+  const [listErrorsPasswordRecovery, setListErrorsPasswordRecovery] = useState([]); //les messages d'erreur sont transmis par le Back
+  const [listErrorsNewPassword, setListErrorsNewPassword] = useState([]); //les messages d'erreur sont transmis par le Back
 
   const [userQuestionAndAnswer, setUserQuestionAndAnswer] = useState(false); //état lié à la vérification de la question secrète choisie et la réponse du user dans la BDD
   const [newPassword, setNewPassword] = useState("");
@@ -49,7 +49,7 @@ function PasswordRecoveryScreen({ navigation, onSubmitUsername }) {
     if (body.result === true) {
       setUserQuestionAndAnswer(true);
     } else {
-      setErrorsPasswordRecovery(body.error);
+      setListErrorsPasswordRecovery(body.error);
     }
   };
   let newPasswordView;
@@ -92,7 +92,7 @@ function PasswordRecoveryScreen({ navigation, onSubmitUsername }) {
       onSubmitUsername(username);
       navigation.navigate("PagesTab");
     } else {
-      setErrorsNewPassword(body.error);
+      setListErrorsNewPassword(body.error);
     }
   };
 
