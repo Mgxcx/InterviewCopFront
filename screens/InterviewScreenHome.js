@@ -94,12 +94,12 @@ function InterviewScreenHome({ navigation, username }) {
             defaultColor="#4FA2C7"
             style={styles.input}
             onChangeText={(county) => setCounty(county)}
-            value={department}
+            value={county}
           />
           <Button
             icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFE" />}
             onPress={() => {
-              navigation.navigate("InterviewScreen1");
+              navigation.navigate("InterviewScreen");
             }}
             buttonStyle={styles.button}
           />
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   button: {
-    marginTop: 20,
+    marginTop: 10,
     backgroundColor: "#0773A3",
     borderRadius: 15,
     width: 60,
