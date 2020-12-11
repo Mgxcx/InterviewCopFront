@@ -20,12 +20,51 @@ function InterviewScreenResult({ username, navigation }) {
   const [overlayVisible2, setOverlayVisible2] = useState(false);
   const [overlayVisible3, setOverlayVisible3] = useState(false);
   const [overlayVisible4, setOverlayVisible4] = useState(false);
+  const [listErrorsNewTrophy, setListErrorsNewTrophy] = useState([]);
+  const [lastTrophy, setLastTrophy] = useState("");
+  let trophy;
   //pour gérer les polices expo-google-fonts
   let [fontsLoaded] = useFonts({
     Montserrat_500Medium,
     Montserrat_400Regular,
     Montserrat_400Regular_Italic,
     Montserrat_700Bold,
+  });
+
+  const urlBack = "https://interviewcoptest.herokuapp.com";
+
+  //Process NewTrophy : se déclenche via le bouton "suivant" après les conseils suite au dernier entretien
+  //récupère le dernier trophée gagné dans la BDD via le Back pour pouvoir le montrer à l'utilisateur
+  const handleSubmitNewTrophy = async () => {
+    console.log("clic détecté");
+    const data = await fetch(`${urlBack}/interviewfind-lasttrophy`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `usernameFromFront=${username}`,
+    });
+
+    const body = await data.json();
+
+    if (body.result === true) {
+      setLastTrophy(body.lastTrophyToShow); //on stocke dans un état le trophée récupéré du back
+      setListErrorsNewTrophy(body.error);
+    }
+  };
+
+  // vérification du nombre du trophée stocké précédemment dans l'état pour pouvoir attribuer une image de trophée en fonction
+  if (lastTrophy.number) {
+    if (lastTrophy.number == 1) {
+      trophy = require("../assets/badgeparfait.png");
+    } else if (lastTrophy.number == 2) {
+      trophy = require("../assets/badgepresqueparfait.png");
+    } else {
+      trophy = require("../assets/badgeaparfaire.png");
+    }
+  }
+
+  //affichage des erreurs liées au nouveau trophée du user récupéré de la BDD
+  const tabErrorsNewTrophy = listErrorsNewTrophy.map((error, i) => {
+    return <Text key={i}>{error}</Text>;
   });
 
   const toggleOverlay = () => {
@@ -110,11 +149,16 @@ function InterviewScreenResult({ username, navigation }) {
         <Button
           icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFA" />}
           buttonStyle={styles.button}
-          onPress={toggleOverlay4}
+          onPress={() => {
+            toggleOverlay4();
+            handleSubmitNewTrophy();
+          }}
         />
         <Overlay isVisible={overlayVisible4} backdropStyle={styles.backdropoverlay} overlayStyle={styles.overlay}>
           <View style={styles.overlay}>
-            <Text style={styles.title}>Vous avez gagné le trophée...</Text>
+            <Text style={styles.title}>Vous avez gagné le trophée {lastTrophy.name}</Text>
+            <Image source={trophy} style={styles.trophy} />
+            {tabErrorsNewTrophy}
             <Button
               title="Mon compte"
               titleStyle={styles.textbutton2}
@@ -150,6 +194,7 @@ const styles = StyleSheet.create({
     color: "#FFFEFA",
     fontFamily: "Montserrat_700Bold",
     fontSize: 22,
+    textAlign: "center",
   },
   title2: {
     color: "#0773A3",
@@ -243,6 +288,10 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     alignItems: "center",
     width: 300,
+  },
+  trophy: {
+    width: 130,
+    height: 130,
   },
 });
 
