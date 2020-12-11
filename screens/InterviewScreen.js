@@ -2,11 +2,22 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { AppLoading } from "expo";
 import { Button, Header } from "react-native-elements";
+import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
-function InterviewScreen({navigation}) {
-  const [questionNumber, setQuestionNumber] = useState(1);
-  const [questionList, setQuestionList] = useState();
+function InterviewScreen({ navigation, username }) {
+
+  const [questionNumber, setQuestionNumber] = useState(1);//compteur des questions affiché sur la top bar entretien
+  const [questionList, setQuestionList] = useState();//stocke les données des questions envoyées par le back (questions,réponses,conseils etc)
+
+  const [tempScore, setTempScore] = useState(0);//score temporaire associé à la réponse actuellement sélectionnée (pas encore confirmée par le user)
+  const [score, setScore] = useState([]);//lorsque la réponse est confirmée par le user, le score final est incrémenté
+
+  //états liés aux réponses, un état passe à true si la réponse associée est sélectionnée par le user
+  const [answerA, setAnswerA] = useState(false);
+  const [answerB, setAnswerB] = useState(false);
+  const [answerC, setAnswerC] = useState(false);
+  const [answerD, setAnswerD] = useState(false);
 
 
   const urlBack = "https://interviewcoptest.herokuapp.com"; 
@@ -17,24 +28,70 @@ function InterviewScreen({navigation}) {
       const data = await fetch(`${urlBack}/generate-questions`);
       const body = await data.json();
       if (body.result === true) {
-        // console.log(body.questionsArray);
         setQuestionList(body.questionsArray);
       }
     };
     fetchData();
   }, []);
 
+  //déclenche handleSubmitLastQuestion après la dernière question 
+  useEffect( () => {
+    // console.log(`progression du tableau: ${score}`);//sert à checker dans la console l'incrémentation du score
+    score.length === 10 && handleSubmitLastQuestion();
+  }, [score]);
 
-  //incrémente le compteur questionNumber, puis redirige vers screenresult quand la question 10 a été répondue
-  const handleNextQuestion = () => {
-    questionNumber < 10 ? setQuestionNumber(prev => prev+1) : navigation.navigate("InterviewScreenResult");
+
+  //mécanique lorsque le user choisit une réponse
+  const handleSelectedAnswer = (order, points) => {
+    if (order === 'A') {
+      setAnswerA(true); setAnswerB(false); setAnswerC(false); setAnswerD(false);
+    } else if (order === 'B') {
+      setAnswerA(false); setAnswerB(true); setAnswerC(false); setAnswerD(false);
+    } else if (order === 'C') {
+      setAnswerA(false); setAnswerB(false); setAnswerC(true); setAnswerD(false);
+    } else {
+      setAnswerA(false); setAnswerB(false); setAnswerC(false); setAnswerD(true);
+    }
+    // console.log('cette réponse vaut '+points+' points');
+    setTempScore(points);
   }
+
+
+  //mécanique qui incrémente le score et charge la question suivante
+  const handleNextQuestion = () => {
+    if (answerA || answerB || answerC || answerD) { //vérification qu'une réponse a bien été sélectionnée par l'utilisateur
+      setScore([...score, tempScore]); //enregistrement du score
+      questionNumber < 10 && setQuestionNumber(prev => prev+1); //incrémente le compteur des questions
+      //réinitialisation des états liés aux réponses    
+      setAnswerA(false);
+      setAnswerB(false);
+      setAnswerC(false);
+      setAnswerD(false);
+    }
+  }
+
+  // //envoi du score et du username au back à la fin de l'entretien (une fois la question 10 validée)
+  const handleSubmitLastQuestion = async () => {
+    const finalScore = score.reduce((a, b)=> a + b,0);
+    // console.log(finalScore);
+    const data = await fetch(`${urlBack}/interviewsave-scoreandtrophy`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `usernameFromFront=${username}&scoreFromFront=${finalScore}`,
+    });
+    const body = await data.json();
+    if (body.result === true) {
+      navigation.navigate("InterviewScreenResult")
+    }
+  };
+
+
 
   if(!questionList) {
     return (<AppLoading></AppLoading>)
   }
 
-  let questionDisplay = questionList[questionNumber-1];
+  let questionDisplay = questionList[questionNumber-1];//lorsque le compteur des questions s'actualise, la question suivante est chargée
 
   return (
     <View style={styles.container}>
@@ -49,37 +106,40 @@ function InterviewScreen({navigation}) {
         <Button
           title={questionDisplay.answers[0].text}
           titleStyle={styles.textbutton}
-          // onPress={() => }
-          buttonStyle={styles.button}
-          // TouchableComponent={TouchableHighlight}
+          onPress={() => handleSelectedAnswer('A', questionDisplay.answers[0].points)}
+          buttonStyle={answerA ? styles.buttonSelected : styles.button}
         />
         <Button
           title={questionDisplay.answers[1].text}
           titleStyle={styles.textbutton}
-          // onPress={() => }
-          buttonStyle={styles.button}
+          onPress={() => handleSelectedAnswer('B', questionDisplay.answers[1].points)}
+          buttonStyle={answerB ? styles.buttonSelected : styles.button}
         />
         <Button
           title={questionDisplay.answers[2].text}
           titleStyle={styles.textbutton}
-          // onPress={() => }
-          buttonStyle={styles.button}
+          onPress={() => handleSelectedAnswer('C', questionDisplay.answers[2].points)}
+          buttonStyle={answerC ? styles.buttonSelected : styles.button}
         />
         <Button
           title={questionDisplay.answers[3].text}
           titleStyle={styles.textbutton}
-          // onPress={() => }
-          buttonStyle={styles.button}
+          onPress={() => handleSelectedAnswer('D', questionDisplay.answers[3].points)}
+          buttonStyle={answerD ? styles.buttonSelected : styles.button}
         />
 
       </View>
       <Button
         icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFE" />}
         onPress={() => handleNextQuestion()}
-        buttonStyle={styles.sendbutton}
+        buttonStyle={styles.nextButton}
       />
     </View>
   );
+}
+
+function mapStateToProps(state) {
+  return { username: state.username };
 }
 
 const styles = StyleSheet.create({
@@ -121,10 +181,24 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   button: {
-    marginTop: 25,
+    marginTop: 15,
+    marginLeft: 15,
+    marginRight: 15,
     backgroundColor: "#4FA2C7",
     borderRadius: 15,
-    width: '80%'
+  },
+  buttonSelected: {
+    marginTop: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    backgroundColor: "#E8C518",
+    borderRadius: 15,
+  },
+  nextButton: {
+    backgroundColor: "#4FA2C7",
+    borderRadius: 15,
+    margin: 15,
+    width: 80
   },
   textbutton: {
     color: "#FFFEFE",
@@ -172,4 +246,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default InterviewScreen;
+export default connect(mapStateToProps, null)(InterviewScreen);
