@@ -1,10 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
+import { AppLoading } from "expo";
+import { List } from 'react-native-paper';
+import {
+  useFonts,
+  Montserrat_400Regular,
+  Montserrat_500Medium,
+  Montserrat_400Regular_Italic,
+  Montserrat_700Bold,
+} from "@expo-google-fonts/montserrat";
+
 
 function AdvicesScreen() {
+  //déclenche le setAdvices au chargement de la page pour récupérer ls conseils stockés en BDD
+  const [advices, setAdvices] = useState();
+  //pour gérer les polices expo-google-fonts
+  let [fontsLoaded] = useFonts({
+    Montserrat_500Medium,
+    Montserrat_400Regular,
+    Montserrat_400Regular_Italic,
+    Montserrat_700Bold,
+  });
+
+  const urlBack = "https://interviewcoptest.herokuapp.com";
+
+  useEffect(() => {
+    const getAdvices = async () => {
+      const data = await fetch(`${urlBack}/advices`);
+      const body = await data.json();
+      if (body.result === true) {
+        setAdvices(body.advices)
+      }
+    };
+    getAdvices();
+  }, []);
+
+  if (!advices || !fontsLoaded) {
+    return <AppLoading></AppLoading>;
+  }
+
+  let advicesList = advices.map((e,i) => 
+    <List.Accordion
+    title={e.title}
+    key={i}
+    titleStyle={styles.textbutton}
+    style={styles.button3}
+    >
+      <List.Item 
+      title={e.content}
+      titleStyle={styles.textbutton}
+      style={styles.button3}
+      />
+    </List.Accordion>);
+  // console.log(advicesList);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text}> Hello it's AdvicesScreen !</Text>
+      {advicesList}
     </View>
   );
 }
@@ -15,6 +67,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 50,
+  },
+  button3: {
+    marginTop: 15,
+    marginBottom: 10,
+    backgroundColor: "#0773A3",
+    borderRadius: 15,
+    width: 320,
+    height: 50,
+  },
+  advicetext: {
+
+  },
+  textbutton: {
+    color: "#FFFEFA",
+    fontFamily: "Montserrat_500Medium",
+    fontWeight: "600",
+    fontSize: 11,
+    lineHeight: 29,
+    alignItems: "center",
+    textAlign: "center",
+    letterSpacing: 0.75,
   },
 });
 
