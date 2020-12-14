@@ -18,6 +18,7 @@ import username from "./reducers/username.reducer";
 import score from "./reducers/score.reducer";
 import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
+import { Provider as PaperProvider } from 'react-native-paper';
 
 const store = createStore(combineReducers({ username, score }));
 
@@ -80,13 +81,15 @@ const PagesTab = () => {
 export default function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="PasswordRecovery" component={PasswordRecoveryScreen} />
-          <Stack.Screen name="PagesTab" component={PagesTab} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <PaperProvider>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="PasswordRecovery" component={PasswordRecoveryScreen} />
+            <Stack.Screen name="PagesTab" component={PagesTab} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
     </Provider>
   );
 }
