@@ -15,10 +15,11 @@ import ShopScreen from "./screens/ShopScreen";
 import InterviewScreenResult from "./screens/InterviewScreenResult";
 
 import username from "./reducers/username.reducer";
+import score from "./reducers/score.reducer";
 import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
 
-const store = createStore(combineReducers({ username }));
+const store = createStore(combineReducers({ username, score }));
 
 LogBox.ignoreAllLogs();
 

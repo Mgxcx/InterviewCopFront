@@ -13,9 +13,9 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 
-function InterviewScreenResult({ username, navigation }) {
+function InterviewScreenResult({ username, navigation, score }) {
   const image = require("../assets/MikeChickenLeft.png");
-  const [rating, setRating] = useState(1);
+  const [rating, setRating] = useState(0);
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [overlayVisible2, setOverlayVisible2] = useState(false);
   const [overlayVisible3, setOverlayVisible3] = useState(false);
@@ -30,6 +30,13 @@ function InterviewScreenResult({ username, navigation }) {
     Montserrat_400Regular_Italic,
     Montserrat_700Bold,
   });
+
+  //déclenche le setRating au chargement de la page pour récupérer le dernier score enregistré dans Redux
+  // pour pouvoir l'afficher ici dans InterviewScreenResult
+  useEffect(() => {
+    let newScore5Star = score / 10 / 2;
+    setRating(newScore5Star);
+  }, []);
 
   const urlBack = "https://interviewcoptest.herokuapp.com";
 
@@ -97,6 +104,7 @@ function InterviewScreenResult({ username, navigation }) {
           type="custom"
           imageSize={38}
           readonly
+          fractions={1}
           startingValue={rating}
           ratingBackgroundColor="#0773A3"
           ratingColor="#E8C518"
@@ -176,7 +184,7 @@ function InterviewScreenResult({ username, navigation }) {
 }
 
 function mapStateToProps(state) {
-  return { username: state.username };
+  return { username: state.username, score: state.score };
 }
 
 const styles = StyleSheet.create({
