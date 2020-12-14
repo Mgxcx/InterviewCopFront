@@ -5,6 +5,7 @@ import InputOutline from "react-native-input-outline";
 import { AppLoading } from "expo";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
+import { Dialog, Portal, RadioButton } from 'react-native-paper';
 import {
   useFonts,
   Montserrat_400Regular,
@@ -18,10 +19,13 @@ import { moderateScale } from "react-native-size-matters";
 function InterviewScreenHome({ navigation, username }) {
   const image = require("../assets/MikeChickenLeft.png");
   const [job, setJob] = useState("");
-  const [experience, setExperience] = useState("");
   const [salary, setSalary] = useState("");
-  const [county, setCounty] = useState("");
+  const [county, setCounty] = useState("Choisissez votre région");
   const [listErrorsNewInformation, setListErrorsNewInformation] = useState([]); //les messages d'erreur sont transmis par le Back
+  
+  const [visible, setVisible] = useState(false);
+  const showDialog = () => setVisible(true);
+  const hideDialog = () => setVisible(false);
 
   //pour gérer les polices expo-google-fonts
   let [fontsLoaded] = useFonts({
@@ -39,7 +43,7 @@ function InterviewScreenHome({ navigation, username }) {
     const data = await fetch(`${urlBack}/update-userdata`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `usernameFromFront=${username}&jobFromFront=${job}&experienceFromFront=${experience}&salaryFromFront=${salary}&countyFromFront=${county}`,
+      body: `usernameFromFront=${username}&jobFromFront=${job}&salaryFromFront=${salary}&countyFromFront=${county}`,
     });
 
     const body = await data.json();
@@ -100,14 +104,6 @@ function InterviewScreenHome({ navigation, username }) {
             value={job}
           />
           <InputOutline
-            placeholder="Années d'expériences pro"
-            focusedColor="#0773A3"
-            defaultColor="#4FA2C7"
-            style={styles.input}
-            onChangeText={(experience) => setExperience(experience)}
-            value={experience}
-          />
-          <InputOutline
             placeholder="Salaire souhaité"
             focusedColor="#0773A3"
             defaultColor="#4FA2C7"
@@ -115,15 +111,142 @@ function InterviewScreenHome({ navigation, username }) {
             onChangeText={(salary) => setSalary(salary)}
             value={salary}
           />
-          <InputOutline
-            placeholder="Département"
-            focusedColor="#0773A3"
-            defaultColor="#4FA2C7"
-            style={styles.input}
-            onChangeText={(county) => setCounty(county)}
-            value={county}
+          <Button
+            // onChangeText={(county) => setCounty(county)}
+            title={county}
+            onPress={showDialog}
+            buttonStyle={styles.regionbutton}
+            // value={county}
           />
           {tabErrorsNewInformation}
+          <Portal>
+            <Dialog visible={visible} onDismiss={hideDialog}>
+              <Dialog.Title>Sélectionnez votre région</Dialog.Title>
+              <Dialog.Content>
+                <RadioButton.Group>
+                  <View style={styles.regionselect}>
+                    <RadioButton
+                      value='Auvergne-Rhone-Alpes'
+                      status={ county === 'Auvergne-Rhone-Alpes' ? 'checked' : 'unchecked' }
+                      onPress={() => setCounty('Auvergne-Rhone-Alpes')}
+                    />
+                    <Text>Auvergne-Rhone-Alpes</Text>
+                  </View>
+                  <View style={styles.regionselect}>
+                    <RadioButton
+                      value='Bourgogne-Franche-Comte'
+                      status={ county === 'Bourgogne-Franche-Comte' ? 'checked' : 'unchecked' }
+                      onPress={() => setCounty('Bourgogne-Franche-Comte')}
+                    />
+                    <Text>Bourgogne-Franche-Comte</Text>
+                  </View>
+                  <View style={styles.regionselect}>
+                    <RadioButton
+                      value='Bretagne'
+                      status={ county === 'Bretagne' ? 'checked' : 'unchecked' }
+                      onPress={() => setCounty('Bretagne')}
+                    />
+                    <Text>Bretagne</Text>
+                  </View>
+                  <View style={styles.regionselect}>
+                    <RadioButton
+                      value='Centre-Val de Loire'
+                      status={ county === 'Centre-Val de Loire' ? 'checked' : 'unchecked' }
+                      onPress={() => setCounty('Centre-Val de Loire')}
+                    />
+                    <Text>Centre-Val de Loire</Text>
+                  </View>
+                  <View style={styles.regionselect}>
+                    <RadioButton
+                      value='Corse'
+                      status={ county === 'Corse' ? 'checked' : 'unchecked' }
+                      onPress={() => setCounty('Corse')}
+                    />
+                    <Text>Corse</Text>
+                  </View>
+                  <View style={styles.regionselect}>
+                    <RadioButton
+                      value='Grand Est'
+                      status={ county === 'Grand Est' ? 'checked' : 'unchecked' }
+                      onPress={() => setCounty('Grand Est')}
+                    />
+                    <Text>Grand Est</Text>
+                  </View>
+                  <View style={styles.regionselect}>
+                    <RadioButton
+                      value='Hauts-de-France'
+                      status={ county === 'Hauts-de-France' ? 'checked' : 'unchecked' }
+                      onPress={() => setCounty('Hauts-de-France')}
+                    />
+                    <Text>Hauts-de-France</Text>
+                  </View>
+                  <View style={styles.regionselect}>
+                    <RadioButton
+                      value='Ile-de-France'
+                      status={ county === 'Ile-de-France' ? 'checked' : 'unchecked' }
+                      onPress={() => setCounty('Ile-de-France')}
+                    />
+                    <Text>Ile-de-France</Text>
+                  </View>
+                  <View style={styles.regionselect}>
+                    <RadioButton
+                      value="Normandie"
+                      status={ county === 'Normandie' ? 'checked' : 'unchecked' }
+                      onPress={() => setCounty('Normandie')}
+                    />
+                    <Text>Normandie</Text>
+                  </View> 
+                  <View style={styles.regionselect}>
+                    <RadioButton
+                      value='Nouvelle-Aquitaine'
+                      status={ county === 'Nouvelle-Aquitaine' ? 'checked' : 'unchecked' }
+                      onPress={() => setCounty('Nouvelle-Aquitaine')}
+                    />
+                    <Text>Nouvelle-Aquitaine</Text>
+                  </View>
+                  <View style={styles.regionselect}>
+                    <RadioButton
+                      value='Occitanie'
+                      status={ county === 'Occitanie' ? 'checked' : 'unchecked' }
+                      onPress={() => setCounty('Occitanie')}
+                    />
+                    <Text>Occitanie</Text>
+                  </View>
+                  <View style={styles.regionselect}>
+                    <RadioButton
+                      value='Pays de la Loire'
+                      status={ county === 'Pays de la Loire' ? 'checked' : 'unchecked' }
+                      onPress={() => setCounty('Pays de la Loire')}
+                    />
+                    <Text>Pays de la Loire</Text>
+                  </View>
+                  <View style={styles.regionselect}>
+                    <RadioButton
+                      value="Provence-Alpes-Cote d'Azur"
+                      status={ county === "Provence-Alpes-Cote d'Azur" ? 'checked' : 'unchecked' }
+                      onPress={() => setCounty("Provence-Alpes-Cote d'Azur")}
+                    />
+                    <Text>Provence-Alpes-Cote d'Azur</Text>
+                  </View>
+                  <View style={styles.regionselect}>
+                    <RadioButton
+                      value="DOM-TOM"
+                      status={ county === "DOM-TOM" ? 'checked' : 'unchecked' }
+                      onPress={() => setCounty("DOM-TOM")}
+                    />
+                    <Text>DOM-TOM</Text>
+                  </View>
+                </RadioButton.Group>
+              </Dialog.Content>
+              <Dialog.Actions>
+                <Button 
+                  buttonStyle={styles.button}
+                  onPress={hideDialog}
+                  title="OK"
+                />
+              </Dialog.Actions>
+            </Dialog>
+          </Portal>
           <Button
             icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFE" />}
             onPress={() => {
@@ -185,7 +308,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     width: 60,
   },
-  textbutton: {
+  regionbutton: {
     color: "#FFFEFE",
     fontFamily: "Montserrat_500Medium",
     fontWeight: "600",
@@ -194,6 +317,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     textAlign: "center",
     letterSpacing: 0.75,
+    height: 40,
+    width: 280,
+    marginTop: 20,
+    borderRadius: 10,
+
+  },
+  regionselect: {
+    flexDirection:"row",
+    alignItems:"center",
   },
   text: {
     fontFamily: "Montserrat_500Medium",
