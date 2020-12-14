@@ -13,7 +13,7 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 
-function InterviewScreenResult({ username, navigation, score }) {
+function InterviewScreenResult({ username, navigation, score, job, county }) {
   const image = require("../assets/MikeChickenLeft.png");
   const [rating, setRating] = useState(0);
   const [overlayVisible, setOverlayVisible] = useState(false);
@@ -22,6 +22,7 @@ function InterviewScreenResult({ username, navigation, score }) {
   const [overlayVisible4, setOverlayVisible4] = useState(false);
   const [listErrorsNewTrophy, setListErrorsNewTrophy] = useState([]);
   const [lastTrophy, setLastTrophy] = useState("");
+  const [salary, setSalary] = useState('Aucune donnée disponible')
   let trophy;
   //pour gérer les polices expo-google-fonts
   let [fontsLoaded] = useFonts({
@@ -31,14 +32,26 @@ function InterviewScreenResult({ username, navigation, score }) {
     Montserrat_700Bold,
   });
 
+  const urlBack = "https://interviewcoptest.herokuapp.com";
+
   //déclenche le setRating au chargement de la page pour récupérer le dernier score enregistré dans Redux
   // pour pouvoir l'afficher ici dans InterviewScreenResult
   useEffect(() => {
+    //gestion du score
     let newScore5Star = score / 10 / 2;
     setRating(newScore5Star);
+    //calcul du salaire d'embauche en récupérant les infos stockées dans redux et en appelant la route du back correspondante
+    console.log("Job is "+job+" and county is "+county);
+    const calculateSalary = async () => {
+      const data = await fetch(`${urlBack}/scrape-salary?job=${job}&county=${county}`);
+      const body = await data.json();
+      if (body.result === true) {
+        setSalary(body.salary)
+      }
+    };
+    calculateSalary();
   }, []);
 
-  const urlBack = "https://interviewcoptest.herokuapp.com";
 
   //Process NewTrophy : se déclenche via le bouton "suivant" après les conseils suite au dernier entretien
   //récupère le dernier trophée gagné dans la BDD via le Back pour pouvoir le montrer à l'utilisateur
@@ -122,7 +135,7 @@ function InterviewScreenResult({ username, navigation, score }) {
             <Button title="Ok" titleStyle={styles.textbutton2} buttonStyle={styles.button} onPress={toggleOverlay} />
           </View>
         </Overlay>
-        <Text style={styles.text}>Votre salaire d'embauche : 36 000 bruts annuel</Text>
+        <Text style={styles.text}>Votre salaire d'embauche : {salary} bruts annuel</Text>
         <View style={styles.icop}>
           <Text style={styles.texticop}>
             Bravo {username} ! C'était un entretien rondement mené !{"\n"}
@@ -184,7 +197,7 @@ function InterviewScreenResult({ username, navigation, score }) {
 }
 
 function mapStateToProps(state) {
-  return { username: state.username, score: state.score };
+  return { username: state.username, score: state.score, job: state.job, county: state.county };
 }
 
 const styles = StyleSheet.create({

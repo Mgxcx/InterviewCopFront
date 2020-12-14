@@ -16,7 +16,7 @@ import {
 import Svg, { Path } from "react-native-svg";
 import { moderateScale } from "react-native-size-matters";
 
-function InterviewScreenHome({ navigation, username }) {
+function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty }) {
   const image = require("../assets/MikeChickenLeft.png");
   const [job, setJob] = useState("");
   const [salary, setSalary] = useState("");
@@ -49,6 +49,8 @@ function InterviewScreenHome({ navigation, username }) {
     const body = await data.json();
 
     if (body.result === true) {
+      onSubmitJob(job);
+      onSubmitCounty(county);
       navigation.navigate("InterviewScreen");
     } else {
       setListErrorsNewInformation(body.error);
@@ -264,6 +266,17 @@ function mapStateToProps(state) {
   return { username: state.username };
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    onSubmitJob: function (job) {
+      dispatch({ type: "saveJob", job });
+    },
+    onSubmitCounty: function(county) {
+      dispatch({ type: "saveCounty", county});
+    }
+  };
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -388,4 +401,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps, null)(InterviewScreenHome);
+export default connect(mapStateToProps, mapDispatchToProps)(InterviewScreenHome);
