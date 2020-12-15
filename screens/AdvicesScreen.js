@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { ScrollView, StyleSheet, View, Text } from "react-native";
 import { AppLoading } from "expo";
 import { List } from 'react-native-paper';
 import {
@@ -45,45 +45,49 @@ function AdvicesScreen() {
     key={i}
     titleStyle={styles.textbutton}
     style={styles.button3}
+    titleNumberOfLines={5}
     >
       <List.Item 
       title={e.content}
-      titleStyle={styles.textbutton}
-      style={styles.button3}
+      titleStyle={styles.advicetext}
+      titleNumberOfLines={30}
       />
     </List.Accordion>);
-  // console.log(advicesList);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       {advicesList}
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  contentContainer: {
     alignItems: "center",
     justifyContent: "center",
     padding: 50,
   },
   button3: {
     marginTop: 15,
-    marginBottom: 10,
     backgroundColor: "#0773A3",
     borderRadius: 15,
     width: 320,
-    height: 50,
   },
   advicetext: {
-
+    fontFamily: "Montserrat_500Medium",
+    fontWeight: "600",
+    fontSize: 13,
+    lineHeight: 29,
+    letterSpacing: 0.75,
   },
   textbutton: {
     color: "#FFFEFA",
     fontFamily: "Montserrat_500Medium",
     fontWeight: "600",
-    fontSize: 11,
+    fontSize: 13,
     lineHeight: 29,
     alignItems: "center",
     textAlign: "center",

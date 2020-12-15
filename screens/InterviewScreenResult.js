@@ -13,7 +13,7 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 
-function InterviewScreenResult({ username, navigation, score, job, county }) {
+function InterviewScreenResult({ username, navigation, score, detailedscore, job, county }) {
   const image = require("../assets/MikeChickenLeft.png");
   const [rating, setRating] = useState(0);
   const [overlayVisible, setOverlayVisible] = useState(false);
@@ -41,7 +41,6 @@ function InterviewScreenResult({ username, navigation, score, job, county }) {
     let newScore5Star = score / 10 / 2;
     setRating(newScore5Star);
     //calcul du salaire d'embauche en récupérant les infos stockées dans redux et en appelant la route du back correspondante
-    console.log("Job is "+job+" and county is "+county);
     const calculateSalary = async () => {
       const data = await fetch(`${urlBack}/scrape-salary?job=${job}&county=${county}`);
       const body = await data.json();
@@ -56,7 +55,6 @@ function InterviewScreenResult({ username, navigation, score, job, county }) {
   //Process NewTrophy : se déclenche via le bouton "suivant" après les conseils suite au dernier entretien
   //récupère le dernier trophée gagné dans la BDD via le Back pour pouvoir le montrer à l'utilisateur
   const handleSubmitNewTrophy = async () => {
-    console.log("clic détecté");
     const data = await fetch(`${urlBack}/interviewfind-lasttrophy`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -197,7 +195,7 @@ function InterviewScreenResult({ username, navigation, score, job, county }) {
 }
 
 function mapStateToProps(state) {
-  return { username: state.username, score: state.score, job: state.job, county: state.county };
+  return { username: state.username, score: state.score, detailedscore: state.detailedscore, job: state.job, county: state.county };
 }
 
 const styles = StyleSheet.create({
