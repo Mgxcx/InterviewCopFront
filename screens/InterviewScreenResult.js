@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { Button, Header, Overlay } from "react-native-elements";
 import { Rating } from "react-native-ratings";
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
+import { VictoryBar, VictoryChart, VictoryPie } from "victory-native";
 import {
   useFonts,
   Montserrat_400Regular,
@@ -22,7 +23,7 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
   const [overlayVisible4, setOverlayVisible4] = useState(false);
   const [listErrorsNewTrophy, setListErrorsNewTrophy] = useState([]);
   const [lastTrophy, setLastTrophy] = useState("");
-  const [salary, setSalary] = useState('Aucune donnée disponible')
+  const [salary, setSalary] = useState("Aucune donnée disponible");
   let trophy;
   //pour gérer les polices expo-google-fonts
   let [fontsLoaded] = useFonts({
@@ -46,12 +47,11 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
       const data = await fetch(`${urlBack}/scrape-salary?job=${job}&county=${county}`);
       const body = await data.json();
       if (body.result === true) {
-        setSalary(body.salary)
+        setSalary(body.salary);
       }
     };
     calculateSalary();
   }, []);
-
 
   //Process NewTrophy : se déclenche via le bouton "suivant" après les conseils suite au dernier entretien
   //récupère le dernier trophée gagné dans la BDD via le Back pour pouvoir le montrer à l'utilisateur
@@ -130,7 +130,45 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
         />
         <Overlay isVisible={overlayVisible} backdropStyle={styles.backdropoverlay} overlayStyle={styles.overlay}>
           <View style={styles.overlay}>
-            <Text style={styles.title}>Résultats par thème</Text>
+            <Text style={styles.title}>Résultats par question</Text>
+            <VictoryChart
+              padding={{ top: 5, bottom: 50, left: 50, right: 50 }}
+              domainPadding={20}
+              height={180}
+              width={340}
+            >
+              <VictoryBar
+                style={{
+                  data: { fill: "#E8C518", stroke: "#0773A3", strokeWidth: 2 },
+                }}
+                data={[
+                  { x: "q1", y: 1 },
+                  { x: "q2", y: 2 },
+                  { x: "q3", y: 3 },
+                  { x: "q4", y: 4 },
+                  { x: "q5", y: 5 },
+                  { x: "q6", y: 6 },
+                  { x: "q7", y: 7 },
+                  { x: "q8", y: 8 },
+                  { x: "q9", y: 9 },
+                  { x: "q10", y: 10 },
+                ]}
+                cornerRadius={4}
+              />
+            </VictoryChart>
+            <Text style={styles.title}>Résultats par catégorie</Text>
+            <VictoryPie
+              data={[
+                { x: "Parler de soi", y: 35 },
+                { x: "Préparatifs", y: 40 },
+                { x: "Storytelling", y: 55 },
+                { x: "Projection", y: 35 },
+                { x: "Négociation", y: 40 },
+              ]}
+              height={200}
+              padding={{ top: 40, bottom: 40, left: 50, right: 50 }}
+              colorScale={["#ED1C24", "#E8C518", "#FFFEFA", "#0773A3", "#333333"]}
+            />
             <Button title="Ok" titleStyle={styles.textbutton2} buttonStyle={styles.button} onPress={toggleOverlay} />
           </View>
         </Overlay>
@@ -196,7 +234,13 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
 }
 
 function mapStateToProps(state) {
-  return { username: state.username, score: state.score, detailedscore: state.detailedscore, job: state.job, county: state.county };
+  return {
+    username: state.username,
+    score: state.score,
+    detailedscore: state.detailedscore,
+    job: state.job,
+    county: state.county,
+  };
 }
 
 const styles = StyleSheet.create({
@@ -297,17 +341,15 @@ const styles = StyleSheet.create({
   },
   backdropoverlay: {
     backgroundColor: "#4FA2C7",
-    width: 300,
-    height: 450,
-    margin: 40,
-    marginTop: 130,
+    width: "80%",
+    height: "80%",
     borderRadius: 20,
     opacity: 0.95,
+    margin: 40,
   },
   overlay: {
     backgroundColor: "transparent",
     alignItems: "center",
-    width: 300,
   },
   trophy: {
     width: 130,

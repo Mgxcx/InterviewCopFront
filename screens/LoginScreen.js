@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { Button, Header } from "react-native-elements";
 import InputOutline from "react-native-input-outline";
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 import DropDownPicker from "react-native-dropdown-picker";
 import { connect } from "react-redux";
 import {

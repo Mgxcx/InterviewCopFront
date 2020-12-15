@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View, Text } from "react-native";
-import { AppLoading } from "expo";
-import { List } from 'react-native-paper';
-import { Header } from "react-native-elements";
-
+import AppLoading from "expo-app-loading";
+import { List } from "react-native-paper";
 import {
   useFonts,
   Montserrat_400Regular,
@@ -11,7 +9,6 @@ import {
   Montserrat_400Regular_Italic,
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
-
 
 function AdvicesScreen() {
   //déclenche le setAdvices au chargement de la page pour récupérer ls conseils stockés en BDD
@@ -31,7 +28,7 @@ function AdvicesScreen() {
       const data = await fetch(`${urlBack}/advices`);
       const body = await data.json();
       if (body.result === true) {
-        setAdvices(body.advices)
+        setAdvices(body.advices);
       }
     };
     getAdvices();
@@ -41,21 +38,17 @@ function AdvicesScreen() {
     return <AppLoading></AppLoading>;
   }
 
-  let advicesList = advices.map((e,i) => 
+  let advicesList = advices.map((e, i) => (
     <List.Accordion
-    title={e.title}
-    key={i}
-    titleStyle={styles.textbutton}
-    style={styles.button3}
-    titleNumberOfLines={5}
+      title={e.title}
+      key={i}
+      titleStyle={styles.textbutton}
+      style={styles.button3}
+      titleNumberOfLines={5}
     >
-      <List.Item 
-      title={e.content}
-      titleStyle={styles.advicetext}
-      titleNumberOfLines={30}
-      style={styles.adviceitem}
-      />
-    </List.Accordion>);
+      <List.Item title={e.content} titleStyle={styles.advicetext} titleNumberOfLines={30} style={styles.adviceitem} />
+    </List.Accordion>
+  ));
 
   return (
     <View style={styles.container}>
@@ -64,10 +57,7 @@ function AdvicesScreen() {
         centerComponent={<Text style={styles.title}>Conseils</Text>}
         containerStyle={styles.topbar}
       />
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-
-        {advicesList}
-      </ScrollView>
+      <ScrollView contentContainerStyle={styles.contentContainer}>{advicesList}</ScrollView>
     </View>
   );
 }
@@ -95,7 +85,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.75,
   },
   adviceitem: {
-    marginTop: 30
+    marginTop: 30,
   },
   textbutton: {
     color: "#FFFEFA",
@@ -115,7 +105,7 @@ const styles = StyleSheet.create({
   topbar: {
     backgroundColor: "#0773A3",
     marginBottom: 10,
-  }
+  },
 });
 
 export default AdvicesScreen;

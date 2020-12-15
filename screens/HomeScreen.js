@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { Button, Header } from "react-native-elements";
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 import { connect } from "react-redux";
 import {
   useFonts,

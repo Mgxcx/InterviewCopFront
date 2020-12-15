@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Animated, ScrollView, StyleSheet, View, Text } from "react-native";
-import { AppLoading } from "expo";
+import { Animated, StyleSheet, View, Text } from "react-native";
+import AppLoading from "expo-app-loading";
 import { Button, Header } from "react-native-elements";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -67,11 +67,11 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
   };
 
   //mécanique qui incrémente le score et charge la question suivante
-  const handleNextQuestion = newCategory => {
+  const handleNextQuestion = (newCategory) => {
     if (answerA || answerB || answerC || answerD) {
       //vérification qu'une réponse a bien été sélectionnée par l'utilisateur
       setScore([...score, tempScore]); //enregistrement du score
-      setCategory([...category, newCategory])
+      setCategory([...category, newCategory]);
       questionNumber < 10 && setQuestionNumber((prev) => prev + 1); //incrémente le compteur des questions
       //réinitialisation des états liés aux réponses
       setAnswerA(false);
@@ -92,7 +92,7 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
     const body = await data.json();
     if (body.result === true) {
       onSubmitLastScore(finalScore); //envoie le score total dans redux
-      onSubmitDetailedScore({score, category}); //envoie le resultat de chaque question dans redux
+      onSubmitDetailedScore({ score, category }); //envoie le resultat de chaque question dans redux
       navigation.navigate("InterviewScreenResult");
     }
   };
@@ -158,7 +158,7 @@ function mapDispatchToProps(dispatch) {
     },
     onSubmitDetailedScore: function (detailedScore) {
       dispatch({ type: "saveDetailedScore", detailedScore });
-    }
+    },
   };
 }
 
