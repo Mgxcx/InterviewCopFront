@@ -64,7 +64,6 @@ function AccountScreen({ username, navigation }) {
           centerComponent={<Text style={styles.title}>Mon compte</Text>}
           containerStyle={styles.topbar}
         />
-        <Text style={styles.text}>{listErrors}</Text>
         <Text style={styles.title2}>Mes scores aux derniers entretiens</Text>
         {userScores && (
           <>
@@ -157,6 +156,7 @@ function AccountScreen({ username, navigation }) {
             )}
           </>
         )}
+        <Text style={styles.text}>{listErrors}</Text>
       </View>
     );
   }
