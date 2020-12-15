@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { ScrollView, StyleSheet, View, Text } from "react-native";
 import { AppLoading } from "expo";
 import { List } from 'react-native-paper';
 import {
@@ -48,22 +48,24 @@ function AdvicesScreen() {
     >
       <List.Item 
       title={e.content}
-      titleStyle={styles.textbutton}
-      style={styles.button3}
+      titleStyle={styles.advicetext}
+      // style={styles.button3}
       />
     </List.Accordion>);
   // console.log(advicesList);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       {advicesList}
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  contentContainer: {
     alignItems: "center",
     justifyContent: "center",
     padding: 50,
@@ -74,10 +76,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#0773A3",
     borderRadius: 15,
     width: 320,
-    height: 50,
   },
   advicetext: {
-
+    fontFamily: "Montserrat_500Medium",
+    fontWeight: "600",
+    fontSize: 11,
+    lineHeight: 29,
+    alignItems: "center",
+    textAlign: "center",
+    letterSpacing: 0.75,
   },
   textbutton: {
     color: "#FFFEFA",
