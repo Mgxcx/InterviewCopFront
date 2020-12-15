@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Animated, StyleSheet, View, Text } from "react-native";
+import { Animated, ScrollView, StyleSheet, View, Text } from "react-native";
 import { AppLoading } from "expo";
 import { Button, Header } from "react-native-elements";
 import { connect } from "react-redux";
@@ -108,7 +108,7 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
         centerComponent={<Text style={styles.title}>Entretien</Text>}
         containerStyle={styles.topbar}
       />
-      <View style={styles.information}>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
         <Text style={styles.title2}> {questionDisplay.question} </Text>
         <Button
           title={questionDisplay.answers[0].text}
@@ -134,12 +134,12 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
           onPress={() => handleSelectedAnswer("D", questionDisplay.answers[3].points)}
           buttonStyle={answerD ? styles.buttonSelected : styles.button}
         />
-      </View>
-      <Button
-        icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFE" />}
-        onPress={() => handleNextQuestion()}
-        buttonStyle={styles.nextButton}
-      />
+        <Button
+          icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFE" />}
+          onPress={() => handleNextQuestion()}
+          buttonStyle={styles.nextButton}
+        />
+      </ScrollView>
     </View>
   );
 }
@@ -165,10 +165,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  icoppresentation: {
-    flexDirection: "row",
-    flex: 1.5,
-    alignSelf: "flex-end",
+  contentContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    // padding: 50,
   },
   information: {
     flex: 4.5,
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   nextButton: {
-    backgroundColor: "#4FA2C7",
+    backgroundColor: "#0773A3",
     borderRadius: 15,
     margin: 15,
     width: 80,
