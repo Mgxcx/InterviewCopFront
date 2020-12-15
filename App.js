@@ -16,6 +16,7 @@ import InterviewScreenResult from "./screens/InterviewScreenResult";
 
 import username from "./reducers/username.reducer";
 import score from "./reducers/score.reducer";
+import detailedscore from "./reducers/detailedscore.reducer";
 import job from "./reducers/job.reducer";
 import county from "./reducers/county.reducer";
 
@@ -23,7 +24,7 @@ import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
 import { Provider as PaperProvider } from 'react-native-paper';
 
-const store = createStore(combineReducers({ username, score, job, county }));
+const store = createStore(combineReducers({ username, score, detailedscore, job, county }));
 
 LogBox.ignoreAllLogs();
 

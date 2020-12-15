@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React, { useRef, useEffect, useState } from "react";
+import { Animated, StyleSheet, View, Text } from "react-native";
 import { AppLoading } from "expo";
 import { Button, Header } from "react-native-elements";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
-function InterviewScreen({ navigation, username, onSubmitLastScore }) {
+function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDetailedScore }) {
   const [questionNumber, setQuestionNumber] = useState(1); //compteur des questions affiché sur la top bar entretien
   const [questionList, setQuestionList] = useState(); //stocke les données des questions envoyées par le back (questions,réponses,conseils etc)
 
@@ -34,7 +34,6 @@ function InterviewScreen({ navigation, username, onSubmitLastScore }) {
 
   //déclenche handleSubmitLastQuestion après la dernière question
   useEffect(() => {
-    // console.log(`progression du tableau: ${score}`);//sert à checker dans la console l'incrémentation du score
     score.length === 10 && handleSubmitLastQuestion();
   }, [score]);
 
@@ -82,7 +81,6 @@ function InterviewScreen({ navigation, username, onSubmitLastScore }) {
   // //envoi du score et du username au back à la fin de l'entretien (une fois la question 10 validée)
   const handleSubmitLastQuestion = async () => {
     const finalScore = score.reduce((a, b) => a + b, 0);
-    // console.log(finalScore);
     const data = await fetch(`${urlBack}/interviewsave-scoreandtrophy`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -90,7 +88,8 @@ function InterviewScreen({ navigation, username, onSubmitLastScore }) {
     });
     const body = await data.json();
     if (body.result === true) {
-      onSubmitLastScore(finalScore);
+      onSubmitLastScore(finalScore); //envoie le score total dans redux
+      onSubmitDetailedScore(score); //envoie le resultat de chaque question dans redux
       navigation.navigate("InterviewScreenResult");
     }
   };
@@ -154,6 +153,9 @@ function mapDispatchToProps(dispatch) {
     onSubmitLastScore: function (score) {
       dispatch({ type: "saveLastScore", score });
     },
+    onSubmitDetailedScore: function (detailedScore) {
+      dispatch({ type: "saveDetailedScore", detailedScore });
+    }
   };
 }
 
