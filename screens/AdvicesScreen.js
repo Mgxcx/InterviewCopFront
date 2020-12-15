@@ -45,14 +45,14 @@ function AdvicesScreen() {
     key={i}
     titleStyle={styles.textbutton}
     style={styles.button3}
+    titleNumberOfLines={5}
     >
       <List.Item 
       title={e.content}
       titleStyle={styles.advicetext}
-      // style={styles.button3}
+      titleNumberOfLines={30}
       />
     </List.Accordion>);
-  // console.log(advicesList);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
   },
   button3: {
     marginTop: 15,
-    marginBottom: 10,
     backgroundColor: "#0773A3",
     borderRadius: 15,
     width: 320,
@@ -80,17 +79,15 @@ const styles = StyleSheet.create({
   advicetext: {
     fontFamily: "Montserrat_500Medium",
     fontWeight: "600",
-    fontSize: 11,
+    fontSize: 13,
     lineHeight: 29,
-    alignItems: "center",
-    textAlign: "center",
     letterSpacing: 0.75,
   },
   textbutton: {
     color: "#FFFEFA",
     fontFamily: "Montserrat_500Medium",
     fontWeight: "600",
-    fontSize: 11,
+    fontSize: 13,
     lineHeight: 29,
     alignItems: "center",
     textAlign: "center",
