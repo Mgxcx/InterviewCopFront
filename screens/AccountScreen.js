@@ -25,6 +25,10 @@ function AccountScreen({ username, navigation }) {
   const [userIcops, setUserIcops] = useState();
   const [userPackage, setUserPackage] = useState();
   const [listErrors, setListErrors] = useState();
+  const [listErrorsScores, setListErrorsScores] = useState();
+  const [listErrorsTrophies, setListErrorsTrophies] = useState();
+  const [listErrorsPackage, setListErrorsPackage] = useState();
+  const [listErrorsIcops, setListErrorsIcops] = useState();
 
   const urlBack = "https://interviewcoptest.herokuapp.com";
 
@@ -38,7 +42,10 @@ function AccountScreen({ username, navigation }) {
         setUserTrophies(body.trophiesDataBase);
         setUserIcops(body.icopsDataBase);
         setUserPackage(body.packageDataBase);
-        setListErrors(body.error);
+        setListErrorsScores(body.errorscores);
+        setListErrorsTrophies(body.errortrophies);
+        setListErrorsPackage(body.errorpackage);
+        setListErrorsIcops(body.erroricops);
       } else {
         setListErrors(body.error);
       }
@@ -57,33 +64,42 @@ function AccountScreen({ username, navigation }) {
           centerComponent={<Text style={styles.title}>Mon compte</Text>}
           containerStyle={styles.topbar}
         />
+        <Text style={styles.text}>{listErrors}</Text>
         <Text style={styles.title2}>Mes scores aux derniers entretiens</Text>
-        {userScores.length > 0 ? (
-          <View style={styles.container3}>
-            <Text style={styles.text}>{userScores[userScores.length - 3]} / 100</Text>
-            <Text style={styles.text}>{userScores[userScores.length - 2]} / 100</Text>
-            <Text style={styles.text}>{userScores[userScores.length - 1]} / 100</Text>
-          </View>
-        ) : (
-          <Text style={styles.text}>{listErrors[0]}</Text>
+        {userScores && (
+          <>
+            {userScores.length > 0 ? (
+              <View style={styles.container3}>
+                <Text style={styles.text}>{userScores[userScores.length - 3]} / 100</Text>
+                <Text style={styles.text}>{userScores[userScores.length - 2]} / 100</Text>
+                <Text style={styles.text}>{userScores[userScores.length - 1]} / 100</Text>
+              </View>
+            ) : (
+              <Text style={styles.text}>{listErrorsScores}</Text>
+            )}
+          </>
         )}
         <Text style={styles.title2}>Mes trophées</Text>
         <View style={styles.container2}>
-          {userTrophies.length > 0 ? (
-            userTrophies.map((trophies, i) => {
-              // vérification des nombres des trophées stockés précédemment dans l'état userTrophies pour pouvoir attribuer une image de trophée en fonction
-              let path;
-              if (trophies.number == 1) {
-                path = require("../assets/badgeparfait.png");
-              } else if (trophies.number == 2) {
-                path = require("../assets/badgepresqueparfait.png");
-              } else if (trophies.number == 3) {
-                path = require("../assets/badgeaparfaire.png");
-              }
-              return <Image key={i} source={path} style={styles.trophy} />;
-            })
-          ) : (
-            <Text style={styles.text}>{listErrors[1]}</Text>
+          {userTrophies && (
+            <>
+              {userTrophies.length > 0 ? (
+                userTrophies.map((trophies, i) => {
+                  // vérification des nombres des trophées stockés précédemment dans l'état userTrophies pour pouvoir attribuer une image de trophée en fonction
+                  let path;
+                  if (trophies.number == 1) {
+                    path = require("../assets/badgeparfait.png");
+                  } else if (trophies.number == 2) {
+                    path = require("../assets/badgepresqueparfait.png");
+                  } else if (trophies.number == 3) {
+                    path = require("../assets/badgeaparfaire.png");
+                  }
+                  return <Image key={i} source={path} style={styles.trophy} />;
+                })
+              ) : (
+                <Text style={styles.text}>{listErrorsTrophies}</Text>
+              )}
+            </>
           )}
         </View>
         <View style={styles.container3}>
@@ -106,7 +122,7 @@ function AccountScreen({ username, navigation }) {
                 )}
               </>
             ) : (
-              <Text style={styles.text}>{listErrors[2]}</Text>
+              <Text style={styles.text}>{listErrorsPackage}</Text>
             )}
           </View>
           <View style={styles.icops}>
@@ -123,7 +139,7 @@ function AccountScreen({ username, navigation }) {
                 return <Image key={i} source={icopimage} style={styles.icop} />;
               })
             ) : (
-              <Text style={styles.text}>{listErrors[3]}</Text>
+              <Text style={styles.text}>{listErrorsIcops}</Text>
             )}
           </View>
         </View>
