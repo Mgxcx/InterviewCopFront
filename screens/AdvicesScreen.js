@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View, Text } from "react-native";
-import { AppLoading } from "expo";
-import { List } from 'react-native-paper';
+import AppLoading from "expo-app-loading";
+import { List } from "react-native-paper";
 import {
   useFonts,
   Montserrat_400Regular,
@@ -9,7 +9,6 @@ import {
   Montserrat_400Regular_Italic,
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
-
 
 function AdvicesScreen() {
   //déclenche le setAdvices au chargement de la page pour récupérer ls conseils stockés en BDD
@@ -29,7 +28,7 @@ function AdvicesScreen() {
       const data = await fetch(`${urlBack}/advices`);
       const body = await data.json();
       if (body.result === true) {
-        setAdvices(body.advices)
+        setAdvices(body.advices);
       }
     };
     getAdvices();
@@ -39,20 +38,17 @@ function AdvicesScreen() {
     return <AppLoading></AppLoading>;
   }
 
-  let advicesList = advices.map((e,i) => 
+  let advicesList = advices.map((e, i) => (
     <List.Accordion
-    title={e.title}
-    key={i}
-    titleStyle={styles.textbutton}
-    style={styles.button3}
-    titleNumberOfLines={5}
+      title={e.title}
+      key={i}
+      titleStyle={styles.textbutton}
+      style={styles.button3}
+      titleNumberOfLines={5}
     >
-      <List.Item 
-      title={e.content}
-      titleStyle={styles.advicetext}
-      titleNumberOfLines={30}
-      />
-    </List.Accordion>);
+      <List.Item title={e.content} titleStyle={styles.advicetext} titleNumberOfLines={30} />
+    </List.Accordion>
+  ));
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>

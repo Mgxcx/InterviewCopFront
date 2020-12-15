@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Animated, StyleSheet, View, Text } from "react-native";
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 import { Button, Header } from "react-native-elements";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -155,7 +155,7 @@ function mapDispatchToProps(dispatch) {
     },
     onSubmitDetailedScore: function (detailedScore) {
       dispatch({ type: "saveDetailedScore", detailedScore });
-    }
+    },
   };
 }
 

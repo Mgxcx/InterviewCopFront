@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { Button, Header } from "react-native-elements";
 import InputOutline from "react-native-input-outline";
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
-import { Dialog, Portal, RadioButton } from 'react-native-paper';
+import { Dialog, Portal, RadioButton } from "react-native-paper";
 import {
   useFonts,
   Montserrat_400Regular,
@@ -22,7 +22,7 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
   const [salary, setSalary] = useState("");
   const [county, setCounty] = useState("Choisissez votre région");
   const [listErrorsNewInformation, setListErrorsNewInformation] = useState([]); //les messages d'erreur sont transmis par le Back
-  
+
   const [visible, setVisible] = useState(false);
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
@@ -128,104 +128,104 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
                 <RadioButton.Group>
                   <View style={styles.regionselect}>
                     <RadioButton
-                      value='Auvergne-Rhone-Alpes'
-                      status={ county === 'Auvergne-Rhone-Alpes' ? 'checked' : 'unchecked' }
-                      onPress={() => setCounty('Auvergne-Rhone-Alpes')}
+                      value="Auvergne-Rhone-Alpes"
+                      status={county === "Auvergne-Rhone-Alpes" ? "checked" : "unchecked"}
+                      onPress={() => setCounty("Auvergne-Rhone-Alpes")}
                     />
                     <Text>Auvergne-Rhone-Alpes</Text>
                   </View>
                   <View style={styles.regionselect}>
                     <RadioButton
-                      value='Bourgogne-Franche-Comte'
-                      status={ county === 'Bourgogne-Franche-Comte' ? 'checked' : 'unchecked' }
-                      onPress={() => setCounty('Bourgogne-Franche-Comte')}
+                      value="Bourgogne-Franche-Comte"
+                      status={county === "Bourgogne-Franche-Comte" ? "checked" : "unchecked"}
+                      onPress={() => setCounty("Bourgogne-Franche-Comte")}
                     />
                     <Text>Bourgogne-Franche-Comte</Text>
                   </View>
                   <View style={styles.regionselect}>
                     <RadioButton
-                      value='Bretagne'
-                      status={ county === 'Bretagne' ? 'checked' : 'unchecked' }
-                      onPress={() => setCounty('Bretagne')}
+                      value="Bretagne"
+                      status={county === "Bretagne" ? "checked" : "unchecked"}
+                      onPress={() => setCounty("Bretagne")}
                     />
                     <Text>Bretagne</Text>
                   </View>
                   <View style={styles.regionselect}>
                     <RadioButton
-                      value='Centre-Val de Loire'
-                      status={ county === 'Centre-Val de Loire' ? 'checked' : 'unchecked' }
-                      onPress={() => setCounty('Centre-Val de Loire')}
+                      value="Centre-Val de Loire"
+                      status={county === "Centre-Val de Loire" ? "checked" : "unchecked"}
+                      onPress={() => setCounty("Centre-Val de Loire")}
                     />
                     <Text>Centre-Val de Loire</Text>
                   </View>
                   <View style={styles.regionselect}>
                     <RadioButton
-                      value='Corse'
-                      status={ county === 'Corse' ? 'checked' : 'unchecked' }
-                      onPress={() => setCounty('Corse')}
+                      value="Corse"
+                      status={county === "Corse" ? "checked" : "unchecked"}
+                      onPress={() => setCounty("Corse")}
                     />
                     <Text>Corse</Text>
                   </View>
                   <View style={styles.regionselect}>
                     <RadioButton
-                      value='Grand Est'
-                      status={ county === 'Grand Est' ? 'checked' : 'unchecked' }
-                      onPress={() => setCounty('Grand Est')}
+                      value="Grand Est"
+                      status={county === "Grand Est" ? "checked" : "unchecked"}
+                      onPress={() => setCounty("Grand Est")}
                     />
                     <Text>Grand Est</Text>
                   </View>
                   <View style={styles.regionselect}>
                     <RadioButton
-                      value='Hauts-de-France'
-                      status={ county === 'Hauts-de-France' ? 'checked' : 'unchecked' }
-                      onPress={() => setCounty('Hauts-de-France')}
+                      value="Hauts-de-France"
+                      status={county === "Hauts-de-France" ? "checked" : "unchecked"}
+                      onPress={() => setCounty("Hauts-de-France")}
                     />
                     <Text>Hauts-de-France</Text>
                   </View>
                   <View style={styles.regionselect}>
                     <RadioButton
-                      value='Ile-de-France'
-                      status={ county === 'Ile-de-France' ? 'checked' : 'unchecked' }
-                      onPress={() => setCounty('Ile-de-France')}
+                      value="Ile-de-France"
+                      status={county === "Ile-de-France" ? "checked" : "unchecked"}
+                      onPress={() => setCounty("Ile-de-France")}
                     />
                     <Text>Ile-de-France</Text>
                   </View>
                   <View style={styles.regionselect}>
                     <RadioButton
                       value="Normandie"
-                      status={ county === 'Normandie' ? 'checked' : 'unchecked' }
-                      onPress={() => setCounty('Normandie')}
+                      status={county === "Normandie" ? "checked" : "unchecked"}
+                      onPress={() => setCounty("Normandie")}
                     />
                     <Text>Normandie</Text>
-                  </View> 
+                  </View>
                   <View style={styles.regionselect}>
                     <RadioButton
-                      value='Nouvelle-Aquitaine'
-                      status={ county === 'Nouvelle-Aquitaine' ? 'checked' : 'unchecked' }
-                      onPress={() => setCounty('Nouvelle-Aquitaine')}
+                      value="Nouvelle-Aquitaine"
+                      status={county === "Nouvelle-Aquitaine" ? "checked" : "unchecked"}
+                      onPress={() => setCounty("Nouvelle-Aquitaine")}
                     />
                     <Text>Nouvelle-Aquitaine</Text>
                   </View>
                   <View style={styles.regionselect}>
                     <RadioButton
-                      value='Occitanie'
-                      status={ county === 'Occitanie' ? 'checked' : 'unchecked' }
-                      onPress={() => setCounty('Occitanie')}
+                      value="Occitanie"
+                      status={county === "Occitanie" ? "checked" : "unchecked"}
+                      onPress={() => setCounty("Occitanie")}
                     />
                     <Text>Occitanie</Text>
                   </View>
                   <View style={styles.regionselect}>
                     <RadioButton
-                      value='Pays de la Loire'
-                      status={ county === 'Pays de la Loire' ? 'checked' : 'unchecked' }
-                      onPress={() => setCounty('Pays de la Loire')}
+                      value="Pays de la Loire"
+                      status={county === "Pays de la Loire" ? "checked" : "unchecked"}
+                      onPress={() => setCounty("Pays de la Loire")}
                     />
                     <Text>Pays de la Loire</Text>
                   </View>
                   <View style={styles.regionselect}>
                     <RadioButton
                       value="Provence-Alpes-Cote d'Azur"
-                      status={ county === "Provence-Alpes-Cote d'Azur" ? 'checked' : 'unchecked' }
+                      status={county === "Provence-Alpes-Cote d'Azur" ? "checked" : "unchecked"}
                       onPress={() => setCounty("Provence-Alpes-Cote d'Azur")}
                     />
                     <Text>Provence-Alpes-Cote d'Azur</Text>
@@ -233,7 +233,7 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
                   <View style={styles.regionselect}>
                     <RadioButton
                       value="DOM-TOM"
-                      status={ county === "DOM-TOM" ? 'checked' : 'unchecked' }
+                      status={county === "DOM-TOM" ? "checked" : "unchecked"}
                       onPress={() => setCounty("DOM-TOM")}
                     />
                     <Text>DOM-TOM</Text>
@@ -241,11 +241,7 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
                 </RadioButton.Group>
               </Dialog.Content>
               <Dialog.Actions>
-                <Button 
-                  buttonStyle={styles.button}
-                  onPress={hideDialog}
-                  title="OK"
-                />
+                <Button buttonStyle={styles.button} onPress={hideDialog} title="OK" />
               </Dialog.Actions>
             </Dialog>
           </Portal>
@@ -271,9 +267,9 @@ function mapDispatchToProps(dispatch) {
     onSubmitJob: function (job) {
       dispatch({ type: "saveJob", job });
     },
-    onSubmitCounty: function(county) {
-      dispatch({ type: "saveCounty", county});
-    }
+    onSubmitCounty: function (county) {
+      dispatch({ type: "saveCounty", county });
+    },
   };
 }
 
@@ -334,11 +330,10 @@ const styles = StyleSheet.create({
     width: 280,
     marginTop: 20,
     borderRadius: 10,
-
   },
   regionselect: {
-    flexDirection:"row",
-    alignItems:"center",
+    flexDirection: "row",
+    alignItems: "center",
   },
   text: {
     fontFamily: "Montserrat_500Medium",
