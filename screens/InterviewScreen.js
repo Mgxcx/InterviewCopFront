@@ -1,9 +1,16 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Animated, ScrollView, StyleSheet, View, Text } from "react-native";
+import { Animated, Image, ScrollView, StyleSheet, View, Text } from "react-native";
 import { AppLoading } from "expo";
-import { Button, Header } from "react-native-elements";
+import { Button, Header, Overlay } from "react-native-elements";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
+import {
+  useFonts,
+  Montserrat_400Regular,
+  Montserrat_500Medium,
+  Montserrat_400Regular_Italic,
+  Montserrat_700Bold,
+} from "@expo-google-fonts/montserrat";
 
 function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDetailedScore }) {
   const [questionNumber, setQuestionNumber] = useState(1); //compteur des questions affiché sur la top bar entretien
@@ -20,7 +27,21 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
   const [answerC, setAnswerC] = useState(false);
   const [answerD, setAnswerD] = useState(false);
 
+  //état et fonction gérant l'overlay pour choisir la region
+  const [visible, setVisible] = useState(false);
+  const toggleOverlay = () => { setVisible(!visible);};
+  
+  const image = require("../assets/MikeChickenSmall.png");
+
   const urlBack = "https://interviewcoptest.herokuapp.com";
+
+  //pour gérer les polices expo-google-fonts
+  let [fontsLoaded] = useFonts({
+    Montserrat_500Medium,
+    Montserrat_400Regular,
+    Montserrat_400Regular_Italic,
+    Montserrat_700Bold,
+  });
 
   //charge les questions (générées aléatoirement par le backend)
   useEffect(() => {
@@ -97,7 +118,7 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
     }
   };
 
-  if (!questionList) {
+  if (!questionList || !fontsLoaded) {
     return <AppLoading></AppLoading>;
   }
 
@@ -139,9 +160,20 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
         />
         <Button
           icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFE" />}
-          onPress={() => handleNextQuestion(questionDisplay.category)}
+          onPress={() =>toggleOverlay()}
           buttonStyle={styles.nextButton}
         />
+        <Overlay isVisible={visible} overlayStyle={styles.overlay}>
+          <View>
+          <Image source={image} style={styles.image} />
+          <Text style={styles.advicetext}> {questionDisplay.advice} </Text>
+          <Button 
+            buttonStyle={styles.adviceokbutton}
+            onPress={() => {toggleOverlay(); handleNextQuestion(questionDisplay.category)}}
+            title="OK"
+          />
+          </View>
+        </Overlay>
       </ScrollView>
     </View>
   );
@@ -194,11 +226,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    width: 70,
+    width: 130,
     height: 130,
-    marginTop: 30,
-    marginBottom: 10,
-    marginRight: 20,
+    alignSelf: 'center'
   },
   button: {
     marginTop: 15,
@@ -246,24 +276,35 @@ const styles = StyleSheet.create({
     height: 40,
     width: 280,
   },
-  arrowContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: -1,
-    flex: 1,
+  advicetext: {
+    fontFamily: "Montserrat_500Medium",
+    fontSize: 15,
+    color: "#FFFEFE",
+    textAlign: "center",
+    padding: 5,
   },
-  arrowLeftContainer: {
-    justifyContent: "flex-end",
-    alignItems: "flex-start",
+  adviceokbutton: {
+    color: "#FFFEFE",
+    fontFamily: "Montserrat_500Medium",
+    fontWeight: "600",
+    fontSize: 16,
+    lineHeight: 29,
+    alignItems: "center",
+    textAlign: "center",
+    letterSpacing: 0.75,
+    height: 40,
+    width: 200,
+    marginTop: 20,
+    borderRadius: 10,
+    alignSelf:'center'
   },
-
-  arrowRightContainer: {
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
-  },
+  overlay: {
+    backgroundColor: "#4FA2C7",
+    opacity: 0.90,
+    alignItems: "center",
+    // width: 300,
+    borderRadius: 20
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InterviewScreen);
