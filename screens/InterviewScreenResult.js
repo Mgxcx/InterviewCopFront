@@ -37,6 +37,7 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
   //déclenche le setRating au chargement de la page pour récupérer le dernier score enregistré dans Redux
   // pour pouvoir l'afficher ici dans InterviewScreenResult
   useEffect(() => {
+    console.log(detailedscore);
     //gestion du score
     let newScore5Star = score / 10 / 2;
     setRating(newScore5Star);

@@ -10,7 +10,9 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
   const [questionList, setQuestionList] = useState(); //stocke les données des questions envoyées par le back (questions,réponses,conseils etc)
 
   const [tempScore, setTempScore] = useState(0); //score temporaire associé à la réponse actuellement sélectionnée (pas encore confirmée par le user)
+
   const [score, setScore] = useState([]); //lorsque la réponse est confirmée par le user, le score final est incrémenté
+  const [category, setCategory] = useState([]); //lorsque la réponse est confirmée par le user, la liste des categories de questions est enregistrée (pour envoi dans redux à la fin)
 
   //états liés aux réponses, un état passe à true si la réponse associée est sélectionnée par le user
   const [answerA, setAnswerA] = useState(false);
@@ -65,10 +67,11 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
   };
 
   //mécanique qui incrémente le score et charge la question suivante
-  const handleNextQuestion = () => {
+  const handleNextQuestion = newCategory => {
     if (answerA || answerB || answerC || answerD) {
       //vérification qu'une réponse a bien été sélectionnée par l'utilisateur
       setScore([...score, tempScore]); //enregistrement du score
+      setCategory([...category, newCategory])
       questionNumber < 10 && setQuestionNumber((prev) => prev + 1); //incrémente le compteur des questions
       //réinitialisation des états liés aux réponses
       setAnswerA(false);
@@ -89,7 +92,7 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
     const body = await data.json();
     if (body.result === true) {
       onSubmitLastScore(finalScore); //envoie le score total dans redux
-      onSubmitDetailedScore(score); //envoie le resultat de chaque question dans redux
+      onSubmitDetailedScore({score, category}); //envoie le resultat de chaque question dans redux
       navigation.navigate("InterviewScreenResult");
     }
   };
@@ -136,7 +139,7 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
         />
         <Button
           icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFE" />}
-          onPress={() => handleNextQuestion()}
+          onPress={() => handleNextQuestion(questionDisplay.category)}
           buttonStyle={styles.nextButton}
         />
       </ScrollView>
