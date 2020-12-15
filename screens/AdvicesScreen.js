@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View, Text } from "react-native";
 import { AppLoading } from "expo";
 import { List } from 'react-native-paper';
+import { Header } from "react-native-elements";
+
 import {
   useFonts,
   Montserrat_400Regular,
@@ -51,13 +53,22 @@ function AdvicesScreen() {
       title={e.content}
       titleStyle={styles.advicetext}
       titleNumberOfLines={30}
+      style={styles.adviceitem}
       />
     </List.Accordion>);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      {advicesList}
-    </ScrollView>
+    <View style={styles.container}>
+      <Header
+        barStyle="light-content"
+        centerComponent={<Text style={styles.title}>Conseils</Text>}
+        containerStyle={styles.topbar}
+      />
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+
+        {advicesList}
+      </ScrollView>
+    </View>
   );
 }
 
@@ -68,7 +79,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     alignItems: "center",
     justifyContent: "center",
-    padding: 50,
+    // padding: 50,
   },
   button3: {
     marginTop: 15,
@@ -83,6 +94,9 @@ const styles = StyleSheet.create({
     lineHeight: 29,
     letterSpacing: 0.75,
   },
+  adviceitem: {
+    marginTop: 30
+  },
   textbutton: {
     color: "#FFFEFA",
     fontFamily: "Montserrat_500Medium",
@@ -93,6 +107,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     letterSpacing: 0.75,
   },
+  title: {
+    color: "#FFFEFA",
+    fontFamily: "Montserrat_700Bold",
+    fontSize: 22,
+  },
+  topbar: {
+    backgroundColor: "#0773A3",
+    marginBottom: 10,
+  }
 });
 
 export default AdvicesScreen;
