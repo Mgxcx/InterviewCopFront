@@ -123,12 +123,15 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
             // value={county}
           />
           {tabErrorsNewInformation}
-          <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+          <Overlay isVisible={visible} overlayStyle={styles.overlay}>
             <ScrollView>
               <View style={styles.regionview}>
                 <Text style={styles.regiontitle}>Sélectionnez votre région</Text>
                 <CheckBox
                   title="Auvergne-Rhone-Alpes"
+                  textStyle={styles.text2}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
                   checkedIcon="dot-circle-o"
                   uncheckedIcon="circle-o"
                   checked={county === "Auvergne-Rhone-Alpes" ? true : false}
@@ -137,6 +140,9 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
                 />
                 <CheckBox
                   title="Bourgogne-Franche-Comte"
+                  textStyle={styles.text2}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
                   checkedIcon="dot-circle-o"
                   uncheckedIcon="circle-o"
                   checked={county === "Bourgogne-Franche-Comte" ? true : false}
@@ -145,6 +151,9 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
                 />
                 <CheckBox
                   title="Bretagne"
+                  textStyle={styles.text2}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
                   checkedIcon="dot-circle-o"
                   uncheckedIcon="circle-o"
                   checked={county === "Bretagne" ? true : false}
@@ -153,6 +162,9 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
                 />
                 <CheckBox
                   title="Centre-Val de Loire"
+                  textStyle={styles.text2}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
                   checkedIcon="dot-circle-o"
                   uncheckedIcon="circle-o"
                   checked={county === "Centre-Val de Loire" ? true : false}
@@ -161,6 +173,9 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
                 />
                 <CheckBox
                   title="Corse"
+                  textStyle={styles.text2}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
                   checkedIcon="dot-circle-o"
                   uncheckedIcon="circle-o"
                   checked={county === "Corse" ? true : false}
@@ -169,6 +184,9 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
                 />
                 <CheckBox
                   title="Grand Est"
+                  textStyle={styles.text2}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
                   checkedIcon="dot-circle-o"
                   uncheckedIcon="circle-o"
                   checked={county === "Grand Est" ? true : false}
@@ -177,6 +195,9 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
                 />
                 <CheckBox
                   title="Hauts-de-France"
+                  textStyle={styles.text2}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
                   checkedIcon="dot-circle-o"
                   uncheckedIcon="circle-o"
                   checked={county === "Hauts-de-France" ? true : false}
@@ -185,6 +206,9 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
                 />
                 <CheckBox
                   title="Ile-de-France"
+                  textStyle={styles.text2}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
                   checkedIcon="dot-circle-o"
                   uncheckedIcon="circle-o"
                   checked={county === "Ile-de-France" ? true : false}
@@ -193,6 +217,9 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
                 />
                 <CheckBox
                   title="Normandie"
+                  textStyle={styles.text2}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
                   checkedIcon="dot-circle-o"
                   uncheckedIcon="circle-o"
                   checked={county === "Normandie" ? true : false}
@@ -201,6 +228,9 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
                 />
                 <CheckBox
                   title="Nouvelle-Aquitaine"
+                  textStyle={styles.text2}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
                   checkedIcon="dot-circle-o"
                   uncheckedIcon="circle-o"
                   checked={county === "Nouvelle-Aquitaine" ? true : false}
@@ -209,6 +239,9 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
                 />
                 <CheckBox
                   title="Occitanie"
+                  textStyle={styles.text2}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
                   checkedIcon="dot-circle-o"
                   uncheckedIcon="circle-o"
                   checked={county === "Occitanie" ? true : false}
@@ -217,6 +250,9 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
                 />
                 <CheckBox
                   title="Pays de la Loire"
+                  textStyle={styles.text2}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
                   checkedIcon="dot-circle-o"
                   uncheckedIcon="circle-o"
                   checked={county === "Pays de la Loire" ? true : false}
@@ -225,6 +261,9 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
                 />
                 <CheckBox
                   title="Provence-Alpes-Cote d'Azur"
+                  textStyle={styles.text2}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
                   checkedIcon="dot-circle-o"
                   uncheckedIcon="circle-o"
                   checked={county === "Provence-Alpes-Cote d'Azur" ? true : false}
@@ -233,14 +272,17 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
                 />
                 <CheckBox
                   title="DOM-TOM"
+                  textStyle={styles.text2}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
                   checkedIcon="dot-circle-o"
                   uncheckedIcon="circle-o"
                   checked={county === "DOM-TOM" ? true : false}
                   onPress={() => setCounty("DOM-TOM")}
                   containerStyle={styles.checkbox}
                 />
+                <Button buttonStyle={styles.button} onPress={toggleOverlay} title="OK" />
               </View>
-              <Button buttonStyle={styles.regionbutton} onPress={toggleOverlay} title="OK" />
             </ScrollView>
           </Overlay>
           <Button
@@ -317,12 +359,15 @@ const styles = StyleSheet.create({
   },
   checkbox: {
     width: 250,
+    backgroundColor: "transparent",
+    borderColor: "transparent",
   },
   regionview: {
     alignItems: "center",
   },
   regionbutton: {
-    color: "#FFFEFE",
+    color: "#FFFEFA",
+    backgroundColor: "#0773A3",
     fontFamily: "Montserrat_500Medium",
     fontWeight: "600",
     fontSize: 16,
@@ -331,7 +376,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     letterSpacing: 0.75,
     height: 40,
-    width: 200,
+    width: 280,
     marginTop: 20,
     borderRadius: 10,
     alignSelf: "center",
@@ -354,6 +399,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     padding: 5,
   },
+  text2: {
+    fontFamily: "Montserrat_500Medium",
+    fontSize: 14,
+    color: "#0773A3",
+    textAlign: "center",
+    padding: 5,
+  },
   input: {
     borderColor: "#0773A3",
     fontFamily: "Montserrat_500Medium",
@@ -362,6 +414,17 @@ const styles = StyleSheet.create({
     color: "#0773A3",
     height: 40,
     width: 280,
+  },
+  overlay: {
+    backgroundColor: "#FFFEFA",
+    width: "90%",
+    height: "85%",
+    borderRadius: 20,
+    opacity: 0.95,
+    margin: 40,
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
   },
   bubble: {
     marginVertical: moderateScale(7, 2),
