@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react";
 import {connect} from 'react-redux'
 import { View, KeyboardAvoidingView, ScrollView, StyleSheet, Text } from 'react-native';
-import { Input, Button} from 'react-native-elements'
+import { Input, Button, Header} from 'react-native-elements'
+import { TextInput } from 'react-native-paper';
 import AppLoading from 'expo-app-loading';
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome } from '@expo/vector-icons';
 import socketIOClient from "socket.io-client";
 import Svg, { Path } from "react-native-svg";
 import { moderateScale } from "react-native-size-matters";
@@ -32,6 +33,17 @@ function ChatScreen(username) {
   });
 
   useEffect(() => {
+    socket.emit("sendWelcomeMessage", {currentMessage:"", username});
+  }, [] )
+
+  useEffect(() => {
+    socket.on('welcomeMessage', newMessage => {
+      var regexSmile = /:\)/;
+      var newStr = newMessage.currentMessage
+      .replace(regexSmile, '\u263A');
+      newMessage.currentMessage = newStr;
+      setListMessage([...listMessage, newMessage]);
+    } )
     socket.on('sendMessageToAll', newMessage => {
       var regexSmile = /:\)/;
       var regexSad = /:\(/;
@@ -45,13 +57,35 @@ function ChatScreen(username) {
       newMessage.currentMessage = newStr;
       setListMessage([...listMessage, newMessage]);
     } )
-  },[currentMessage])
+  },[listMessage])
 
   const affichageMessages = listMessage.map( (e,i) => {
-    return (
+    if (e.username != username.username) {
+      return (
+        <View key={i} style={styles.icoppresentation2}>
+        <View style={[styles.bubble, styles.bubbleIn]}>
+          <View style={[styles.balloon, { backgroundColor: "#0773A3" }]}>
+            <Text style={styles.text}>{e.currentMessage}</Text>
+            <Text style={styles.smalltext}>{e.username}</Text>
+            <View style={[styles.arrowContainer, styles.arrowLeftContainer]}>
+              <Svg
+                style={styles.arrowLeft}
+                width={moderateScale(15.5, 0.6)}
+                height={moderateScale(17.5, 0.6)}
+                viewBox="32.485 17.5 15.515 17.5"
+                enable-background="new 32.485 17.5 15.515 17.5"
+              >
+                <Path d="M38.484,17.5c0,8.75,1,13.5-6,17.5C51.484,35,52.484,17.5,38.484,17.5z" fill="#0773A3" x="0" y="0" />
+              </Svg>
+            </View>
+          </View>
+        </View>
+      </View>
+      )
+    } else return (
     <View key={i} style={styles.icoppresentation}>
       <View style={[styles.bubble, styles.bubbleOut]}>
-        <View style={[styles.balloon, { backgroundColor: "#0773A3" }]}>
+        <View style={[styles.balloon, { backgroundColor: "#4FA2C7" }]}>
           <Text style={styles.text}>{e.currentMessage}</Text>
           <Text style={styles.smalltext}>{e.username}</Text>
           <View style={[styles.arrowContainer, styles.arrowRightContainer]}>
@@ -62,7 +96,7 @@ function ChatScreen(username) {
               viewBox="32.485 17.5 15.515 17.5"
               enable-background="new 32.485 17.5 15.515 17.5"
             >
-              <Path d="M48,35c-7-4-6-8.75-6-17.5C28,17.5,29,35,48,35z" fill="#0773A3" x="0" y="0" />
+              <Path d="M48,35c-7-4-6-8.75-6-17.5C28,17.5,29,35,48,35z" fill="#4FA2C7" x="0" y="0" />
             </Svg>
           </View>
         </View>
@@ -78,27 +112,31 @@ function ChatScreen(username) {
 
   return (
     < View style={{flex:1}}>
-      
-      <ScrollView  style={{flex:1, marginTop: 30}}>
+      <Header
+        barStyle="light-content"
+        centerComponent={<Text style={styles.title}>Chat</Text>}
+        containerStyle={styles.topbar}
+      />
+      <ScrollView  style={{flex:1}}>
         {affichageMessages}
       </ScrollView >
 
           <KeyboardAvoidingView behavior="padding" enabled>
-              <Input
-                  containerStyle = {{marginBottom: 5}}
-                  placeholder='Tapez votre message ici'
-                  onChangeText={(e)=>setCurrentMessage(e)}
-                  value={currentMessage}
+            <TextInput
+              label="Tapez votre message ici"
+              value={currentMessage}
+              onChangeText={(e)=>setCurrentMessage(e)}
+              style={styles.input}
+              mode='outlined'
               />
-              <Button
-                  icon={
-                    <FontAwesome5 name="comment" size={24} color="black" />
-                  } 
-                  title="Send"
-                  buttonStyle={{backgroundColor: "#eb4d4b"}}
-                  type="solid"
-                  onPress={() => {socket.emit("sendMessage", {currentMessage, username:username.username}); setCurrentMessage('')}}
-              />
+            <Button
+                icon={<FontAwesome name="send-o" size={24} color="black" />} 
+                iconRight
+                title="Envoyer  "
+                buttonStyle={{backgroundColor: "#eb4d4b"}}
+                type="solid"
+                onPress={() => {socket.emit("sendMessage", {currentMessage, username:username.username}); setCurrentMessage('')}}
+            />
           </KeyboardAvoidingView>
     </View>
   );
@@ -111,14 +149,31 @@ function mapStateToProps(state) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 50,
+  },
+  title: {
+    color: "#FFFEFA",
+    fontFamily: "Montserrat_700Bold",
+    fontSize: 22,
+  },
+  topbar: {
+    backgroundColor: "#0773A3",
+    marginBottom: 10,
+  },
+  input: {
+    fontFamily: "Montserrat_500Medium",
+    fontSize: 20,
+    width: '100%',
+    alignSelf:'center'
   },
   icoppresentation: {
     flexDirection: "row",
     flex: 1.5,
     alignSelf: "flex-end",
+  },
+  icoppresentation2: {
+    flexDirection: "row",
+    flex: 1.5,
+    alignSelf: "flex-start",
   },
   bubble: {
     marginVertical: moderateScale(7, 2),
