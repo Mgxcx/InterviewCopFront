@@ -16,8 +16,9 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 
+const urlBack = "https://interviewcoptest.herokuapp.com";
 
-const socket = socketIOClient("http://192.168.1.16:3000");
+const socket = socketIOClient(urlBack);
 
 function ChatScreen(username) {
 
