@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from "react";
-import {connect} from 'react-redux'
-import { View, KeyboardAvoidingView, ScrollView, StyleSheet, Text } from 'react-native';
-import { Input, Button, Header} from 'react-native-elements'
-import { TextInput } from 'react-native-paper';
-import AppLoading from 'expo-app-loading';
-import { FontAwesome } from '@expo/vector-icons';
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { View, KeyboardAvoidingView, ScrollView, StyleSheet, Text } from "react-native";
+import { Input, Button, Header } from "react-native-elements";
+import { TextInput } from "react-native-paper";
+import AppLoading from "expo-app-loading";
+import { FontAwesome } from "@expo/vector-icons";
 import socketIOClient from "socket.io-client";
 import Svg, { Path } from "react-native-svg";
 import { moderateScale } from "react-native-size-matters";
@@ -21,7 +21,6 @@ const urlBack = "https://interviewcoptest.herokuapp.com";
 const socket = socketIOClient(urlBack);
 
 function ChatScreen(username) {
-
   const [currentMessage, setCurrentMessage] = useState(null);
   const [listMessage, setListMessage] = useState([]);
 
@@ -34,77 +33,81 @@ function ChatScreen(username) {
   });
 
   useEffect(() => {
-    socket.emit("sendWelcomeMessage", {currentMessage:"", username});
-  }, [] )
+    socket.emit("sendWelcomeMessage", { currentMessage: "", username });
+  }, []);
 
   useEffect(() => {
-    socket.on('welcomeMessage', newMessage => {
+    socket.on("welcomeMessage", (newMessage) => {
       var regexSmile = /:\)/;
-      var newStr = newMessage.currentMessage
-      .replace(regexSmile, '\u263A');
+      var newStr = newMessage.currentMessage.replace(regexSmile, "\u263A");
       newMessage.currentMessage = newStr;
       setListMessage([...listMessage, newMessage]);
-    } )
-    socket.on('sendMessageToAll', newMessage => {
+    });
+    socket.on("sendMessageToAll", (newMessage) => {
       var regexSmile = /:\)/;
       var regexSad = /:\(/;
       var regexLangue = /:\p/;
       var regexFuck = /fuck[a-z]*/i;
       var newStr = newMessage.currentMessage
-      .replace(regexSmile, '\u263A')
-      .replace(regexSad, '\u2639')
-      .replace(regexLangue, '\uD83D\uDE1B')
-      .replace(regexFuck, '\u2022\u2022\u2022')
+        .replace(regexSmile, "\u263A")
+        .replace(regexSad, "\u2639")
+        .replace(regexLangue, "\uD83D\uDE1B")
+        .replace(regexFuck, "\u2022\u2022\u2022");
       newMessage.currentMessage = newStr;
       setListMessage([...listMessage, newMessage]);
-    } )
-  },[listMessage])
+    });
+  }, [listMessage]);
 
-  const affichageMessages = listMessage.map( (e,i) => {
+  const affichageMessages = listMessage.map((e, i) => {
     if (e.username != username.username) {
       return (
         <View key={i} style={styles.icoppresentation2}>
-        <View style={[styles.bubble, styles.bubbleIn]}>
-          <View style={[styles.balloon, { backgroundColor: "#0773A3" }]}>
-            <Text style={styles.text}>{e.currentMessage}</Text>
-            <Text style={styles.smalltext}>{e.username}</Text>
-            <View style={[styles.arrowContainer, styles.arrowLeftContainer]}>
-              <Svg
-                style={styles.arrowLeft}
-                width={moderateScale(15.5, 0.6)}
-                height={moderateScale(17.5, 0.6)}
-                viewBox="32.485 17.5 15.515 17.5"
-                enable-background="new 32.485 17.5 15.515 17.5"
-              >
-                <Path d="M38.484,17.5c0,8.75,1,13.5-6,17.5C51.484,35,52.484,17.5,38.484,17.5z" fill="#0773A3" x="0" y="0" />
-              </Svg>
+          <View style={[styles.bubble, styles.bubbleIn]}>
+            <View style={[styles.balloon, { backgroundColor: "#0773A3" }]}>
+              <Text style={styles.text}>{e.currentMessage}</Text>
+              <Text style={styles.smalltext}>{e.username}</Text>
+              <View style={[styles.arrowContainer, styles.arrowLeftContainer]}>
+                <Svg
+                  style={styles.arrowLeft}
+                  width={moderateScale(15.5, 0.6)}
+                  height={moderateScale(17.5, 0.6)}
+                  viewBox="32.485 17.5 15.515 17.5"
+                  enable-background="new 32.485 17.5 15.515 17.5"
+                >
+                  <Path
+                    d="M38.484,17.5c0,8.75,1,13.5-6,17.5C51.484,35,52.484,17.5,38.484,17.5z"
+                    fill="#0773A3"
+                    x="0"
+                    y="0"
+                  />
+                </Svg>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-      )
-    } else return (
-    <View key={i} style={styles.icoppresentation}>
-      <View style={[styles.bubble, styles.bubbleOut]}>
-        <View style={[styles.balloon, { backgroundColor: "#4FA2C7" }]}>
-          <Text style={styles.text}>{e.currentMessage}</Text>
-          <Text style={styles.smalltext}>{e.username}</Text>
-          <View style={[styles.arrowContainer, styles.arrowRightContainer]}>
-            <Svg
-              style={styles.arrowRight}
-              width={moderateScale(15.5, 0.6)}
-              height={moderateScale(17.5, 0.6)}
-              viewBox="32.485 17.5 15.515 17.5"
-              enable-background="new 32.485 17.5 15.515 17.5"
-            >
-              <Path d="M48,35c-7-4-6-8.75-6-17.5C28,17.5,29,35,48,35z" fill="#4FA2C7" x="0" y="0" />
-            </Svg>
+      );
+    } else
+      return (
+        <View key={i} style={styles.icoppresentation}>
+          <View style={[styles.bubble, styles.bubbleOut]}>
+            <View style={[styles.balloon, { backgroundColor: "#4FA2C7" }]}>
+              <Text style={styles.text}>{e.currentMessage}</Text>
+              <Text style={styles.smalltext}>{e.username}</Text>
+              <View style={[styles.arrowContainer, styles.arrowRightContainer]}>
+                <Svg
+                  style={styles.arrowRight}
+                  width={moderateScale(15.5, 0.6)}
+                  height={moderateScale(17.5, 0.6)}
+                  viewBox="32.485 17.5 15.515 17.5"
+                  enable-background="new 32.485 17.5 15.515 17.5"
+                >
+                  <Path d="M48,35c-7-4-6-8.75-6-17.5C28,17.5,29,35,48,35z" fill="#4FA2C7" x="0" y="0" />
+                </Svg>
+              </View>
+            </View>
           </View>
         </View>
-      </View>
-    </View>
-
-    )
+      );
   });
 
   if (!fontsLoaded) {
@@ -112,33 +115,36 @@ function ChatScreen(username) {
   }
 
   return (
-    < View style={{flex:1}}>
+    <View style={{ flex: 1 }}>
       <Header
         barStyle="light-content"
         centerComponent={<Text style={styles.title}>Chat</Text>}
         containerStyle={styles.topbar}
       />
-      <ScrollView  style={{flex:1}}>
-        {affichageMessages}
-      </ScrollView >
+      <ScrollView style={{ flex: 1 }}>{affichageMessages}</ScrollView>
 
-          <KeyboardAvoidingView behavior="padding" enabled>
-            <TextInput
-              label="Tapez votre message ici"
-              value={currentMessage}
-              onChangeText={(e)=>setCurrentMessage(e)}
-              style={styles.input}
-              mode='outlined'
-              />
-            <Button
-                icon={<FontAwesome name="send-o" size={24} color="black" />} 
-                iconRight
-                title="Envoyer  "
-                buttonStyle={{backgroundColor: "#eb4d4b"}}
-                type="solid"
-                onPress={() => {socket.emit("sendMessage", {currentMessage, username:username.username}); setCurrentMessage('')}}
-            />
-          </KeyboardAvoidingView>
+      <KeyboardAvoidingView behavior="padding" enabled>
+        <TextInput
+          label="Tapez votre message ici"
+          value={currentMessage}
+          onChangeText={(e) => setCurrentMessage(e)}
+          style={styles.input}
+          mode="outlined"
+          selectionColor="blue"
+          underlineColor="blue"
+        />
+        <Button
+          icon={<FontAwesome name="send-o" size={24} color="#FFFEFA" />}
+          iconRight
+          title="Envoyer  "
+          buttonStyle={{ backgroundColor: "#0773A3" }}
+          type="solid"
+          onPress={() => {
+            socket.emit("sendMessage", { currentMessage, username: username.username });
+            setCurrentMessage("");
+          }}
+        />
+      </KeyboardAvoidingView>
     </View>
   );
 }
@@ -150,6 +156,7 @@ function mapStateToProps(state) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#FFFEFA",
   },
   title: {
     color: "#FFFEFA",
@@ -163,8 +170,8 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: "Montserrat_500Medium",
     fontSize: 20,
-    width: '100%',
-    alignSelf:'center'
+    width: "100%",
+    alignSelf: "center",
   },
   icoppresentation: {
     flexDirection: "row",
@@ -227,11 +234,11 @@ const styles = StyleSheet.create({
   },
   smalltext: {
     fontFamily: "Montserrat_400Regular",
-    fontSize:10,
+    fontSize: 10,
     color: "#FFFEFE",
-    textAlign:'right' ,
+    textAlign: "right",
     padding: 5,
-  }
+  },
 });
 
 export default connect(mapStateToProps, null)(ChatScreen);

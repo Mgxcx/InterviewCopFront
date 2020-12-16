@@ -21,9 +21,9 @@ import detailedscore from "./reducers/detailedscore.reducer";
 import job from "./reducers/job.reducer";
 import county from "./reducers/county.reducer";
 
-import { Provider } from "react-redux";
+import { Provider as StoreProvider } from "react-redux";
 import { createStore, combineReducers } from "redux";
-import { Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 
 const store = createStore(combineReducers({ username, score, detailedscore, job, county }));
 
@@ -33,7 +33,6 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const SecondStack = createStackNavigator();
 const ThirdStack = createStackNavigator();
-
 
 const StackInterview = () => {
   return (
@@ -94,10 +93,27 @@ const PagesTab = () => {
   );
 };
 
+const theme = {
+  ...DefaultTheme,
+  roundness: 2,
+  colors: {
+    ...DefaultTheme.colors,
+    disabled: "#4FA2C7",
+    placeholder: "#4FA2C7",
+    text: "#4FA2C7",
+    accent: "#f1c40f",
+    background: "#FFFEFA",
+    surface: "#4FA2C7",
+    backdrop: "#0773A3",
+    primary: "#0773A3",
+    accent: "#4FA2C7",
+  },
+};
+
 export default function App() {
   return (
-    <Provider store={store}>
-      <PaperProvider>
+    <StoreProvider store={store}>
+      <PaperProvider theme={theme}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
@@ -106,6 +122,6 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>
-    </Provider>
+    </StoreProvider>
   );
 }
