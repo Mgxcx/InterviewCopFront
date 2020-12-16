@@ -13,6 +13,7 @@ import InterviewScreen from "./screens/InterviewScreen";
 import AdvicesScreen from "./screens/AdvicesScreen";
 import ShopScreen from "./screens/ShopScreen";
 import InterviewScreenResult from "./screens/InterviewScreenResult";
+import ChatScreen from "./screens/ChatScreen";
 
 import username from "./reducers/username.reducer";
 import score from "./reducers/score.reducer";
@@ -31,6 +32,8 @@ LogBox.ignoreAllLogs();
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const SecondStack = createStackNavigator();
+const ThirdStack = createStackNavigator();
+
 
 const StackInterview = () => {
   return (
@@ -39,6 +42,15 @@ const StackInterview = () => {
       <SecondStack.Screen name="InterviewScreen" component={InterviewScreen} />
       <SecondStack.Screen name="InterviewScreenResult" component={InterviewScreenResult} />
     </SecondStack.Navigator>
+  );
+};
+
+const StackAccount = () => {
+  return (
+    <ThirdStack.Navigator screenOptions={{ headerShown: false }}>
+      <ThirdStack.Screen name="AccountScreen" component={AccountScreen} />
+      <ThirdStack.Screen name="ChatScreen" component={ChatScreen} />
+    </ThirdStack.Navigator>
   );
 };
 
@@ -74,7 +86,7 @@ const PagesTab = () => {
       }}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Account" component={AccountScreen} />
+      <Tab.Screen name="Account" component={StackAccount} />
       <Tab.Screen name="Interview" component={StackInterview} />
       <Tab.Screen name="Advices" component={AdvicesScreen} />
       <Tab.Screen name="Shop" component={ShopScreen} />

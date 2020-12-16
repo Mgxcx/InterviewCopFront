@@ -143,7 +143,7 @@ function AccountScreen({ username, navigation }) {
           </View>
         </View>
         {userPackage && (
-          <>
+          <View style={styles.chatview}>
             {userPackage.name == "Pro" && (
               <Button
                 title="Chat"
@@ -154,7 +154,7 @@ function AccountScreen({ username, navigation }) {
                 buttonStyle={styles.button}
               />
             )}
-          </>
+          </View>
         )}
         <Text style={styles.text}>{listErrors}</Text>
       </View>
@@ -241,6 +241,10 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     width: 110,
   },
+  chatview: {
+    justifyContent:'center',
+    alignItems:'center'
+  }
 });
 
 export default connect(mapStateToProps, null)(AccountScreen);

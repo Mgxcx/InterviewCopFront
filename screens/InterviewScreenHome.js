@@ -5,7 +5,6 @@ import InputOutline from "react-native-input-outline";
 import AppLoading from "expo-app-loading";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
-import { Dialog, Portal, RadioButton } from "react-native-paper";
 import {
   useFonts,
   Montserrat_400Regular,

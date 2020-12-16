@@ -38,6 +38,7 @@
     "react-native-web": "~0.13.12",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
+    "socket.io-client": "^3.0.4",
     "victory-native": "^35.3.1"
   },
   "devDependencies": {
