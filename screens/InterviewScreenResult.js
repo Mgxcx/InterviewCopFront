@@ -36,8 +36,6 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
 
   const urlBack = "https://interviewcoptest.herokuapp.com";
 
-  //déclenche le setRating au chargement de la page pour récupérer le dernier score enregistré dans Redux
-  // pour pouvoir l'afficher ici dans InterviewScreenResult
   useEffect(() => {
     //gestion des résultats par catégorie dans les statistiques détaillées
     var categories = [
@@ -80,11 +78,16 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
         numberPointsFalse,
       };
     });
+    //déclenche le setCategoriesScores au chargement de la page pour récupérer les scores détaillées enregistrés dans Redux
+    // pour pouvoir l'afficher dans les statistiques détaillées
     setCategoriesScores(categoriesScores);
 
     //gestion du score 5 étoiles
     let newScore5Star = score / 10 / 2;
+    //déclenche le setRating au chargement de la page pour récupérer le dernier score enregistré dans Redux
+    // pour pouvoir l'afficher ici dans InterviewScreenResult
     setRating(newScore5Star);
+
     //calcul du salaire d'embauche en récupérant les infos stockées dans redux et en appelant la route du back correspondante
     const calculateSalary = async () => {
       const data = await fetch(`${urlBack}/scrape-salary?job=${job}&county=${county}`);
