@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { ScrollView, StyleSheet, View, Text, Image } from "react-native";
 import { Button, Header } from "react-native-elements";
 import AppLoading from "expo-app-loading";
 import { connect } from "react-redux";
@@ -63,100 +63,102 @@ function AccountScreen({ username, navigation }) {
           barStyle="light-content"
           centerComponent={<Text style={styles.title}>Mon compte</Text>}
           containerStyle={styles.topbar}
-        />
-        <Text style={styles.title2}>Mes scores aux derniers entretiens</Text>
-        {userScores && (
-          <>
-            {userScores.length > 0 ? (
-              <View style={styles.container3}>
-                <Text style={styles.text}>{userScores[userScores.length - 3]} / 100</Text>
-                <Text style={styles.text}>{userScores[userScores.length - 2]} / 100</Text>
-                <Text style={styles.text}>{userScores[userScores.length - 1]} / 100</Text>
-              </View>
-            ) : (
-              <Text style={styles.text}>{listErrorsScores}</Text>
-            )}
-          </>
-        )}
-        <Text style={styles.title2}>Mes trophées</Text>
-        <View style={styles.container2}>
-          {userTrophies && (
-            <>
-              {userTrophies.length > 0 ? (
-                userTrophies.map((trophies, i) => {
-                  // vérification des nombres des trophées stockés précédemment dans l'état userTrophies pour pouvoir attribuer une image de trophée en fonction
-                  let path;
-                  if (trophies.number == 1) {
-                    path = require("../assets/badgeparfait.png");
-                  } else if (trophies.number == 2) {
-                    path = require("../assets/badgepresqueparfait.png");
-                  } else if (trophies.number == 3) {
-                    path = require("../assets/badgeaparfaire.png");
-                  }
-                  return <Image key={i} source={path} style={styles.trophy} />;
-                })
-              ) : (
-                <Text style={styles.text}>{listErrorsTrophies}</Text>
-              )}
-            </>
-          )}
-        </View>
-        <View style={styles.container3}>
-          <View style={styles.formule}>
-            <Text style={styles.title2}>Ma formule</Text>
-            {userPackage ? (
+            />
+          <ScrollView>
+            <Text style={styles.title2}>Mes scores aux derniers entretiens</Text>
+            {userScores && (
               <>
-                <Text style={styles.text}>
-                  Ma formule {userPackage.name} {"\n"} à {userPackage.price} €
-                </Text>
-                {(userPackage.name == "Free" || userPackage.name == "+") && (
+                {userScores.length > 0 ? (
+                  <View style={styles.container3}>
+                    <Text style={styles.text}>{userScores[userScores.length - 3]} / 100</Text>
+                    <Text style={styles.text}>{userScores[userScores.length - 2]} / 100</Text>
+                    <Text style={styles.text}>{userScores[userScores.length - 1]} / 100</Text>
+                  </View>
+                ) : (
+                  <Text style={styles.text}>{listErrorsScores}</Text>
+                )}
+              </>
+            )}
+            <Text style={styles.title2}>Mes trophées</Text>
+            <View style={styles.container2}>
+              {userTrophies && (
+                <>
+                  {userTrophies.length > 0 ? (
+                    userTrophies.map((trophies, i) => {
+                      // vérification des nombres des trophées stockés précédemment dans l'état userTrophies pour pouvoir attribuer une image de trophée en fonction
+                      let path;
+                      if (trophies.number == 1) {
+                        path = require("../assets/badgeparfait.png");
+                      } else if (trophies.number == 2) {
+                        path = require("../assets/badgepresqueparfait.png");
+                      } else if (trophies.number == 3) {
+                        path = require("../assets/badgeaparfaire.png");
+                      }
+                      return <Image key={i} source={path} style={styles.trophy} />;
+                    })
+                  ) : (
+                    <Text style={styles.text}>{listErrorsTrophies}</Text>
+                  )}
+                </>
+              )}
+            </View>
+            <View style={styles.container3}>
+              <View style={styles.formule}>
+                <Text style={styles.title2}>Ma formule</Text>
+                {userPackage ? (
+                  <>
+                    <Text style={styles.text}>
+                      Ma formule {userPackage.name} {"\n"} à {userPackage.price} €
+                    </Text>
+                    {(userPackage.name == "Free" || userPackage.name == "+") && (
+                      <Button
+                        title="Upgrade!"
+                        titleStyle={styles.textbutton}
+                        onPress={() => {
+                          navigation.navigate("Shop");
+                        }}
+                        buttonStyle={styles.button}
+                      />
+                    )}
+                  </>
+                ) : (
+                  <Text style={styles.text}>{listErrorsPackage}</Text>
+                )}
+              </View>
+              <View style={styles.icops}>
+                <Text style={styles.title2}>Mes iCops</Text>
+                {userIcops ? (
+                  userIcops.map((icops, i) => {
+                    // vérification des nombres des trophées stockés précédemment dans l'état userTrophies pour pouvoir attribuer une image de trophée en fonction
+                    let icopimage;
+                    if (icops.number == 1) {
+                      icopimage = require("../assets/MikeChickenLeft.png");
+                    } else if (icops.number == 2) {
+                      icopimage = require("../assets/MikeChickenRight.png");
+                    }
+                    return <Image key={i} source={icopimage} style={styles.icop} />;
+                  })
+                ) : (
+                  <Text style={styles.text}>{listErrorsIcops}</Text>
+                )}
+              </View>
+            </View>
+            {userPackage && (
+              <View style={styles.chatview}>
+                {userPackage.name == "Pro" && (
                   <Button
-                    title="Upgrade!"
+                    title="Chat"
                     titleStyle={styles.textbutton}
                     onPress={() => {
-                      navigation.navigate("Shop");
+                      navigation.navigate("ChatScreen");
                     }}
                     buttonStyle={styles.button}
                   />
                 )}
-              </>
-            ) : (
-              <Text style={styles.text}>{listErrorsPackage}</Text>
+              </View>
             )}
-          </View>
-          <View style={styles.icops}>
-            <Text style={styles.title2}>Mes iCops</Text>
-            {userIcops ? (
-              userIcops.map((icops, i) => {
-                // vérification des nombres des trophées stockés précédemment dans l'état userTrophies pour pouvoir attribuer une image de trophée en fonction
-                let icopimage;
-                if (icops.number == 1) {
-                  icopimage = require("../assets/MikeChickenLeft.png");
-                } else if (icops.number == 2) {
-                  icopimage = require("../assets/MikeChickenRight.png");
-                }
-                return <Image key={i} source={icopimage} style={styles.icop} />;
-              })
-            ) : (
-              <Text style={styles.text}>{listErrorsIcops}</Text>
-            )}
-          </View>
-        </View>
-        {userPackage && (
-          <View style={styles.chatview}>
-            {userPackage.name == "Pro" && (
-              <Button
-                title="Chat"
-                titleStyle={styles.textbutton}
-                onPress={() => {
-                  navigation.navigate("ChatScreen");
-                }}
-                buttonStyle={styles.button}
-              />
-            )}
-          </View>
-        )}
-        <Text style={styles.text}>{listErrors}</Text>
+            <Text style={styles.text}>{listErrors}</Text>
+          </ScrollView>
       </View>
     );
   }

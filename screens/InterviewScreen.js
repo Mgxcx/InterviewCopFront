@@ -309,7 +309,6 @@ const styles = StyleSheet.create({
     height: "65%",
     borderRadius: 20,
     opacity: 0.95,
-    margin: 40,
     alignSelf: "center",
   },
 });
