@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Animated, Image, ScrollView, StyleSheet, View, Text } from "react-native";
-import AppLoading from 'expo-app-loading';
+import AppLoading from "expo-app-loading";
 import { Button, Header, Overlay } from "react-native-elements";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -29,8 +29,10 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
 
   //état et fonction gérant l'overlay pour choisir la region
   const [visible, setVisible] = useState(false);
-  const toggleOverlay = () => { setVisible(!visible);};
-  
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
   const image = require("../assets/MikeChickenSmall.png");
 
   const urlBack = "https://interviewcoptest.herokuapp.com";
@@ -160,21 +162,24 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
         />
         <Button
           icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFE" />}
-          onPress={() =>toggleOverlay()}
+          onPress={() => toggleOverlay()}
           buttonStyle={styles.nextButton}
         />
-        <Overlay isVisible={visible} overlayStyle={styles.overlay}>
-          <View>
+      </ScrollView>
+      <Overlay isVisible={visible} overlayStyle={styles.overlay}>
+        <ScrollView style={styles.overlay}>
           <Image source={image} style={styles.image} />
           <Text style={styles.advicetext}> {questionDisplay.advice} </Text>
-          <Button 
+          <Button
             buttonStyle={styles.adviceokbutton}
-            onPress={() => {toggleOverlay(); handleNextQuestion(questionDisplay.category)}}
+            onPress={() => {
+              toggleOverlay();
+              handleNextQuestion(questionDisplay.category);
+            }}
             title="OK"
           />
-          </View>
-        </Overlay>
-      </ScrollView>
+        </ScrollView>
+      </Overlay>
     </View>
   );
 }
@@ -228,7 +233,7 @@ const styles = StyleSheet.create({
   image: {
     width: 130,
     height: 130,
-    alignSelf: 'center'
+    alignSelf: "center",
   },
   button: {
     marginTop: 15,
@@ -296,15 +301,17 @@ const styles = StyleSheet.create({
     width: 200,
     marginTop: 20,
     borderRadius: 10,
-    alignSelf:'center'
+    alignSelf: "center",
   },
   overlay: {
     backgroundColor: "#4FA2C7",
-    opacity: 0.90,
-    alignItems: "center",
-    // width: 300,
-    borderRadius: 20
-  }
+    width: "100%",
+    height: "65%",
+    borderRadius: 20,
+    opacity: 0.95,
+    margin: 40,
+    alignSelf: "center",
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InterviewScreen);
