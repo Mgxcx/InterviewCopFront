@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { View, KeyboardAvoidingView, ScrollView, StyleSheet, Text } from "react-native";
-import { Input, Button, Header } from "react-native-elements";
+import { Button, Header } from "react-native-elements";
 import { TextInput } from "react-native-paper";
 import AppLoading from "expo-app-loading";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import socketIOClient from "socket.io-client";
 import Svg, { Path } from "react-native-svg";
 import { moderateScale } from "react-native-size-matters";
@@ -20,7 +20,7 @@ const urlBack = "https://interviewcoptest.herokuapp.com";
 
 const socket = socketIOClient(urlBack);
 
-function ChatScreen(username) {
+function ChatScreen({ username, navigation }) {
   const [currentMessage, setCurrentMessage] = useState(null);
   const [listMessage, setListMessage] = useState([]);
 
@@ -59,7 +59,7 @@ function ChatScreen(username) {
   }, [listMessage]);
 
   const affichageMessages = listMessage.map((e, i) => {
-    if (e.username != username.username) {
+    if (e.username != username) {
       return (
         <View key={i} style={styles.icoppresentation2}>
           <View style={[styles.bubble, styles.bubbleIn]}>
@@ -118,6 +118,15 @@ function ChatScreen(username) {
     <View style={{ flex: 1 }}>
       <Header
         barStyle="light-content"
+        leftComponent={
+          <Button
+            icon={<Ionicons name="ios-arrow-back" size={24} color="#FFFEFA" />}
+            onPress={() => {
+              navigation.navigate("AccountScreen");
+            }}
+            buttonStyle={styles.button}
+          />
+        }
         centerComponent={<Text style={styles.title}>Chat</Text>}
         containerStyle={styles.topbar}
       />
@@ -138,7 +147,7 @@ function ChatScreen(username) {
           buttonStyle={{ backgroundColor: "#0773A3" }}
           type="solid"
           onPress={() => {
-            socket.emit("sendMessage", { currentMessage, username: username.username });
+            socket.emit("sendMessage", { currentMessage, username });
             setCurrentMessage("");
           }}
         />
@@ -236,6 +245,9 @@ const styles = StyleSheet.create({
     color: "#FFFEFE",
     textAlign: "right",
     padding: 5,
+  },
+  button: {
+    backgroundColor: "transparent",
   },
 });
 

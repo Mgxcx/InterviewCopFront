@@ -12,8 +12,9 @@ import {
 } from "@expo-google-fonts/montserrat";
 
 function AdvicesScreen() {
-  //déclenche le setAdvices au chargement de la page pour récupérer ls conseils stockés en BDD
+  //déclenche le setAdvices au chargement de la page pour récupérer les conseils stockés en BDD
   const [advices, setAdvices] = useState();
+
   //pour gérer les polices expo-google-fonts
   let [fontsLoaded] = useFonts({
     Montserrat_500Medium,
@@ -40,13 +41,7 @@ function AdvicesScreen() {
   }
 
   let advicesList = advices.map((e, i) => (
-    <List.Accordion
-      title={e.title}
-      key={i}
-      titleStyle={styles.textbutton}
-      style={styles.button3}
-      titleNumberOfLines={5}
-    >
+    <List.Accordion title={e.title} key={i} titleStyle={styles.textbutton} style={styles.button} titleNumberOfLines={5}>
       <List.Item title={e.content} titleStyle={styles.advicetext} titleNumberOfLines={30} style={styles.adviceitem} />
     </List.Accordion>
   ));
@@ -68,26 +63,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFEFA",
   },
+  topbar: {
+    backgroundColor: "#0773A3",
+    marginBottom: 10,
+  },
   contentContainer: {
     alignItems: "center",
     justifyContent: "center",
-    // padding: 50,
   },
-  button3: {
+  title: {
+    color: "#FFFEFA",
+    fontFamily: "Montserrat_700Bold",
+    fontSize: 22,
+  },
+  button: {
     marginTop: 15,
     backgroundColor: "#0773A3",
     borderRadius: 15,
     width: 320,
-  },
-  advicetext: {
-    fontFamily: "Montserrat_500Medium",
-    fontWeight: "600",
-    fontSize: 13,
-    lineHeight: 29,
-    letterSpacing: 0.75,
-  },
-  adviceitem: {
-    marginTop: 30,
   },
   textbutton: {
     color: "#FFFEFA",
@@ -99,14 +92,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     letterSpacing: 0.75,
   },
-  title: {
-    color: "#FFFEFA",
-    fontFamily: "Montserrat_700Bold",
-    fontSize: 22,
+  advicetext: {
+    fontFamily: "Montserrat_500Medium",
+    fontWeight: "600",
+    fontSize: 13,
+    lineHeight: 29,
+    letterSpacing: 0.75,
   },
-  topbar: {
-    backgroundColor: "#0773A3",
-    marginBottom: 10,
+  adviceitem: {
+    marginTop: 30,
   },
 });
 

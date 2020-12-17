@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { Button, Header, CheckBox, Divider, Overlay } from "react-native-elements";
 import AppLoading from "expo-app-loading";
-import InputOutline from "react-native-input-outline";
+import { TextInput } from "react-native-paper";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -60,6 +60,12 @@ function ShopScreen({ username, navigation }) {
     if (usernameCard && creditCardNumbers && expirationMonth && expirationMonth && CVC) {
       toggleOverlay();
       setInformationPayment(true);
+      setUsernameCard("");
+      setCreditCardNumbers("");
+      setExpirationMonth("");
+      setExpirationYear("");
+      setCVC("");
+      setErrorInformationPayment("");
 
       if (informationPayment == true) {
         const fetchData2 = async () => {
@@ -203,46 +209,47 @@ function ShopScreen({ username, navigation }) {
         <Overlay isVisible={overlayVisible} overlayStyle={styles.overlay}>
           <View style={styles.overlay}>
             <Text style={styles.title2}>Payer par carte</Text>
-            <InputOutline
+            <TextInput
               placeholder="Nom du titulaire de la carte"
-              focusedColor="#0773A3"
-              defaultColor="#4FA2C7"
-              style={styles.input}
+              label="Nom du titulaire de la carte"
               onChangeText={(usernamecard) => setUsernameCard(usernamecard)}
               value={usernameCard}
-            />
-            <InputOutline
-              placeholder="Numéros de la carte"
-              focusedColor="#0773A3"
-              defaultColor="#4FA2C7"
               style={styles.input}
+              mode="outlined"
+            />
+            <TextInput
+              placeholder="Numéros de la carte"
+              label="Numéros de la carte"
               onChangeText={(creditcardnumbers) => setCreditCardNumbers(creditcardnumbers)}
               value={creditCardNumbers}
-            />
-            <InputOutline
-              placeholder="Mois d'expiration"
-              focusedColor="#0773A3"
-              defaultColor="#4FA2C7"
               style={styles.input}
+              mode="outlined"
+            />
+            <TextInput
+              placeholder="Mois d'expiration"
+              label="Mois d'expiration"
               onChangeText={(expirationmonth) => setExpirationMonth(expirationmonth)}
               value={expirationMonth}
-            />
-            <InputOutline
-              placeholder="Année d'expiration"
-              focusedColor="#0773A3"
-              defaultColor="#4FA2C7"
               style={styles.input}
+              mode="outlined"
+            />
+            <TextInput
+              placeholder="Année d'expiration"
+              label="Année d'expiration"
               onChangeText={(expirationyear) => setExpirationYear(expirationyear)}
               value={expirationYear}
-            />
-            <InputOutline
-              placeholder="CVC"
-              focusedColor="#0773A3"
-              defaultColor="#4FA2C7"
               style={styles.input}
+              mode="outlined"
+            />
+            <TextInput
+              placeholder="CVC"
+              label="CVC"
               onChangeText={(cvc) => setCVC(cvc)}
               value={CVC}
+              style={styles.input}
+              mode="outlined"
             />
+
             <Text style={styles.text}>{errorInformationPayment}</Text>
             <Button
               title={price}
@@ -353,7 +360,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   input: {
-    borderColor: "#0773A3",
+    marginTop: 10,
     fontFamily: "Montserrat_500Medium",
     fontSize: 20,
     backgroundColor: "#FFFEFA",

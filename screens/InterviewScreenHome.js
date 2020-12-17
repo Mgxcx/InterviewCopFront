@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View, Text, Image } from "react-native";
 import { Button, CheckBox, Header, Overlay } from "react-native-elements";
-import InputOutline from "react-native-input-outline";
 import { TextInput } from "react-native-paper";
 import AppLoading from "expo-app-loading";
 import { connect } from "react-redux";

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image } from "react-native";
 import { Button, Header } from "react-native-elements";
 import AppLoading from "expo-app-loading";
 import DropDownPicker from "react-native-dropdown-picker";
-import InputOutline from "react-native-input-outline";
+import { TextInput } from "react-native-paper";
 
 import { connect } from "react-redux";
 import {
@@ -57,13 +57,13 @@ function PasswordRecoveryScreen({ navigation, onSubmitUsername }) {
   if (userQuestionAndAnswer) {
     newPasswordView = (
       <View style={styles.newpassword}>
-        <InputOutline
+        <TextInput
           placeholder="New Password"
-          focusedColor="#0773A3"
-          defaultColor="#4FA2C7"
-          style={styles.input}
+          label="New Password"
           onChangeText={(newPassword) => setNewPassword(newPassword)}
           value={newPassword}
+          style={styles.input}
+          mode="outlined"
         />
         <Button
           title="Valider"
@@ -122,13 +122,13 @@ function PasswordRecoveryScreen({ navigation, onSubmitUsername }) {
         <View style={styles.passwordrecovery}>
           <Text style={styles.title2}>Récupération du mot de passe</Text>
 
-          <InputOutline
+          <TextInput
             placeholder="Username"
-            focusedColor="#0773A3"
-            defaultColor="#4FA2C7"
-            style={styles.input}
+            label="Username"
             onChangeText={(username) => setUsername(username)}
             value={username}
+            style={styles.input}
+            mode="outlined"
           />
 
           <DropDownPicker
@@ -156,13 +156,13 @@ function PasswordRecoveryScreen({ navigation, onSubmitUsername }) {
             value={secretQuestion}
           />
 
-          <InputOutline
+          <TextInput
             placeholder="Réponse"
-            focusedColor="#0773A3"
-            defaultColor="#4FA2C7"
-            style={styles.input}
+            label="Réponse"
             onChangeText={(answer) => setAnswer(answer)}
             value={answer}
+            style={styles.input}
+            mode="outlined"
           />
 
           {tabErrorsPasswordRecovery}
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFEFA",
   },
   input: {
-    borderColor: "#0773A3",
+    marginTop: 10,
     fontFamily: "Montserrat_500Medium",
     fontSize: 20,
     backgroundColor: "#FFFEFA",
