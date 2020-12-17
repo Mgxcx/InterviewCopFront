@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View, Text, Image } from "react-native";
+import { ScrollView, StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { Button, CheckBox, Header, Overlay } from "react-native-elements";
 import { TextInput } from "react-native-paper";
 import AppLoading from "expo-app-loading";
@@ -15,11 +15,13 @@ import {
 import Svg, { Path } from "react-native-svg";
 import { moderateScale } from "react-native-size-matters";
 
-function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty }) {
+function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty, onSubmitIcop }) {
   const image = require("../assets/MikeChickenLeft.png");
   const [job, setJob] = useState("");
   const [salary, setSalary] = useState("");
   const [county, setCounty] = useState("Choisissez votre région");
+  const [icop, setIcop] = useState("Choisissez votre iCop");
+
   const [listErrorsNewInformation, setListErrorsNewInformation] = useState([]); //les messages d'erreur sont transmis par le Back
 
   //état et fonction gérant l'overlay pour choisir la region
@@ -27,6 +29,15 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
   const toggleOverlay = () => {
     setVisible(!visible);
   };
+
+  //état et fonction gérant l'overlay pour choisir l'icop'
+  const [visibleTwo, setVisibleTwo] = useState(false);
+  const toggleOverlayTwo = () => {
+    setVisibleTwo(!visibleTwo);
+  };
+
+  const imageMikeChicken = require("../assets/MikeChickenSmall.png");
+  const imageAgentTouf = require("../assets/AgentToufSmall.png");
 
   //pour gérer les polices expo-google-fonts
   let [fontsLoaded] = useFonts({
@@ -52,6 +63,7 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
     if (body.result === true) {
       onSubmitJob(job);
       onSubmitCounty(county);
+      onSubmitIcop(icop);
       navigation.navigate("InterviewScreen");
     } else {
       setListErrorsNewInformation(body.error);
@@ -117,13 +129,11 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
           />
 
           <Button
-            // onChangeText={(county) => setCounty(county)}
             title={county}
             onPress={toggleOverlay}
-            buttonStyle={styles.regionbutton}
-            // value={county}
+            buttonStyle={styles.selectionbutton}
           />
-          {tabErrorsNewInformation}
+
           <Overlay isVisible={visible} overlayStyle={styles.overlay}>
             <ScrollView>
               <View style={styles.regionview}>
@@ -286,6 +296,38 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
               </View>
             </ScrollView>
           </Overlay>
+          
+          <Button
+            title={icop}
+            onPress={toggleOverlayTwo}
+            buttonStyle={styles.selectionbutton}
+          />
+
+          <Overlay isVisible={visibleTwo} overlayStyle={styles.overlay}>
+          
+            <ScrollView contentContainerStyle={styles.contentContainer}>
+
+              <Text style={styles.regiontitle}>Sélectionnez votre iCop</Text>
+
+              <TouchableOpacity style={styles.contentContainer} onPress={() => setIcop('MikeChicken')}>
+                <Image source={imageMikeChicken} style={icop === 'MikeChicken' ? styles.imageIcopSelected : styles.imageIcop} />
+                <Text style={styles.text2}>Nom: Mike Chicken</Text>
+                <Text style={styles.text2}>Difficulté : Moyenne</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.contentContainer}  onPress={() => setIcop('AgentTouf')}>
+                <Image source={imageAgentTouf} style={icop === 'AgentTouf' ? styles.imageIcopSelected : styles.imageIcop} />
+                <Text style={styles.text2} >Nom: Agent Touf</Text>
+                <Text style={styles.text2} >Difficulté : Élevée</Text>
+              </TouchableOpacity>
+
+              <Button buttonStyle={styles.button} onPress={toggleOverlayTwo} title="OK" />
+
+            </ScrollView>
+          </Overlay>
+
+          {tabErrorsNewInformation}
+
           <Button
             icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFE" />}
             onPress={() => {
@@ -310,6 +352,9 @@ function mapDispatchToProps(dispatch) {
     },
     onSubmitCounty: function (county) {
       dispatch({ type: "saveCounty", county });
+    },
+    onSubmitIcop: function (icop) {
+      dispatch({ type: "saveIcop", icop });
     },
   };
 }
@@ -367,7 +412,7 @@ const styles = StyleSheet.create({
   regionview: {
     alignItems: "center",
   },
-  regionbutton: {
+  selectionbutton: {
     color: "#FFFEFA",
     backgroundColor: "#0773A3",
     fontFamily: "Montserrat_500Medium",
@@ -470,6 +515,21 @@ const styles = StyleSheet.create({
 
   arrowRight: {
     right: moderateScale(-6, 0.5),
+  },
+  imageIcop: {
+    width: 130,
+    height: 130,
+  },
+  imageIcopSelected: {
+    width: 150,
+    height: 150,
+    borderWidth: 3,
+    borderColor:'yellow',
+    borderRadius: 100
+  },
+  contentContainer: {
+    alignItems: "center",
+    paddingTop: 10
   },
 });
 

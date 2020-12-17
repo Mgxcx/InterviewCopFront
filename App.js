@@ -20,12 +20,14 @@ import score from "./reducers/score.reducer";
 import detailedscore from "./reducers/detailedscore.reducer";
 import job from "./reducers/job.reducer";
 import county from "./reducers/county.reducer";
+import icop from "./reducers/icop.reducer";
+
 
 import { Provider as StoreProvider } from "react-redux";
 import { createStore, combineReducers } from "redux";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 
-const store = createStore(combineReducers({ username, score, detailedscore, job, county }));
+const store = createStore(combineReducers({ username, score, detailedscore, job, county, icop }));
 
 LogBox.ignoreAllLogs();
 

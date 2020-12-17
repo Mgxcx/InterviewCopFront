@@ -12,7 +12,7 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 
-function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDetailedScore }) {
+function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDetailedScore, icop }) {
   const [questionNumber, setQuestionNumber] = useState(1); //compteur des questions affiché sur la top bar entretien
   const [questionList, setQuestionList] = useState(); //stocke les données des questions envoyées par le back (questions,réponses,conseils etc)
 
@@ -33,7 +33,8 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
     setVisible(!visible);
   };
 
-  const image = require("../assets/MikeChickenSmall.png");
+  const imageMikeChicken = require("../assets/MikeChickenSmall.png");
+  const imageAgentTouf = require("../assets/AgentToufSmall.png");
 
   const urlBack = "https://interviewcoptest.herokuapp.com";
 
@@ -48,7 +49,7 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
   //charge les questions (générées aléatoirement par le backend)
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetch(`${urlBack}/generate-questions`);
+      const data = await fetch(`${urlBack}/generate-questions?icop=${icop}`);
       const body = await data.json();
       if (body.result === true) {
         setQuestionList(body.questionsArray);
@@ -168,7 +169,7 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
       </ScrollView>
       <Overlay isVisible={visible} overlayStyle={styles.overlay}>
         <ScrollView style={styles.overlay}>
-          <Image source={image} style={styles.image} />
+          <Image source={icop === 'MikeChicken' ? imageMikeChicken : imageAgentTouf} style={styles.image} />
           <Text style={styles.advicetext}> {questionDisplay.advice} </Text>
           <Button
             buttonStyle={styles.adviceokbutton}
@@ -185,7 +186,7 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
 }
 
 function mapStateToProps(state) {
-  return { username: state.username };
+  return { username: state.username, icop: state.icop };
 }
 
 function mapDispatchToProps(dispatch) {
