@@ -130,8 +130,6 @@ function ChatScreen(username) {
           onChangeText={(e) => setCurrentMessage(e)}
           style={styles.input}
           mode="outlined"
-          selectionColor="blue"
-          underlineColor="blue"
         />
         <Button
           icon={<FontAwesome name="send-o" size={24} color="#FFFEFA" />}

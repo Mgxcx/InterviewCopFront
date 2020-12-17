@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { Button, Header } from "react-native-elements";
 import InputOutline from "react-native-input-outline";
+import { TextInput } from "react-native-paper";
 import AppLoading from "expo-app-loading";
 import DropDownPicker from "react-native-dropdown-picker";
 import { connect } from "react-redux";
@@ -108,13 +109,13 @@ function LoginScreen({ navigation, onSubmitUsername }) {
         />
         <View style={styles.signin}>
           <Text style={styles.text}>Déjà un compte ?</Text>
-          <InputOutline
+          <TextInput
             placeholder="Username"
-            focusedColor="#0773A3"
-            defaultColor="#4FA2C7"
-            style={styles.input}
+            label="Username"
             onChangeText={(username) => setSignInUsername(username)}
             value={signInUsername}
+            style={styles.input}
+            mode="outlined"
           />
 
           <InputOutline
@@ -296,7 +297,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFEFA",
   },
   input: {
-    borderColor: "#0773A3",
+    marginTop: 10,
     fontFamily: "Montserrat_500Medium",
     fontSize: 20,
     backgroundColor: "#FFFEFA",
