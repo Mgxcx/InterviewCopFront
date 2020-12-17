@@ -231,39 +231,59 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
                   y: categoriesScores[0].sumScoreCategory,
                 },
                 {
+                  x: " ",
+                  y: categoriesScores[0].numberPointsFalse,
+                },
+                {
                   x: `Storytelling \n ${categoriesScores[1].sumScoreCategory}/${categoriesScores[1].numberPointsMax}`,
                   y: categoriesScores[1].sumScoreCategory,
+                },
+                {
+                  x: " ",
+                  y: categoriesScores[1].numberPointsFalse,
                 },
                 {
                   x: `Préparatifs \n ${categoriesScores[2].sumScoreCategory}/${categoriesScores[2].numberPointsMax}`,
                   y: categoriesScores[2].sumScoreCategory,
                 },
                 {
+                  x: " ",
+                  y: categoriesScores[2].numberPointsFalse,
+                },
+                {
                   x: `Projection \n ${categoriesScores[3].sumScoreCategory}/${categoriesScores[3].numberPointsMax}`,
                   y: categoriesScores[3].sumScoreCategory,
+                },
+                {
+                  x: " ",
+                  y: categoriesScores[3].numberPointsFalse,
                 },
                 {
                   x: `Négociation \n ${categoriesScores[4].sumScoreCategory}/${categoriesScores[4].numberPointsMax}`,
                   y: categoriesScores[4].sumScoreCategory,
                 },
+                {
+                  x: " ",
+                  y: categoriesScores[4].numberPointsFalse,
+                },
               ]}
-              height={200}
+              height={210}
               padding={{ top: 50, bottom: 50, left: 40, right: 40 }}
               colorScale={[
                 "#ED1C24",
-                "#ED1C24CC",
+                "#ED1C24B3",
                 "#E8C518",
-                "#E8C518CC",
+                "#E8C518B3",
                 "#208C58",
-                "#208C58CC",
+                "#208C58B3",
                 "#0773A3",
-                "#0773A3CC",
+                "#0773A3B3",
                 "#333333",
-                "#333333CC",
+                "#333333B3",
               ]}
               cornerRadius={0}
             />
-            <Button title="Ok" titleStyle={styles.textbutton2} buttonStyle={styles.button} onPress={toggleOverlay} />
+            <Button title="Ok" titleStyle={styles.textbutton2} buttonStyle={styles.button5} onPress={toggleOverlay} />
           </View>
         </Overlay>
         <Text style={styles.text}>Votre salaire d'embauche : {salary} bruts annuel</Text>
@@ -272,32 +292,31 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
 
           <Image source={image} style={styles.image} />
         </View>
+
+        <Text style={styles.texticop}>Vous devriez vous perfectionner sur : </Text>
         {categoriesScores.map(
           (categoriescore) =>
-            categoriescore.numberPointsFalse >= 6 && (
-              <Text style={styles.texticop}>
-                Vous devriez vous perfectionner sur : {"\n"} {"\n"}
-                {categoriescore.category}
-              </Text>
-            )
+            categoriescore.numberPointsFalse >= 6 && <Text style={styles.texticop}>{categoriescore.category}</Text>
         )}
-        <Button
-          title="Voir les conseils"
-          titleStyle={styles.textbutton}
-          buttonStyle={styles.button2}
-          onPress={() => {
-            navigation.navigate("Advices");
-          }}
-        />
+        <View style={styles.buttonsafterinterview}>
+          <Button
+            title="Voir les conseils"
+            titleStyle={styles.textbutton}
+            buttonStyle={styles.button2}
+            onPress={() => {
+              navigation.navigate("Advices");
+            }}
+          />
 
-        <Button
-          title="Refaire un entretien !"
-          titleStyle={styles.textbutton}
-          buttonStyle={styles.button2}
-          onPress={() => {
-            navigation.navigate("InterviewScreen");
-          }}
-        />
+          <Button
+            title="Refaire un entretien !"
+            titleStyle={styles.textbutton}
+            buttonStyle={styles.button2}
+            onPress={() => {
+              navigation.navigate("InterviewScreen");
+            }}
+          />
+        </View>
         <Button
           icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFA" />}
           buttonStyle={styles.button}
@@ -350,6 +369,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  buttonsafterinterview: {
+    flexDirection: "row",
+  },
   title: {
     color: "#FFFEFA",
     fontFamily: "Montserrat_700Bold",
@@ -373,18 +395,19 @@ const styles = StyleSheet.create({
     height: 130,
   },
   button: {
-    marginTop: 10,
-    marginBottom: 20,
+    marginBottom: 10,
     backgroundColor: "#0773A3",
     borderRadius: 15,
     width: 60,
   },
   button2: {
-    marginTop: 15,
+    marginTop: 10,
     marginBottom: 10,
+    marginLeft: 4,
+    marginRight: 4,
     backgroundColor: "#0773A3",
     borderRadius: 15,
-    width: 180,
+    width: 170,
   },
   button3: {
     marginTop: 15,
@@ -401,6 +424,13 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     width: 200,
     height: 50,
+  },
+  button5: {
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: "#0773A3",
+    borderRadius: 15,
+    width: 60,
   },
   textbutton: {
     color: "#FFFEFA",
@@ -434,14 +464,13 @@ const styles = StyleSheet.create({
     color: "#0773A3",
     width: 260,
     textAlign: "center",
-    marginTop: 20,
   },
   overlay: {
     backgroundColor: "#4FA2C7",
     width: "90%",
     height: "85%",
     borderRadius: 20,
-    opacity: 0.95,
+    opacity: 0.96,
     margin: 40,
     alignSelf: "center",
     alignItems: "center",

@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   textbutton: {
-    color: "#FFFEFE",
+    color: "#FFFEFA",
     fontFamily: "Montserrat_500Medium",
     fontWeight: "600",
     fontSize: 16,

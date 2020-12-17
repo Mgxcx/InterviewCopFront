@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { Button, Header } from "react-native-elements";
 import AppLoading from "expo-app-loading";
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     width: 140,
   },
   textbutton: {
-    color: "#FFFEFE",
+    color: "#FFFEFA",
     fontFamily: "Montserrat_500Medium",
     fontWeight: "600",
     fontSize: 16,

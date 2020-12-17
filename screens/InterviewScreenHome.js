@@ -22,18 +22,18 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
   const [county, setCounty] = useState("Choisissez votre région");
   const [icop, setIcop] = useState("Choisissez votre iCop");
 
-  const [listErrorsNewInformation, setListErrorsNewInformation] = useState([]); //les messages d'erreur sont transmis par le Back
+  const [listErrorsNewInformation, setListErrorsNewInformation] = useState(); //les messages d'erreur sont transmis par le Back
 
   //état et fonction gérant l'overlay pour choisir la region
-  const [visible, setVisible] = useState(false);
+  const [overlayVisible, setOverlayVisible] = useState(false);
   const toggleOverlay = () => {
-    setVisible(!visible);
+    setOverlayVisible(!overlayVisible);
   };
 
-  //état et fonction gérant l'overlay pour choisir l'icop'
-  const [visibleTwo, setVisibleTwo] = useState(false);
+  //état et fonction gérant l'overlay pour choisir l'icop
+  const [overlayVisibleTwo, setOverlayVisibleTwo] = useState(false);
   const toggleOverlayTwo = () => {
-    setVisibleTwo(!visibleTwo);
+    setOverlayVisibleTwo(!overlayVisibleTwo);
   };
 
   const imageMikeChicken = require("../assets/MikeChickenSmall.png");
@@ -69,11 +69,6 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
       setListErrorsNewInformation(body.error);
     }
   };
-
-  //affichage des erreurs liées aux nouvelles informations (ou informations à modifier) du user à stocker dans la BDD
-  const tabErrorsNewInformation = listErrorsNewInformation.map((error, i) => {
-    return <Text key={i}>{error}</Text>;
-  });
 
   if (!fontsLoaded) {
     //mécanique pour attendre que les polices soient chargées avant de générer le screen
@@ -128,13 +123,9 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
             mode="outlined"
           />
 
-          <Button
-            title={county}
-            onPress={toggleOverlay}
-            buttonStyle={styles.selectionbutton}
-          />
+          <Button title={county} onPress={toggleOverlay} buttonStyle={styles.selectionbutton} />
 
-          <Overlay isVisible={visible} overlayStyle={styles.overlay}>
+          <Overlay isVisible={overlayVisible} overlayStyle={styles.overlay}>
             <ScrollView>
               <View style={styles.regionview}>
                 <Text style={styles.regiontitle}>Sélectionnez votre région</Text>
@@ -296,37 +287,36 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
               </View>
             </ScrollView>
           </Overlay>
-          
-          <Button
-            title={icop}
-            onPress={toggleOverlayTwo}
-            buttonStyle={styles.selectionbutton}
-          />
 
-          <Overlay isVisible={visibleTwo} overlayStyle={styles.overlay}>
-          
+          <Button title={icop} onPress={toggleOverlayTwo} buttonStyle={styles.selectionbutton} />
+
+          <Overlay isVisible={overlayVisibleTwo} overlayStyle={styles.overlay}>
             <ScrollView contentContainerStyle={styles.contentContainer}>
-
               <Text style={styles.regiontitle}>Sélectionnez votre iCop</Text>
 
-              <TouchableOpacity style={styles.contentContainer} onPress={() => setIcop('MikeChicken')}>
-                <Image source={imageMikeChicken} style={icop === 'MikeChicken' ? styles.imageIcopSelected : styles.imageIcop} />
+              <TouchableOpacity style={styles.contentContainer} onPress={() => setIcop("MikeChicken")}>
+                <Image
+                  source={imageMikeChicken}
+                  style={icop === "MikeChicken" ? styles.imageIcopSelected : styles.imageIcop}
+                />
                 <Text style={styles.text2}>Nom: Mike Chicken</Text>
                 <Text style={styles.text2}>Difficulté : Moyenne</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.contentContainer}  onPress={() => setIcop('AgentTouf')}>
-                <Image source={imageAgentTouf} style={icop === 'AgentTouf' ? styles.imageIcopSelected : styles.imageIcop} />
-                <Text style={styles.text2} >Nom: Agent Touf</Text>
-                <Text style={styles.text2} >Difficulté : Élevée</Text>
+              <TouchableOpacity style={styles.contentContainer} onPress={() => setIcop("AgentTouf")}>
+                <Image
+                  source={imageAgentTouf}
+                  style={icop === "AgentTouf" ? styles.imageIcopSelected : styles.imageIcop}
+                />
+                <Text style={styles.text2}>Nom: Agent Touf</Text>
+                <Text style={styles.text2}>Difficulté : Élevée</Text>
               </TouchableOpacity>
 
               <Button buttonStyle={styles.button} onPress={toggleOverlayTwo} title="OK" />
-
             </ScrollView>
           </Overlay>
 
-          {tabErrorsNewInformation}
+          <Text style={styles.text2}>{listErrorsNewInformation}</Text>
 
           <Button
             icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFE" />}
@@ -399,7 +389,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   button: {
-    marginTop: 10,
+    marginTop: 20,
     backgroundColor: "#0773A3",
     borderRadius: 15,
     width: 60,
@@ -442,7 +432,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "Montserrat_500Medium",
     fontSize: 15,
-    color: "#FFFEFE",
+    color: "#FFFEFA",
     textAlign: "center",
     padding: 5,
   },
@@ -524,12 +514,12 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderWidth: 3,
-    borderColor:'yellow',
-    borderRadius: 100
+    borderColor: "yellow",
+    borderRadius: 100,
   },
   contentContainer: {
     alignItems: "center",
-    paddingTop: 10
+    paddingTop: 10,
   },
 });
 

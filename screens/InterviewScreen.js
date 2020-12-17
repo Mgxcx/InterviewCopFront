@@ -27,10 +27,9 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
   const [answerC, setAnswerC] = useState(false);
   const [answerD, setAnswerD] = useState(false);
 
-  //état et fonction gérant l'overlay pour choisir la region
-  const [visible, setVisible] = useState(false);
+  const [overlayVisible, setOverlayVisible] = useState(false);
   const toggleOverlay = () => {
-    setVisible(!visible);
+    setOverlayVisible(!overlayVisible);
   };
 
   const imageMikeChicken = require("../assets/MikeChickenSmall.png");
@@ -131,7 +130,7 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
     <View style={styles.container}>
       <Header
         barStyle="light-content"
-        leftComponent={<Text style={styles.title}>{questionNumber}</Text>}
+        leftComponent={<Text style={styles.title}>{questionNumber}/10</Text>}
         centerComponent={<Text style={styles.title}>Entretien</Text>}
         containerStyle={styles.topbar}
       />
@@ -167,9 +166,9 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
           buttonStyle={styles.nextButton}
         />
       </ScrollView>
-      <Overlay isVisible={visible} overlayStyle={styles.overlay}>
+      <Overlay isVisible={overlayVisible} overlayStyle={styles.overlay}>
         <ScrollView style={styles.overlay}>
-          <Image source={icop === 'MikeChicken' ? imageMikeChicken : imageAgentTouf} style={styles.image} />
+          <Image source={icop === "MikeChicken" ? imageMikeChicken : imageAgentTouf} style={styles.image} />
           <Text style={styles.advicetext}> {questionDisplay.advice} </Text>
           <Button
             buttonStyle={styles.adviceokbutton}
@@ -209,11 +208,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     alignItems: "center",
-    justifyContent: "center",
-  },
-  information: {
-    flex: 4.5,
-    alignItems: "center",
   },
   title: {
     color: "#FFFEFA",
@@ -224,7 +218,6 @@ const styles = StyleSheet.create({
     color: "#0773A3",
     fontFamily: "Montserrat_700Bold",
     fontSize: 22,
-    // marginTop: 30,
     textAlign: "center",
   },
   topbar: {
@@ -306,7 +299,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     backgroundColor: "#4FA2C7",
-    width: "100%",
+    width: "90%",
     height: "65%",
     borderRadius: 20,
     opacity: 0.95,

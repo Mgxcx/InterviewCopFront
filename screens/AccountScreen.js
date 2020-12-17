@@ -9,6 +9,7 @@ import {
   Montserrat_500Medium,
   Montserrat_400Regular_Italic,
   Montserrat_700Bold,
+  Montserrat_100Thin,
 } from "@expo-google-fonts/montserrat";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -130,16 +131,19 @@ function AccountScreen({ username, navigation }) {
             <View style={styles.icops}>
               <Text style={styles.title2}>Mes iCops</Text>
               {userIcops ? (
-                userIcops.map((icops, i) => {
-                  // vérification des nombres des trophées stockés précédemment dans l'état userTrophies pour pouvoir attribuer une image de trophée en fonction
-                  let icopimage;
-                  if (icops.number == 1) {
-                    icopimage = require("../assets/MikeChickenLeft.png");
-                  } else if (icops.number == 2) {
-                    icopimage = require("../assets/MikeChickenRight.png");
-                  }
-                  return <Image key={i} source={icopimage} style={styles.icop} />;
-                })
+                <>
+                  <View style={styles.icopsimage}>
+                    {userIcops.map((icops, i) => {
+                      let icopimage;
+                      if (icops.number == 1) {
+                        icopimage = require("../assets/MikeChickenSmall.png");
+                      } else if (icops.number == 2) {
+                        icopimage = require("../assets/AgentToufSmall.png");
+                      }
+                      return <Image key={i} source={icopimage} style={styles.icop} />;
+                    })}
+                  </View>
+                </>
               ) : (
                 <Text style={styles.text}>{listErrorsIcops}</Text>
               )}
@@ -195,6 +199,11 @@ const styles = StyleSheet.create({
     width: "50%",
     alignItems: "center",
   },
+  icopsimage: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
   topbar: {
     backgroundColor: "#0773A3",
     marginBottom: 10,
@@ -226,8 +235,8 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   icop: {
-    width: 40,
-    height: 70,
+    width: 50,
+    height: 50,
     margin: 5,
   },
   textbutton: {

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { Button, Header, CheckBox, Divider, Overlay } from "react-native-elements";
 import AppLoading from "expo-app-loading";
 import { TextInput } from "react-native-paper";
 import { connect } from "react-redux";
-import { Ionicons } from "@expo/vector-icons";
 
 import {
   useFonts,
@@ -298,6 +297,7 @@ function ShopScreen({ username, navigation }) {
               titleStyle={styles.textbutton2}
               buttonStyle={styles.button}
               onPress={() => {
+                navigation.navigate("Account");
                 toggleOverlay2();
               }}
             />

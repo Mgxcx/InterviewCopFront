@@ -25,7 +25,7 @@ function LoginScreen({ navigation, onSubmitUsername }) {
   //états liés au Sign-In
   const [signInUsername, setSignInUsername] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
-  const [listErrorsSignin, setListErrorsSignin] = useState([]); //les messages d'erreur sont transmis par le Back
+  const [listErrorsSignin, setListErrorsSignin] = useState(); //les messages d'erreur sont transmis par le Back
 
   const [userExists, setUserExists] = useState(false); //état lié à la vérification de l'existence du user dans la BDD
 
@@ -37,7 +37,7 @@ function LoginScreen({ navigation, onSubmitUsername }) {
     Montserrat_700Bold,
   });
 
-  const urlBack = "https://interviewcoptest.herokuapp.com"; //URL A METTRE A JOUR AVEC L'URL D'HEROKU
+  const urlBack = "https://interviewcoptest.herokuapp.com";
 
   //Process SignUp : se déclenche via le bouton connecter du "pas encore de compte?"
   //interroge la BDD via le Back, le Back vérifie que le user est bien créé dans la BDD et renvoie un message d'erreur le cas échéant
@@ -84,16 +84,6 @@ function LoginScreen({ navigation, onSubmitUsername }) {
     }
   }, [userExists]);
 
-  //affichage des erreurs liées au SignIn
-  const tabErrorsSignin = listErrorsSignin.map((error, i) => {
-    return <Text key={i}>{error}</Text>;
-  });
-
-  //affichage des erreurs liées au SignUp
-  const tabErrorsSignup = listErrorsSignup.map((error, i) => {
-    return <Text key={i}>{error}</Text>;
-  });
-
   if (!fontsLoaded) {
     //mécanique pour attendre que les polices soient chargées avant de générer le screen
     return <AppLoading />;
@@ -135,7 +125,7 @@ function LoginScreen({ navigation, onSubmitUsername }) {
             Mot de passe oublié ?
           </Text>
 
-          {tabErrorsSignin}
+          <Text style={styles.text2}>{listErrorsSignin}</Text>
 
           <Button
             title="Se connecter"
@@ -203,7 +193,7 @@ function LoginScreen({ navigation, onSubmitUsername }) {
             mode="outlined"
           />
 
-          {tabErrorsSignup}
+          <Text style={styles.text2}>{listErrorsSignup}</Text>
 
           <Button
             title="Se connecter"
@@ -262,6 +252,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#0773A3",
   },
+  text2: {
+    marginTop: 2,
+    fontFamily: "Montserrat_500Medium",
+    fontSize: 14,
+    color: "#0773A3",
+  },
   smalltext: {
     fontFamily: "Montserrat_400Regular_Italic",
     fontSize: 13,
@@ -275,7 +271,7 @@ const styles = StyleSheet.create({
     width: 140,
   },
   textbutton: {
-    color: "#FFFEFE",
+    color: "#FFFEFA",
     fontFamily: "Montserrat_500Medium",
     fontWeight: "600",
     fontSize: 16,
