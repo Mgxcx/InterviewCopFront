@@ -22,19 +22,21 @@ function ShopScreen({ username, navigation }) {
     Montserrat_400Regular_Italic,
     Montserrat_700Bold,
   });
-  const [userPackage, setUserPackage] = useState();
-  const [listErrors, setListErrors] = useState();
 
   const [overlayVisible, setOverlayVisible] = useState(false);
+  const [overlayVisible2, setOverlayVisible2] = useState(false);
+  const [userPackage, setUserPackage] = useState();
+  const [packageId, setPackageId] = useState();
   const [price, setPrice] = useState();
   const [usernameCard, setUsernameCard] = useState();
   const [creditCardNumbers, setCreditCardNumbers] = useState();
   const [expirationMonth, setExpirationMonth] = useState();
   const [expirationYear, setExpirationYear] = useState();
   const [CVC, setCVC] = useState();
-  const [informationPayment, setInformationPayment] = useState(false);
+  const [payment, setPayment] = useState(false);
   const [errorInformationPayment, setErrorInformationPayment] = useState();
-  const [packageId, setPackageId] = useState();
+  const [errorPayment, setErrorPayment] = useState();
+  const [listErrors, setListErrors] = useState();
 
   const urlBack = "https://interviewcoptest.herokuapp.com";
 
@@ -56,10 +58,18 @@ function ShopScreen({ username, navigation }) {
     setOverlayVisible(!overlayVisible);
   };
 
+  const toggleOverlay2 = () => {
+    setOverlayVisible2(!overlayVisible2);
+  };
+
   const handleSubmitPay = () => {
-    if (usernameCard && creditCardNumbers && expirationMonth && expirationMonth && CVC) {
-      toggleOverlay();
-      setInformationPayment(true);
+    const isCardValid = {
+      cardnumbers: "4242424242424242",
+      expMonth: 10,
+      expYear: 21,
+      cvc: "888",
+    };
+    if (usernameCard && creditCardNumbers && expirationMonth && expirationYear && CVC) {
       setUsernameCard("");
       setCreditCardNumbers("");
       setExpirationMonth("");
@@ -67,7 +77,21 @@ function ShopScreen({ username, navigation }) {
       setCVC("");
       setErrorInformationPayment("");
 
-      if (informationPayment == true) {
+      if (
+        isCardValid.cardnumbers == creditCardNumbers &&
+        isCardValid.expMonth == expirationMonth &&
+        isCardValid.expYear == expirationYear &&
+        isCardValid.cvc == CVC
+      ) {
+        toggleOverlay();
+        toggleOverlay2();
+        setPayment(true);
+        setErrorPayment("");
+      } else {
+        setErrorPayment("Le paiement a échoué");
+      }
+
+      if (payment == true) {
         const fetchData2 = async () => {
           const data = await fetch(
             `${urlBack}/shopupdate-package?usernameFromFront=${username}&packageIdFromFront=${packageId}`
@@ -257,6 +281,24 @@ function ShopScreen({ username, navigation }) {
               buttonStyle={styles.button2}
               onPress={() => {
                 handleSubmitPay();
+              }}
+            />
+            <Text style={styles.text}>{errorPayment}</Text>
+          </View>
+        </Overlay>
+
+        <Overlay isVisible={overlayVisible2} overlayStyle={styles.overlay}>
+          <View style={styles.overlay}>
+            <Text style={styles.title2}>
+              Bravo {username} !{"\n"} Ton paiement s'est bien passé, {"\n"}
+              et tu as désormais accès à plus de fonctionnalités !
+            </Text>
+            <Button
+              title="OK"
+              titleStyle={styles.textbutton2}
+              buttonStyle={styles.button}
+              onPress={() => {
+                toggleOverlay2();
               }}
             />
           </View>
