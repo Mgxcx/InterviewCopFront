@@ -13,18 +13,20 @@ import {
   Montserrat_400Regular_Italic,
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
+import { useIsFocused } from "@react-navigation/native";
 
 function InterviewScreenResult({ username, navigation, score, detailedscore, job, county }) {
   const image = require("../assets/MikeChickenLeft.png");
   const [rating, setRating] = useState(0);
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [overlayVisible2, setOverlayVisible2] = useState(false);
-  const [overlayVisible3, setOverlayVisible3] = useState(false);
-  const [overlayVisible4, setOverlayVisible4] = useState(false);
   const [listErrorsNewTrophy, setListErrorsNewTrophy] = useState([]);
   const [lastTrophy, setLastTrophy] = useState("");
   const [salary, setSalary] = useState("Aucune donnée disponible");
+  const [userPackage, setUserPackage] = useState();
   const [categoriesScores, setCategoriesScores] = useState();
+  const [listErrors, setListErrors] = useState();
+  const isFocused = useIsFocused();
   let trophy;
   //pour gérer les polices expo-google-fonts
   let [fontsLoaded] = useFonts({
@@ -70,15 +72,21 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
         sumScoreCategory = scoreCategory.reduce(reducer);
         numberPointsMax = indices.length * 10;
         numberPointsFalse = numberPointsMax - sumScoreCategory;
+        return {
+          category,
+          sumScoreCategory,
+          numberPointsMax,
+          numberPointsFalse,
+        };
       }
       return {
-        category,
-        sumScoreCategory,
-        numberPointsMax,
-        numberPointsFalse,
+        category: " ",
+        sumScoreCategory: " ",
+        numberPointsMax: " ",
+        numberPointsFalse: " ",
       };
     });
-    //déclenche le setCategoriesScores au chargement de la page pour récupérer les scores détaillées enregistrés dans Redux
+    //déclenche le setCategoriesScores au chargement de la page pour récupérer les scores détaillés enregistrés dans Redux
     // pour pouvoir l'afficher dans les statistiques détaillées
     setCategoriesScores(categoriesScores);
 
@@ -97,17 +105,24 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
       }
     };
     calculateSalary();
-  }, []);
+
+    //charge le package du user via le Back (via la BDD)
+    const fetchData = async () => {
+      const data = await fetch(`${urlBack}/shopfind-package?usernameFromFront=${username}`);
+      const body = await data.json();
+      if (body.result === true) {
+        setUserPackage(body.packageDataBase);
+      } else {
+        setListErrors(body.error);
+      }
+    };
+    fetchData();
+  }, [isFocused]);
 
   //Process NewTrophy : se déclenche via le bouton "suivant" après les conseils suite au dernier entretien
   //récupère le dernier trophée gagné dans la BDD via le Back pour pouvoir le montrer à l'utilisateur
   const handleSubmitNewTrophy = async () => {
-    const data = await fetch(`${urlBack}/interviewfind-lasttrophy`, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `usernameFromFront=${username}`,
-    });
-
+    const data = await fetch(`${urlBack}/interviewfind-lasttrophy?usernameFromFront=${username}`);
     const body = await data.json();
 
     if (body.result === true) {
@@ -135,16 +150,12 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
   const toggleOverlay = () => {
     setOverlayVisible(!overlayVisible);
   };
+
   const toggleOverlay2 = () => {
     setOverlayVisible2(!overlayVisible2);
   };
-  const toggleOverlay3 = () => {
-    setOverlayVisible3(!overlayVisible3);
-  };
 
-  const toggleOverlay4 = () => {
-    setOverlayVisible4(!overlayVisible4);
-  };
+  const TextNoStats = <Text style={styles.text}>Upgrade pour avoir cette fonctionnalité !</Text>;
 
   if (!fontsLoaded) {
     //mécanique pour attendre que les polices soient chargées avant de générer le screen
@@ -168,12 +179,22 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
           ratingColor="#E8C518"
           tintColor="#FFFEFA"
         />
-        <Button
-          title="Statistiques détaillées"
-          titleStyle={styles.textbutton}
-          buttonStyle={styles.button2}
-          onPress={toggleOverlay}
-        />
+        {userPackage ? (
+          <>
+            <Button
+              title="Statistiques détaillées"
+              titleStyle={styles.textbutton}
+              buttonStyle={styles.button2}
+              onPress={() => {
+                (userPackage.name == "+" || userPackage.name == "Pro") && toggleOverlay();
+              }}
+            />
+            {userPackage.name == "Free" && TextNoStats}
+          </>
+        ) : (
+          <Text style={styles.text}>{listErrors}</Text>
+        )}
+
         <Overlay isVisible={overlayVisible} overlayStyle={styles.overlay}>
           <View style={styles.overlay}>
             <Text style={styles.title}>Résultats par question</Text>
@@ -210,29 +231,21 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
                   y: categoriesScores[0].sumScoreCategory,
                 },
                 {
-                  x: " ",
-                  y: categoriesScores[0].numberPointsFalse,
-                },
-                {
                   x: `Storytelling \n ${categoriesScores[1].sumScoreCategory}/${categoriesScores[1].numberPointsMax}`,
                   y: categoriesScores[1].sumScoreCategory,
                 },
-                { x: " ", y: categoriesScores[1].numberPointsFalse },
                 {
                   x: `Préparatifs \n ${categoriesScores[2].sumScoreCategory}/${categoriesScores[2].numberPointsMax}`,
                   y: categoriesScores[2].sumScoreCategory,
                 },
-                { x: " ", y: categoriesScores[2].numberPointsFalse },
                 {
                   x: `Projection \n ${categoriesScores[3].sumScoreCategory}/${categoriesScores[3].numberPointsMax}`,
                   y: categoriesScores[3].sumScoreCategory,
                 },
-                { x: " ", y: categoriesScores[3].numberPointsFalse },
                 {
                   x: `Négociation \n ${categoriesScores[4].sumScoreCategory}/${categoriesScores[4].numberPointsMax}`,
                   y: categoriesScores[4].sumScoreCategory,
                 },
-                { x: " ", y: categoriesScores[4].numberPointsFalse },
               ]}
               height={200}
               padding={{ top: 50, bottom: 50, left: 40, right: 40 }}
@@ -255,45 +268,45 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
         </Overlay>
         <Text style={styles.text}>Votre salaire d'embauche : {salary} bruts annuel</Text>
         <View style={styles.icop}>
-          <Text style={styles.texticop}>
-            Bravo {username} ! C'était un entretien rondement mené !{"\n"}
-            Vous devriez vous perfectionner sur :
-          </Text>
+          <Text style={styles.texticop}>Bravo {username} ! C'était un entretien rondement mené !</Text>
+
           <Image source={image} style={styles.image} />
         </View>
+        {categoriesScores.map(
+          (categoriescore) =>
+            categoriescore.numberPointsFalse >= 6 && (
+              <Text style={styles.texticop}>
+                Vous devriez vous perfectionner sur : {"\n"} {"\n"}
+                {categoriescore.category}
+              </Text>
+            )
+        )}
         <Button
-          title="Conseil n°4: Comment parler de ses échecs ? "
+          title="Voir les conseils"
           titleStyle={styles.textbutton}
-          buttonStyle={styles.button3}
-          onPress={toggleOverlay2}
+          buttonStyle={styles.button2}
+          onPress={() => {
+            navigation.navigate("Advices");
+          }}
         />
-        <Overlay isVisible={overlayVisible2} overlayStyle={styles.overlay}>
-          <View style={styles.overlay}>
-            <Text style={styles.title}>Conseil n°4.....</Text>
-            <Button title="Ok" titleStyle={styles.textbutton2} buttonStyle={styles.button} onPress={toggleOverlay2} />
-          </View>
-        </Overlay>
+
         <Button
-          title="Conseil n°6: Quels sont les défauts inavouables ? "
+          title="Refaire un entretien !"
           titleStyle={styles.textbutton}
-          buttonStyle={styles.button3}
-          onPress={toggleOverlay3}
+          buttonStyle={styles.button2}
+          onPress={() => {
+            navigation.navigate("InterviewScreen");
+          }}
         />
-        <Overlay isVisible={overlayVisible3} overlayStyle={styles.overlay}>
-          <View style={styles.overlay}>
-            <Text style={styles.title}>Conseil n°6.....</Text>
-            <Button title="Ok" titleStyle={styles.textbutton2} buttonStyle={styles.button} onPress={toggleOverlay3} />
-          </View>
-        </Overlay>
         <Button
           icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFA" />}
           buttonStyle={styles.button}
           onPress={() => {
-            toggleOverlay4();
+            toggleOverlay2();
             handleSubmitNewTrophy();
           }}
         />
-        <Overlay isVisible={overlayVisible4} overlayStyle={styles.overlay}>
+        <Overlay isVisible={overlayVisible2} overlayStyle={styles.overlay}>
           <View style={styles.overlay}>
             <Text style={styles.title}>
               Vous avez gagné le trophée {"\n"} {lastTrophy.name}
@@ -306,7 +319,7 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
               buttonStyle={styles.button4}
               onPress={() => {
                 navigation.navigate("Account");
-                toggleOverlay4();
+                toggleOverlay2();
               }}
             />
           </View>
@@ -421,6 +434,7 @@ const styles = StyleSheet.create({
     color: "#0773A3",
     width: 260,
     textAlign: "center",
+    marginTop: 20,
   },
   overlay: {
     backgroundColor: "#4FA2C7",
