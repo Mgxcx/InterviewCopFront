@@ -10,6 +10,7 @@ import {
   Montserrat_400Regular_Italic,
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
+import { useIsFocused } from "@react-navigation/native";
 
 function AccountScreen({ username, navigation }) {
   //pour gérer les polices expo-google-fonts
@@ -29,6 +30,7 @@ function AccountScreen({ username, navigation }) {
   const [listErrorsTrophies, setListErrorsTrophies] = useState();
   const [listErrorsPackage, setListErrorsPackage] = useState();
   const [listErrorsIcops, setListErrorsIcops] = useState();
+  const isFocused = useIsFocused();
 
   const urlBack = "https://interviewcoptest.herokuapp.com";
 
@@ -51,7 +53,7 @@ function AccountScreen({ username, navigation }) {
       }
     };
     fetchData();
-  }, []);
+  }, [isFocused]);
 
   if (!fontsLoaded) {
     //mécanique pour attendre que les polices soient chargées avant de générer le screen
