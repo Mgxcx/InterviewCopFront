@@ -10,6 +10,7 @@ import {
   Montserrat_400Regular_Italic,
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
+import { useIsFocused } from "@react-navigation/native";
 
 function AccountScreen({ username, navigation }) {
   //pour gérer les polices expo-google-fonts
@@ -29,6 +30,7 @@ function AccountScreen({ username, navigation }) {
   const [listErrorsTrophies, setListErrorsTrophies] = useState();
   const [listErrorsPackage, setListErrorsPackage] = useState();
   const [listErrorsIcops, setListErrorsIcops] = useState();
+  const isFocused = useIsFocused();
 
   const urlBack = "https://interviewcoptest.herokuapp.com";
 
@@ -51,7 +53,7 @@ function AccountScreen({ username, navigation }) {
       }
     };
     fetchData();
-  }, []);
+  }, [isFocused]);
 
   if (!fontsLoaded) {
     //mécanique pour attendre que les polices soient chargées avant de générer le screen
@@ -63,102 +65,102 @@ function AccountScreen({ username, navigation }) {
           barStyle="light-content"
           centerComponent={<Text style={styles.title}>Mon compte</Text>}
           containerStyle={styles.topbar}
-            />
-          <ScrollView>
-            <Text style={styles.title2}>Mes scores aux derniers entretiens</Text>
-            {userScores && (
+        />
+        <ScrollView>
+          <Text style={styles.title2}>Mes scores aux derniers entretiens</Text>
+          {userScores && (
+            <>
+              {userScores.length > 0 ? (
+                <View style={styles.container3}>
+                  <Text style={styles.text}>{userScores[userScores.length - 3]} / 100</Text>
+                  <Text style={styles.text}>{userScores[userScores.length - 2]} / 100</Text>
+                  <Text style={styles.text}>{userScores[userScores.length - 1]} / 100</Text>
+                </View>
+              ) : (
+                <Text style={styles.text}>{listErrorsScores}</Text>
+              )}
+            </>
+          )}
+          <Text style={styles.title2}>Mes trophées</Text>
+          <View style={styles.container2}>
+            {userTrophies && (
               <>
-                {userScores.length > 0 ? (
-                  <View style={styles.container3}>
-                    <Text style={styles.text}>{userScores[userScores.length - 3]} / 100</Text>
-                    <Text style={styles.text}>{userScores[userScores.length - 2]} / 100</Text>
-                    <Text style={styles.text}>{userScores[userScores.length - 1]} / 100</Text>
-                  </View>
+                {userTrophies.length > 0 ? (
+                  userTrophies.map((trophies, i) => {
+                    // vérification des nombres des trophées stockés précédemment dans l'état userTrophies pour pouvoir attribuer une image de trophée en fonction
+                    let path;
+                    if (trophies.number == 1) {
+                      path = require("../assets/badgeparfait.png");
+                    } else if (trophies.number == 2) {
+                      path = require("../assets/badgepresqueparfait.png");
+                    } else if (trophies.number == 3) {
+                      path = require("../assets/badgeaparfaire.png");
+                    }
+                    return <Image key={i} source={path} style={styles.trophy} />;
+                  })
                 ) : (
-                  <Text style={styles.text}>{listErrorsScores}</Text>
+                  <Text style={styles.text}>{listErrorsTrophies}</Text>
                 )}
               </>
             )}
-            <Text style={styles.title2}>Mes trophées</Text>
-            <View style={styles.container2}>
-              {userTrophies && (
+          </View>
+          <View style={styles.container3}>
+            <View style={styles.formule}>
+              <Text style={styles.title2}>Ma formule</Text>
+              {userPackage ? (
                 <>
-                  {userTrophies.length > 0 ? (
-                    userTrophies.map((trophies, i) => {
-                      // vérification des nombres des trophées stockés précédemment dans l'état userTrophies pour pouvoir attribuer une image de trophée en fonction
-                      let path;
-                      if (trophies.number == 1) {
-                        path = require("../assets/badgeparfait.png");
-                      } else if (trophies.number == 2) {
-                        path = require("../assets/badgepresqueparfait.png");
-                      } else if (trophies.number == 3) {
-                        path = require("../assets/badgeaparfaire.png");
-                      }
-                      return <Image key={i} source={path} style={styles.trophy} />;
-                    })
-                  ) : (
-                    <Text style={styles.text}>{listErrorsTrophies}</Text>
+                  <Text style={styles.text}>
+                    Ma formule {userPackage.name} {"\n"} à {userPackage.price} €
+                  </Text>
+                  {(userPackage.name == "Free" || userPackage.name == "+") && (
+                    <Button
+                      title="Upgrade!"
+                      titleStyle={styles.textbutton}
+                      onPress={() => {
+                        navigation.navigate("Shop");
+                      }}
+                      buttonStyle={styles.button}
+                    />
                   )}
                 </>
+              ) : (
+                <Text style={styles.text}>{listErrorsPackage}</Text>
               )}
             </View>
-            <View style={styles.container3}>
-              <View style={styles.formule}>
-                <Text style={styles.title2}>Ma formule</Text>
-                {userPackage ? (
-                  <>
-                    <Text style={styles.text}>
-                      Ma formule {userPackage.name} {"\n"} à {userPackage.price} €
-                    </Text>
-                    {(userPackage.name == "Free" || userPackage.name == "+") && (
-                      <Button
-                        title="Upgrade!"
-                        titleStyle={styles.textbutton}
-                        onPress={() => {
-                          navigation.navigate("Shop");
-                        }}
-                        buttonStyle={styles.button}
-                      />
-                    )}
-                  </>
-                ) : (
-                  <Text style={styles.text}>{listErrorsPackage}</Text>
-                )}
-              </View>
-              <View style={styles.icops}>
-                <Text style={styles.title2}>Mes iCops</Text>
-                {userIcops ? (
-                  userIcops.map((icops, i) => {
-                    // vérification des nombres des trophées stockés précédemment dans l'état userTrophies pour pouvoir attribuer une image de trophée en fonction
-                    let icopimage;
-                    if (icops.number == 1) {
-                      icopimage = require("../assets/MikeChickenLeft.png");
-                    } else if (icops.number == 2) {
-                      icopimage = require("../assets/MikeChickenRight.png");
-                    }
-                    return <Image key={i} source={icopimage} style={styles.icop} />;
-                  })
-                ) : (
-                  <Text style={styles.text}>{listErrorsIcops}</Text>
-                )}
-              </View>
+            <View style={styles.icops}>
+              <Text style={styles.title2}>Mes iCops</Text>
+              {userIcops ? (
+                userIcops.map((icops, i) => {
+                  // vérification des nombres des trophées stockés précédemment dans l'état userTrophies pour pouvoir attribuer une image de trophée en fonction
+                  let icopimage;
+                  if (icops.number == 1) {
+                    icopimage = require("../assets/MikeChickenLeft.png");
+                  } else if (icops.number == 2) {
+                    icopimage = require("../assets/MikeChickenRight.png");
+                  }
+                  return <Image key={i} source={icopimage} style={styles.icop} />;
+                })
+              ) : (
+                <Text style={styles.text}>{listErrorsIcops}</Text>
+              )}
             </View>
-            {userPackage && (
-              <View style={styles.chatview}>
-                {userPackage.name == "Pro" && (
-                  <Button
-                    title="Chat"
-                    titleStyle={styles.textbutton}
-                    onPress={() => {
-                      navigation.navigate("ChatScreen");
-                    }}
-                    buttonStyle={styles.button}
-                  />
-                )}
-              </View>
-            )}
-            <Text style={styles.text}>{listErrors}</Text>
-          </ScrollView>
+          </View>
+          {userPackage && (
+            <View style={styles.chatview}>
+              {userPackage.name == "Pro" && (
+                <Button
+                  title="Chat"
+                  titleStyle={styles.textbutton}
+                  onPress={() => {
+                    navigation.navigate("ChatScreen");
+                  }}
+                  buttonStyle={styles.button}
+                />
+              )}
+            </View>
+          )}
+          <Text style={styles.text}>{listErrors}</Text>
+        </ScrollView>
       </View>
     );
   }
@@ -244,9 +246,9 @@ const styles = StyleSheet.create({
     width: 110,
   },
   chatview: {
-    justifyContent:'center',
-    alignItems:'center'
-  }
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 export default connect(mapStateToProps, null)(AccountScreen);

@@ -5,11 +5,7 @@ import AppLoading from "expo-app-loading";
 import InputOutline from "react-native-input-outline";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
-// import stripe from "react-native-stripe-payments";
-// stripe.setOptions({
-//   publishingKey:
-//     "pk_test_51HfMCbAziDTXToQ4p2JJ5UtiFFrU86bjTNIwfJpoSOirMHX7RP4Lu728u5ebhttceBOzvS7QIDqbmuLDIXo6uY3k00YATDSM5x",
-// });
+
 import {
   useFonts,
   Montserrat_400Regular,
@@ -64,30 +60,7 @@ function ShopScreen({ username, navigation }) {
     if (usernameCard && creditCardNumbers && expirationMonth && expirationMonth && CVC) {
       toggleOverlay();
       setInformationPayment(true);
-      // const isCardValid = stripe.isCardValid({
-      //   number: "4242424242424242",
-      //   expMonth: 10,
-      //   expYear: 21,
-      //   cvc: "888",
-      // });
-      // const cardDetails = {
-      //   number: creditCardNumbers,
-      //   expMonth: expirationMonth,
-      //   expYear: expirationYear,
-      //   cvc: CVC,
-      // };
-      // if (cardDetails === isCardValid) {
-      //   stripe
-      //     .confirmPayment("client_secret_from_backend", cardDetails)
-      //     .then(function (result) {
-      //       if (result.error) {
-      //         alert(result.error.message);
-      //       }
-      //     })
-      //     .catch(function (error) {
-      //       console.error("Error:", error);
-      //     });
-      // }
+
       if (informationPayment == true) {
         const fetchData2 = async () => {
           const data = await fetch(
@@ -107,38 +80,19 @@ function ShopScreen({ username, navigation }) {
     }
   };
 
-  const handleSubmitChangePackagetoFree = () => {
-    if (packageId == "5fd776ffe2b67bdc3438888b") {
-      const fetchData3 = async () => {
-        const data = await fetch(
-          `${urlBack}/shopupdate-package?usernameFromFront=${username}&packageIdFromFront=${packageId}`
-        );
-        const body = await data.json();
-        if (body.result === true) {
-          setUserPackage(body.packageDataBase);
-        } else {
-          setListErrors(body.error);
-        }
-      };
-      fetchData3();
-    }
-  };
-
-  const handleSubmitChangePackageto9 = () => {
-    if (packageId == "5fd777ddab2c4ddc51207488") {
-      const fetchData4 = async () => {
-        const data = await fetch(
-          `${urlBack}/shopupdate-package?usernameFromFront=${username}&packageIdFromFront=${packageId}`
-        );
-        const body = await data.json();
-        if (body.result === true) {
-          setUserPackage(body.packageDataBase);
-        } else {
-          setListErrors(body.error);
-        }
-      };
-      fetchData4();
-    }
+  const handleSubmitChangePackage = (idPackage) => {
+    const fetchData3 = async () => {
+      const data = await fetch(
+        `${urlBack}/shopupdate-package?usernameFromFront=${username}&packageIdFromFront=${idPackage}`
+      );
+      const body = await data.json();
+      if (body.result === true) {
+        setUserPackage(body.packageDataBase);
+      } else {
+        setListErrors(body.error);
+      }
+    };
+    fetchData3();
   };
 
   if (!fontsLoaded) {
@@ -155,300 +109,151 @@ function ShopScreen({ username, navigation }) {
 
         {userPackage ? (
           <>
-            {userPackage.name == "Free" && (
-              <>
-                <Text style={styles.title2}>
-                  La formule {userPackage.name} à {userPackage.price} € (actuelle)
-                </Text>
-                <CheckBox
-                  title="Parcours entretien illimité"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <Divider style={styles.divider} />
-                <Text style={styles.title2}>La formule + à 9 €</Text>
-                <CheckBox
-                  title="Parcours entretien illimité"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <CheckBox
-                  title="Rapports approfondis"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <Button
-                  title="Je la veux!"
-                  titleStyle={styles.textbutton}
-                  onPress={() => {
-                    setPrice("Payer 9,00 €");
-                    setPackageId("5fd777ddab2c4ddc51207488");
-                    toggleOverlay();
-                  }}
-                  buttonStyle={styles.button}
-                />
-                <Divider style={styles.divider} />
-                <Text style={styles.title2}>La formule Pro à 19 €</Text>
-                <CheckBox
-                  title="Parcours entretien illimité"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <CheckBox
-                  title="Rapports approfondis"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <CheckBox
-                  title="Suivi avec un coach"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <Button
-                  title="Je la veux!"
-                  titleStyle={styles.textbutton}
-                  onPress={() => {
-                    setPrice("Payer 19,00 €");
-                    setPackageId("5fd77864b6d0a5dc87b398db");
-                    toggleOverlay();
-                  }}
-                  buttonStyle={styles.button}
-                />
-              </>
+            <Text style={styles.title2}>La formule Free à 0 € {userPackage.name == "Free" && "(actuelle)"}</Text>
+            <CheckBox
+              title="Parcours entretien illimité"
+              checked={true}
+              containerStyle={styles.checkbox}
+              textStyle={styles.text}
+              checkedColor="#0773A3"
+              uncheckedColor="#4FA2C7"
+            />
+            {userPackage.name != "Free" && (
+              <Button
+                title="Je la veux!"
+                titleStyle={styles.textbutton}
+                onPress={() => handleSubmitChangePackage("5fd776ffe2b67bdc3438888b")}
+                buttonStyle={styles.button}
+              />
             )}
-
-            {userPackage.name == "+" && (
-              <>
-                <Text style={styles.title2}>La formule Free à 0 €</Text>
-                <CheckBox
-                  title="Parcours entretien illimité"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <Button
-                  title="Je la veux!"
-                  titleStyle={styles.textbutton}
-                  onPress={() => {
-                    setPackageId("5fd776ffe2b67bdc3438888b");
-                    handleSubmitChangePackagetoFree();
-                  }}
-                  buttonStyle={styles.button}
-                />
-                <Divider style={styles.divider} />
-                <Text style={styles.title2}>
-                  La formule {userPackage.name} à {userPackage.price} € (actuelle)
-                </Text>
-                <CheckBox
-                  title="Parcours entretien illimité"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <CheckBox
-                  title="Rapports approfondis"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <Divider style={styles.divider} />
-                <Text style={styles.title2}>La formule Pro à 19 €</Text>
-                <CheckBox
-                  title="Parcours entretien illimité"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <CheckBox
-                  title="Rapports approfondis"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <CheckBox
-                  title="Suivi avec un coach"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <Button
-                  title="Je la veux!"
-                  titleStyle={styles.textbutton}
-                  onPress={() => {
-                    setPrice("Payer 19,00 €");
-                    setPackageId("5fd77864b6d0a5dc87b398db");
-                    toggleOverlay();
-                  }}
-                  buttonStyle={styles.button}
-                />
-              </>
+            <Divider style={styles.divider} />
+            <Text style={styles.title2}>La formule + à 9 € {userPackage.name == "+" && "(actuelle)"}</Text>
+            <CheckBox
+              title="Parcours entretien illimité"
+              checked={true}
+              containerStyle={styles.checkbox}
+              textStyle={styles.text}
+              checkedColor="#0773A3"
+              uncheckedColor="#4FA2C7"
+            />
+            <CheckBox
+              title="Rapports approfondis"
+              checked={true}
+              containerStyle={styles.checkbox}
+              textStyle={styles.text}
+              checkedColor="#0773A3"
+              uncheckedColor="#4FA2C7"
+            />
+            {userPackage.name != "+" && (
+              <Button
+                title="Je la veux!"
+                titleStyle={styles.textbutton}
+                onPress={() => {
+                  setPrice("Payer 9,00 €");
+                  setPackageId("5fd777ddab2c4ddc51207488");
+                  userPackage.name == "Free" && toggleOverlay();
+                  userPackage.name == "Pro" && handleSubmitChangePackage("5fd777ddab2c4ddc51207488");
+                }}
+                buttonStyle={styles.button}
+              />
             )}
-
-            {userPackage.name == "Pro" && (
-              <>
-                <Text style={styles.title2}>La formule Free à 0 €</Text>
-                <CheckBox
-                  title="Parcours entretien illimité"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <Button
-                  title="Je la veux!"
-                  titleStyle={styles.textbutton}
-                  onPress={() => {
-                    setPackageId("5fd776ffe2b67bdc3438888b");
-                    handleSubmitChangePackagetoFree();
-                  }}
-                  buttonStyle={styles.button}
-                />
-                <Divider style={styles.divider} />
-                <Text style={styles.title2}>La formule + à 9 € </Text>
-                <CheckBox
-                  title="Parcours entretien illimité"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <CheckBox
-                  title="Rapports approfondis"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <Button
-                  title="Je la veux!"
-                  titleStyle={styles.textbutton}
-                  onPress={() => {
-                    setPackageId("5fd777ddab2c4ddc51207488");
-                    handleSubmitChangePackageto9();
-                  }}
-                  buttonStyle={styles.button}
-                />
-                <Divider style={styles.divider} />
-                <Text style={styles.title2}>
-                  La formule {userPackage.name} à {userPackage.price} € (actuelle)
-                </Text>
-                <CheckBox
-                  title="Parcours entretien illimité"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <CheckBox
-                  title="Rapports approfondis"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-                <CheckBox
-                  title="Suivi avec un coach"
-                  checked={true}
-                  containerStyle={styles.checkbox}
-                  textStyle={styles.text}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                />
-              </>
+            <Divider style={styles.divider} />
+            <Text style={styles.title2}>La formule Pro à 19 € {userPackage.name == "Pro" && "(actuelle)"}</Text>
+            <CheckBox
+              title="Parcours entretien illimité"
+              checked={true}
+              containerStyle={styles.checkbox}
+              textStyle={styles.text}
+              checkedColor="#0773A3"
+              uncheckedColor="#4FA2C7"
+            />
+            <CheckBox
+              title="Rapports approfondis"
+              checked={true}
+              containerStyle={styles.checkbox}
+              textStyle={styles.text}
+              checkedColor="#0773A3"
+              uncheckedColor="#4FA2C7"
+            />
+            <CheckBox
+              title="Suivi avec un coach"
+              checked={true}
+              containerStyle={styles.checkbox}
+              textStyle={styles.text}
+              checkedColor="#0773A3"
+              uncheckedColor="#4FA2C7"
+            />
+            {userPackage.name != "Pro" && (
+              <Button
+                title="Je la veux!"
+                titleStyle={styles.textbutton}
+                onPress={() => {
+                  setPrice("Payer 19,00 €");
+                  setPackageId("5fd77864b6d0a5dc87b398db");
+                  toggleOverlay();
+                }}
+                buttonStyle={styles.button}
+              />
             )}
-            <Overlay isVisible={overlayVisible} overlayStyle={styles.overlay}>
-              <View style={styles.overlay}>
-                <Text style={styles.title2}>Payer par carte</Text>
-                <InputOutline
-                  placeholder="Nom du titulaire de la carte"
-                  focusedColor="#0773A3"
-                  defaultColor="#4FA2C7"
-                  style={styles.input}
-                  onChangeText={(usernamecard) => setUsernameCard(usernamecard)}
-                  value={usernameCard}
-                />
-                <InputOutline
-                  placeholder="Numéros de la carte"
-                  focusedColor="#0773A3"
-                  defaultColor="#4FA2C7"
-                  style={styles.input}
-                  onChangeText={(creditcardnumbers) => setCreditCardNumbers(creditcardnumbers)}
-                  value={creditCardNumbers}
-                />
-                <InputOutline
-                  placeholder="Mois d'expiration"
-                  focusedColor="#0773A3"
-                  defaultColor="#4FA2C7"
-                  style={styles.input}
-                  onChangeText={(expirationmonth) => setExpirationMonth(expirationmonth)}
-                  value={expirationMonth}
-                />
-                <InputOutline
-                  placeholder="Année d'expiration"
-                  focusedColor="#0773A3"
-                  defaultColor="#4FA2C7"
-                  style={styles.input}
-                  onChangeText={(expirationyear) => setExpirationYear(expirationyear)}
-                  value={expirationYear}
-                />
-                <InputOutline
-                  placeholder="CVC"
-                  focusedColor="#0773A3"
-                  defaultColor="#4FA2C7"
-                  style={styles.input}
-                  onChangeText={(cvc) => setCVC(cvc)}
-                  value={CVC}
-                />
-                <Text style={styles.text}>{errorInformationPayment}</Text>
-                <Button
-                  title={price}
-                  titleStyle={styles.textbutton2}
-                  buttonStyle={styles.button2}
-                  onPress={() => {
-                    handleSubmitPay();
-                  }}
-                />
-              </View>
-            </Overlay>
           </>
         ) : (
           <Text style={styles.text}>{listErrors}</Text>
         )}
+
+        <Overlay isVisible={overlayVisible} overlayStyle={styles.overlay}>
+          <View style={styles.overlay}>
+            <Text style={styles.title2}>Payer par carte</Text>
+            <InputOutline
+              placeholder="Nom du titulaire de la carte"
+              focusedColor="#0773A3"
+              defaultColor="#4FA2C7"
+              style={styles.input}
+              onChangeText={(usernamecard) => setUsernameCard(usernamecard)}
+              value={usernameCard}
+            />
+            <InputOutline
+              placeholder="Numéros de la carte"
+              focusedColor="#0773A3"
+              defaultColor="#4FA2C7"
+              style={styles.input}
+              onChangeText={(creditcardnumbers) => setCreditCardNumbers(creditcardnumbers)}
+              value={creditCardNumbers}
+            />
+            <InputOutline
+              placeholder="Mois d'expiration"
+              focusedColor="#0773A3"
+              defaultColor="#4FA2C7"
+              style={styles.input}
+              onChangeText={(expirationmonth) => setExpirationMonth(expirationmonth)}
+              value={expirationMonth}
+            />
+            <InputOutline
+              placeholder="Année d'expiration"
+              focusedColor="#0773A3"
+              defaultColor="#4FA2C7"
+              style={styles.input}
+              onChangeText={(expirationyear) => setExpirationYear(expirationyear)}
+              value={expirationYear}
+            />
+            <InputOutline
+              placeholder="CVC"
+              focusedColor="#0773A3"
+              defaultColor="#4FA2C7"
+              style={styles.input}
+              onChangeText={(cvc) => setCVC(cvc)}
+              value={CVC}
+            />
+            <Text style={styles.text}>{errorInformationPayment}</Text>
+            <Button
+              title={price}
+              titleStyle={styles.textbutton2}
+              buttonStyle={styles.button2}
+              onPress={() => {
+                handleSubmitPay();
+              }}
+            />
+          </View>
+        </Overlay>
       </View>
     );
   }
