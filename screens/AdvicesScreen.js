@@ -66,6 +66,7 @@ function AdvicesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#FFFEFA",
   },
   contentContainer: {
     alignItems: "center",

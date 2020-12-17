@@ -95,7 +95,7 @@ const PagesTab = () => {
 
 const theme = {
   ...DefaultTheme,
-  roundness: 2,
+  roundness: 4,
   colors: {
     ...DefaultTheme.colors,
     disabled: "#4FA2C7",

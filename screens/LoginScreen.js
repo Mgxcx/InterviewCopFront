@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { Button, Header } from "react-native-elements";
-import InputOutline from "react-native-input-outline";
 import { TextInput } from "react-native-paper";
 import AppLoading from "expo-app-loading";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -118,13 +117,13 @@ function LoginScreen({ navigation, onSubmitUsername }) {
             mode="outlined"
           />
 
-          <InputOutline
+          <TextInput
             placeholder="Mot de passe"
-            focusedColor="#0773A3"
-            defaultColor="#4FA2C7"
-            style={styles.input}
+            label="Mot de passe"
             value={signInPassword}
             onChangeText={(password) => setSignInPassword(password)}
+            style={styles.input}
+            mode="outlined"
           />
 
           <Text
@@ -151,22 +150,25 @@ function LoginScreen({ navigation, onSubmitUsername }) {
 
         <View style={styles.signup}>
           <Text style={styles.text}>Pas encore de compte ?</Text>
-          <InputOutline
+
+          <TextInput
             placeholder="Username"
-            focusedColor="#0773A3"
-            defaultColor="#4FA2C7"
-            style={styles.input}
+            label="Username"
             onChangeText={(username) => setSignUpUsername(username)}
             value={signUpUsername}
-          />
-          <InputOutline
-            placeholder="Mot de passe"
-            focusedColor="#0773A3"
-            defaultColor="#4FA2C7"
             style={styles.input}
+            mode="outlined"
+          />
+
+          <TextInput
+            placeholder="Mot de passe"
+            label="Mot de passe"
             onChangeText={(password) => setSignUpPassword(password)}
             value={signUpPassword}
+            style={styles.input}
+            mode="outlined"
           />
+
           <DropDownPicker
             items={[
               {
@@ -192,13 +194,13 @@ function LoginScreen({ navigation, onSubmitUsername }) {
             value={secretQuestion}
           />
 
-          <InputOutline
+          <TextInput
             placeholder="Réponse"
-            focusedColor="#0773A3"
-            defaultColor="#4FA2C7"
-            style={styles.input}
+            label="Réponse"
             onChangeText={(answer) => setAnswer(answer)}
             value={answer}
+            style={styles.input}
+            mode="outlined"
           />
 
           {tabErrorsSignup}

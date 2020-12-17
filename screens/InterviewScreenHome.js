@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View, Text, Image } from "react-native";
 import { Button, CheckBox, Header, Overlay } from "react-native-elements";
 import InputOutline from "react-native-input-outline";
+import { TextInput } from "react-native-paper";
 import AppLoading from "expo-app-loading";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -98,22 +99,24 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
         </View>
         <View style={styles.information}>
           <Text style={styles.title2}> Quelques infos sur vous avant de commencer ! </Text>
-          <InputOutline
-            placeholder="Métier Recherché"
-            focusedColor="#0773A3"
-            defaultColor="#4FA2C7"
-            style={styles.input}
+          <TextInput
+            placeholder="Métier recherché"
+            label="Métier recherché"
             onChangeText={(job) => setJob(job)}
             value={job}
-          />
-          <InputOutline
-            placeholder="Salaire souhaité"
-            focusedColor="#0773A3"
-            defaultColor="#4FA2C7"
             style={styles.input}
+            mode="outlined"
+          />
+
+          <TextInput
+            placeholder="Salaire souhaité"
+            label="Salaire souhaité"
             onChangeText={(salary) => setSalary(salary)}
             value={salary}
+            style={styles.input}
+            mode="outlined"
           />
+
           <Button
             // onChangeText={(county) => setCounty(county)}
             title={county}
@@ -317,6 +320,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
+    backgroundColor: "#FFFEFA",
   },
   icoppresentation: {
     flexDirection: "row",
@@ -406,7 +410,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   input: {
-    borderColor: "#0773A3",
+    marginTop: 10,
     fontFamily: "Montserrat_500Medium",
     fontSize: 20,
     backgroundColor: "#FFFEFA",
