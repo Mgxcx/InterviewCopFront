@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, ScrollView, KeyboardAvoidingView } from "react-native";
 import { Button, Header, CheckBox, Divider, Overlay } from "react-native-elements";
 import AppLoading from "expo-app-loading";
 import { TextInput } from "react-native-paper";
@@ -145,171 +145,177 @@ function ShopScreen({ username, navigation }) {
           containerStyle={styles.topbar}
         />
 
-        {userPackage ? (
-          <>
-            <Text style={styles.title2}>La formule Free à 0 € {userPackage.name == "Free" && "(actuelle)"}</Text>
-            <CheckBox
-              title="Parcours entretien illimité"
-              checked={true}
-              containerStyle={styles.checkbox}
-              textStyle={styles.text}
-              checkedColor="#0773A3"
-              uncheckedColor="#4FA2C7"
-            />
-            {userPackage.name != "Free" && (
-              <Button
-                title="Je la veux!"
-                titleStyle={styles.textbutton}
-                onPress={() => handleSubmitChangePackage("5fd776ffe2b67bdc3438888b")}
-                buttonStyle={styles.button}
-              />
+        <ScrollView>
+          <View style={styles.scrollview}>
+            {userPackage ? (
+              <>
+                <Text style={styles.title2}>La formule Free à 0 € {userPackage.name == "Free" && "(actuelle)"}</Text>
+                <CheckBox
+                  title="Parcours entretien illimité"
+                  checked={true}
+                  containerStyle={styles.checkbox}
+                  textStyle={styles.text}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
+                />
+                {userPackage.name != "Free" && (
+                  <Button
+                    title="Je la veux!"
+                    titleStyle={styles.textbutton}
+                    onPress={() => handleSubmitChangePackage("5fd776ffe2b67bdc3438888b")}
+                    buttonStyle={styles.button}
+                  />
+                )}
+                <Divider style={styles.divider} />
+                <Text style={styles.title2}>La formule + à 9 € {userPackage.name == "+" && "(actuelle)"}</Text>
+                <CheckBox
+                  title="Parcours entretien illimité"
+                  checked={true}
+                  containerStyle={styles.checkbox}
+                  textStyle={styles.text}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
+                />
+                <CheckBox
+                  title="Rapports approfondis"
+                  checked={true}
+                  containerStyle={styles.checkbox}
+                  textStyle={styles.text}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
+                />
+                {userPackage.name != "+" && (
+                  <Button
+                    title="Je la veux!"
+                    titleStyle={styles.textbutton}
+                    onPress={() => {
+                      userPackage.name == "Free" && setPrice("Payer 9,00 €");
+                      userPackage.name == "Free" && setPackageId("5fd777ddab2c4ddc51207488");
+                      userPackage.name == "Pro" && handleSubmitChangePackage("5fd777ddab2c4ddc51207488");
+                    }}
+                    buttonStyle={styles.button}
+                  />
+                )}
+                <Divider style={styles.divider} />
+                <Text style={styles.title2}>La formule Pro à 19 € {userPackage.name == "Pro" && "(actuelle)"}</Text>
+                <CheckBox
+                  title="Parcours entretien illimité"
+                  checked={true}
+                  containerStyle={styles.checkbox}
+                  textStyle={styles.text}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
+                />
+                <CheckBox
+                  title="Rapports approfondis"
+                  checked={true}
+                  containerStyle={styles.checkbox}
+                  textStyle={styles.text}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
+                />
+                <CheckBox
+                  title="Suivi avec un coach"
+                  checked={true}
+                  containerStyle={styles.checkbox}
+                  textStyle={styles.text}
+                  checkedColor="#0773A3"
+                  uncheckedColor="#4FA2C7"
+                />
+                {userPackage.name != "Pro" && (
+                  <Button
+                    title="Je la veux!"
+                    titleStyle={styles.textbutton}
+                    onPress={() => {
+                      setPrice("Payer 19,00 €");
+                      setPackageId("5fd77864b6d0a5dc87b398db");
+                    }}
+                    buttonStyle={styles.button}
+                  />
+                )}
+              </>
+            ) : (
+              <Text style={styles.text}>{listErrors}</Text>
             )}
-            <Divider style={styles.divider} />
-            <Text style={styles.title2}>La formule + à 9 € {userPackage.name == "+" && "(actuelle)"}</Text>
-            <CheckBox
-              title="Parcours entretien illimité"
-              checked={true}
-              containerStyle={styles.checkbox}
-              textStyle={styles.text}
-              checkedColor="#0773A3"
-              uncheckedColor="#4FA2C7"
-            />
-            <CheckBox
-              title="Rapports approfondis"
-              checked={true}
-              containerStyle={styles.checkbox}
-              textStyle={styles.text}
-              checkedColor="#0773A3"
-              uncheckedColor="#4FA2C7"
-            />
-            {userPackage.name != "+" && (
-              <Button
-                title="Je la veux!"
-                titleStyle={styles.textbutton}
-                onPress={() => {
-                  userPackage.name == "Free" && setPrice("Payer 9,00 €");
-                  userPackage.name == "Free" && setPackageId("5fd777ddab2c4ddc51207488");
-                  userPackage.name == "Pro" && handleSubmitChangePackage("5fd777ddab2c4ddc51207488");
-                }}
-                buttonStyle={styles.button}
-              />
-            )}
-            <Divider style={styles.divider} />
-            <Text style={styles.title2}>La formule Pro à 19 € {userPackage.name == "Pro" && "(actuelle)"}</Text>
-            <CheckBox
-              title="Parcours entretien illimité"
-              checked={true}
-              containerStyle={styles.checkbox}
-              textStyle={styles.text}
-              checkedColor="#0773A3"
-              uncheckedColor="#4FA2C7"
-            />
-            <CheckBox
-              title="Rapports approfondis"
-              checked={true}
-              containerStyle={styles.checkbox}
-              textStyle={styles.text}
-              checkedColor="#0773A3"
-              uncheckedColor="#4FA2C7"
-            />
-            <CheckBox
-              title="Suivi avec un coach"
-              checked={true}
-              containerStyle={styles.checkbox}
-              textStyle={styles.text}
-              checkedColor="#0773A3"
-              uncheckedColor="#4FA2C7"
-            />
-            {userPackage.name != "Pro" && (
-              <Button
-                title="Je la veux!"
-                titleStyle={styles.textbutton}
-                onPress={() => {
-                  setPrice("Payer 19,00 €");
-                  setPackageId("5fd77864b6d0a5dc87b398db");
-                }}
-                buttonStyle={styles.button}
-              />
-            )}
-          </>
-        ) : (
-          <Text style={styles.text}>{listErrors}</Text>
-        )}
 
-        <Overlay isVisible={overlayVisible} overlayStyle={styles.overlay}>
-          <View style={styles.overlay}>
-            <Text style={styles.title2}>Payer par carte</Text>
-            <TextInput
-              placeholder="Nom du titulaire de la carte"
-              label="Nom du titulaire de la carte"
-              onChangeText={(usernamecard) => setUsernameCard(usernamecard)}
-              value={usernameCard}
-              style={styles.input}
-              mode="outlined"
-            />
-            <TextInput
-              placeholder="Numéros de la carte"
-              label="Numéros de la carte"
-              onChangeText={(creditcardnumbers) => setCreditCardNumbers(creditcardnumbers)}
-              value={creditCardNumbers}
-              style={styles.input}
-              mode="outlined"
-            />
-            <TextInput
-              placeholder="Mois d'expiration"
-              label="Mois d'expiration"
-              onChangeText={(expirationmonth) => setExpirationMonth(expirationmonth)}
-              value={expirationMonth}
-              style={styles.input}
-              mode="outlined"
-            />
-            <TextInput
-              placeholder="Année d'expiration"
-              label="Année d'expiration"
-              onChangeText={(expirationyear) => setExpirationYear(expirationyear)}
-              value={expirationYear}
-              style={styles.input}
-              mode="outlined"
-            />
-            <TextInput
-              placeholder="CVC"
-              label="CVC"
-              onChangeText={(cvc) => setCVC(cvc)}
-              value={CVC}
-              style={styles.input}
-              mode="outlined"
-            />
+            <Overlay isVisible={overlayVisible} overlayStyle={styles.overlay}>
+              <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
+                <ScrollView style={styles.overlay}>
+                  <Text style={styles.title2}>Payer par carte</Text>
+                  <TextInput
+                    placeholder="Nom du titulaire de la carte"
+                    label="Nom du titulaire de la carte"
+                    onChangeText={(usernamecard) => setUsernameCard(usernamecard)}
+                    value={usernameCard}
+                    style={styles.input}
+                    mode="outlined"
+                  />
+                  <TextInput
+                    placeholder="Numéros de la carte"
+                    label="Numéros de la carte"
+                    onChangeText={(creditcardnumbers) => setCreditCardNumbers(creditcardnumbers)}
+                    value={creditCardNumbers}
+                    style={styles.input}
+                    mode="outlined"
+                  />
+                  <TextInput
+                    placeholder="Mois d'expiration"
+                    label="Mois d'expiration"
+                    onChangeText={(expirationmonth) => setExpirationMonth(expirationmonth)}
+                    value={expirationMonth}
+                    style={styles.input}
+                    mode="outlined"
+                  />
+                  <TextInput
+                    placeholder="Année d'expiration"
+                    label="Année d'expiration"
+                    onChangeText={(expirationyear) => setExpirationYear(expirationyear)}
+                    value={expirationYear}
+                    style={styles.input}
+                    mode="outlined"
+                  />
+                  <TextInput
+                    placeholder="CVC"
+                    label="CVC"
+                    onChangeText={(cvc) => setCVC(cvc)}
+                    value={CVC}
+                    style={styles.input}
+                    mode="outlined"
+                  />
 
-            <Text style={styles.text}>{errorInformationPayment}</Text>
-            <Button
-              title={price}
-              titleStyle={styles.textbutton2}
-              buttonStyle={styles.button2}
-              onPress={() => {
-                handleSubmitPay();
-              }}
-            />
-            <Text style={styles.text}>{errorPayment}</Text>
+                  <Text style={styles.text}>{errorInformationPayment}</Text>
+                  <Button
+                    title={price}
+                    titleStyle={styles.textbutton2}
+                    buttonStyle={styles.button2}
+                    onPress={() => {
+                      handleSubmitPay();
+                    }}
+                  />
+                  <Text style={styles.text}>{errorPayment}</Text>
+                </ScrollView>
+              </KeyboardAvoidingView>
+            </Overlay>
+
+            <Overlay isVisible={overlayVisible2} overlayStyle={styles.overlay}>
+              <View style={styles.overlay}>
+                <Text style={styles.title2}>
+                  Bravo {username} !{"\n"} Ton paiement s'est bien passé, {"\n"}
+                  et tu as désormais accès à plus de fonctionnalités !
+                </Text>
+                <Button
+                  title="OK"
+                  titleStyle={styles.textbutton2}
+                  buttonStyle={styles.button}
+                  onPress={() => {
+                    toggleOverlay2();
+                    navigation.navigate("Account");
+                  }}
+                />
+              </View>
+            </Overlay>
           </View>
-        </Overlay>
-
-        <Overlay isVisible={overlayVisible2} overlayStyle={styles.overlay}>
-          <View style={styles.overlay}>
-            <Text style={styles.title2}>
-              Bravo {username} !{"\n"} Ton paiement s'est bien passé, {"\n"}
-              et tu as désormais accès à plus de fonctionnalités !
-            </Text>
-            <Button
-              title="OK"
-              titleStyle={styles.textbutton2}
-              buttonStyle={styles.button}
-              onPress={() => {
-                toggleOverlay2();
-                navigation.navigate("Account");
-              }}
-            />
-          </View>
-        </Overlay>
+        </ScrollView>
       </View>
     );
   }
@@ -327,6 +333,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     backgroundColor: "#FFFEFA",
+  },
+  scrollview: {
+    alignItems: "center",
   },
   title: {
     color: "#FFFEFA",
@@ -378,6 +387,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#0773A3",
     borderRadius: 15,
     width: 110,
+    alignSelf: "center",
   },
   button2: {
     marginTop: 20,
@@ -385,6 +395,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#0773A3",
     borderRadius: 15,
     width: 180,
+    alignSelf: "center",
   },
   checkbox: {
     width: 250,
@@ -405,8 +416,6 @@ const styles = StyleSheet.create({
     opacity: 0.95,
     margin: 40,
     alignSelf: "center",
-    alignItems: "center",
-    justifyContent: "center",
   },
   input: {
     marginTop: 10,
