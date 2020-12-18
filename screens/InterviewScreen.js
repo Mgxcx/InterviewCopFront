@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useState } from "react";
-import { Animated, Image, ScrollView, StyleSheet, View, Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Image, ScrollView, StyleSheet, View, Text } from "react-native";
 import AppLoading from "expo-app-loading";
 import { Button, Header, Overlay } from "react-native-elements";
 import { connect } from "react-redux";

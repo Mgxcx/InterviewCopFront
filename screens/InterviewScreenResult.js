@@ -142,11 +142,6 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
     }
   }
 
-  //affichage des erreurs liées au nouveau trophée du user récupéré de la BDD
-  const tabErrorsNewTrophy = listErrorsNewTrophy.map((error, i) => {
-    return <Text key={i}>{error}</Text>;
-  });
-
   const toggleOverlay = () => {
     setOverlayVisible(!overlayVisible);
   };
@@ -155,7 +150,8 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
     setOverlayVisible2(!overlayVisible2);
   };
 
-  const TextNoStats = <Text style={styles.text}>Upgrade pour avoir cette fonctionnalité !</Text>;
+  //message en dessous du bouton Statistiques détaillées si le user a un compte "Free" car il ne peut pas y accéder
+  const TextNoStats = <Text style={styles.text}>Upgrade ton compte pour voir les statistiques !</Text>;
 
   if (!fontsLoaded) {
     //mécanique pour attendre que les polices soient chargées avant de générer le screen
@@ -338,7 +334,7 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
                   Vous avez gagné le trophée {"\n"} {lastTrophy.name}
                 </Text>
                 <Image source={trophy} style={styles.trophy} />
-                {tabErrorsNewTrophy}
+                <Text style={styles.text}>{listErrorsNewTrophy}</Text>
                 <Button
                   title="Mon compte"
                   titleStyle={styles.textbutton2}

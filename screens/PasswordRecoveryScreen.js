@@ -15,7 +15,6 @@ import {
 } from "@expo-google-fonts/montserrat";
 
 function PasswordRecoveryScreen({ navigation, onSubmitUsername }) {
-  //états liés à l'utilisateur
   const [username, setUsername] = useState("");
   const [secretQuestion, setSecretQuestion] = useState("");
   const [answer, setAnswer] = useState("");
@@ -98,16 +97,6 @@ function PasswordRecoveryScreen({ navigation, onSubmitUsername }) {
     }
   };
 
-  //affichage des erreurs liées au Password Recovery
-  const tabErrorsPasswordRecovery = listErrorsPasswordRecovery.map((error, i) => {
-    return <Text key={i}>{error}</Text>;
-  });
-
-  //affichage des erreurs liées au New Password
-  const tabErrorsNewPassword = listErrorsNewPassword.map((error, i) => {
-    return <Text key={i}>{error}</Text>;
-  });
-
   if (!fontsLoaded) {
     //mécanique pour attendre que les polices soient chargées avant de générer le screen
     return <AppLoading />;
@@ -167,7 +156,7 @@ function PasswordRecoveryScreen({ navigation, onSubmitUsername }) {
               mode="outlined"
             />
 
-            {tabErrorsPasswordRecovery}
+            <Text style={styles.text}>{listErrorsPasswordRecovery}</Text>
 
             <Button
               title="Valider"
@@ -180,7 +169,7 @@ function PasswordRecoveryScreen({ navigation, onSubmitUsername }) {
             />
           </View>
           {newPasswordView}
-          {tabErrorsNewPassword}
+          <Text style={styles.text}>{listErrorsNewPassword}</Text>
         </ScrollView>
       </KeyboardAvoidingView>
     );

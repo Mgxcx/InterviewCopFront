@@ -59,7 +59,7 @@ function ShopScreen({ username, navigation }) {
     setCVC("");
   }, [isFocused]);
 
-  //se déclenche quand le user veut changer de package
+  //se déclenche quand le user veut changer de package et doit payer
   useEffect(() => {
     packageId && toggleOverlay();
   }, [packageId]);
@@ -298,7 +298,7 @@ function ShopScreen({ username, navigation }) {
             </Overlay>
 
             <Overlay isVisible={overlayVisible2} overlayStyle={styles.overlay}>
-              <View style={styles.overlay}>
+              <View style={styles.overlay2}>
                 <Text style={styles.title2}>
                   Bravo {username} !{"\n"} Ton paiement s'est bien passé, {"\n"}
                   et tu as désormais accès à plus de fonctionnalités !
@@ -416,6 +416,16 @@ const styles = StyleSheet.create({
     opacity: 0.95,
     margin: 40,
     alignSelf: "center",
+  },
+  overlay2: {
+    backgroundColor: "#FFFEFA",
+    width: "90%",
+    height: "85%",
+    borderRadius: 20,
+    opacity: 0.95,
+    margin: 40,
+    alignSelf: "center",
+    justifyContent: "center",
   },
   input: {
     marginTop: 10,

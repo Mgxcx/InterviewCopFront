@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { ScrollView, StyleSheet, View, Text, Image, TouchableOpacity, KeyboardAvoidingView } from "react-native";
 import { Button, CheckBox, Header, Overlay } from "react-native-elements";
 import { TextInput } from "react-native-paper";
 import AppLoading from "expo-app-loading";
@@ -75,258 +75,259 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
     return <AppLoading />;
   } else {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.container}>
         <Header
           barStyle="light-content"
           centerComponent={<Text style={styles.title}>Entretien</Text>}
           containerStyle={styles.topbar}
         />
-        <View style={styles.icoppresentation}>
-          <View style={[styles.bubble, styles.bubbleOut]}>
-            <View style={[styles.balloon, { backgroundColor: "#0773A3" }]}>
-              <Text style={styles.text}>
-                Bonjour, {username} ! {"\n"} Ravi de vous voir !{"\n"}
-                Vous allez devoir répondre à une série de 10 questions !
-              </Text>
-              <View style={[styles.arrowContainer, styles.arrowRightContainer]}>
-                <Svg
-                  style={styles.arrowRight}
-                  width={moderateScale(15.5, 0.6)}
-                  height={moderateScale(17.5, 0.6)}
-                  viewBox="32.485 17.5 15.515 17.5"
-                  enable-background="new 32.485 17.5 15.515 17.5"
-                >
-                  <Path d="M48,35c-7-4-6-8.75-6-17.5C28,17.5,29,35,48,35z" fill="#0773A3" x="0" y="0" />
-                </Svg>
+
+        <ScrollView>
+          <View style={styles.icoppresentation}>
+            <View style={[styles.bubble, styles.bubbleOut]}>
+              <View style={[styles.balloon, { backgroundColor: "#0773A3" }]}>
+                <Text style={styles.text}>
+                  Bonjour, {username} ! {"\n"} Ravi de vous voir !{"\n"}
+                  Vous allez devoir répondre à une série de 10 questions !
+                </Text>
+                <View style={[styles.arrowContainer, styles.arrowRightContainer]}>
+                  <Svg
+                    style={styles.arrowRight}
+                    width={moderateScale(15.5, 0.6)}
+                    height={moderateScale(17.5, 0.6)}
+                    viewBox="32.485 17.5 15.515 17.5"
+                    enable-background="new 32.485 17.5 15.515 17.5"
+                  >
+                    <Path d="M48,35c-7-4-6-8.75-6-17.5C28,17.5,29,35,48,35z" fill="#0773A3" x="0" y="0" />
+                  </Svg>
+                </View>
               </View>
             </View>
+            <Image source={image} style={styles.image} />
           </View>
-          <Image source={image} style={styles.image} />
-        </View>
-        <View style={styles.information}>
-          <Text style={styles.title2}> Quelques infos sur vous avant de commencer ! </Text>
-          <TextInput
-            placeholder="Métier recherché"
-            label="Métier recherché"
-            onChangeText={(job) => setJob(job)}
-            value={job}
-            style={styles.input}
-            mode="outlined"
-          />
+          <View style={styles.information}>
+            <Text style={styles.title2}> Quelques infos sur vous avant de commencer ! </Text>
+            <TextInput
+              placeholder="Métier recherché"
+              label="Métier recherché"
+              onChangeText={(job) => setJob(job)}
+              value={job}
+              style={styles.input}
+              mode="outlined"
+            />
 
-          <TextInput
-            placeholder="Salaire souhaité"
-            label="Salaire souhaité"
-            onChangeText={(salary) => setSalary(salary)}
-            value={salary}
-            style={styles.input}
-            mode="outlined"
-          />
+            <TextInput
+              placeholder="Salaire souhaité"
+              label="Salaire souhaité"
+              onChangeText={(salary) => setSalary(salary)}
+              value={salary}
+              style={styles.input}
+              mode="outlined"
+            />
 
-          <Button title={county} onPress={toggleOverlay} buttonStyle={styles.selectionbutton} />
+            <Button title={county} onPress={toggleOverlay} buttonStyle={styles.selectionbutton} />
 
-          <Overlay isVisible={overlayVisible} overlayStyle={styles.overlay}>
-            <ScrollView>
-              <View style={styles.regionview}>
-                <Text style={styles.regiontitle}>Sélectionnez votre région</Text>
-                <CheckBox
-                  title="Auvergne-Rhone-Alpes"
-                  textStyle={styles.text2}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                  checkedIcon="dot-circle-o"
-                  uncheckedIcon="circle-o"
-                  checked={county === "Auvergne-Rhone-Alpes" ? true : false}
-                  onPress={() => setCounty("Auvergne-Rhone-Alpes")}
-                  containerStyle={styles.checkbox}
-                />
-                <CheckBox
-                  title="Bourgogne-Franche-Comte"
-                  textStyle={styles.text2}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                  checkedIcon="dot-circle-o"
-                  uncheckedIcon="circle-o"
-                  checked={county === "Bourgogne-Franche-Comte" ? true : false}
-                  onPress={() => setCounty("Bourgogne-Franche-Comte")}
-                  containerStyle={styles.checkbox}
-                />
-                <CheckBox
-                  title="Bretagne"
-                  textStyle={styles.text2}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                  checkedIcon="dot-circle-o"
-                  uncheckedIcon="circle-o"
-                  checked={county === "Bretagne" ? true : false}
-                  onPress={() => setCounty("Bretagne")}
-                  containerStyle={styles.checkbox}
-                />
-                <CheckBox
-                  title="Centre-Val de Loire"
-                  textStyle={styles.text2}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                  checkedIcon="dot-circle-o"
-                  uncheckedIcon="circle-o"
-                  checked={county === "Centre-Val de Loire" ? true : false}
-                  onPress={() => setCounty("Centre-Val de Loire")}
-                  containerStyle={styles.checkbox}
-                />
-                <CheckBox
-                  title="Corse"
-                  textStyle={styles.text2}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                  checkedIcon="dot-circle-o"
-                  uncheckedIcon="circle-o"
-                  checked={county === "Corse" ? true : false}
-                  onPress={() => setCounty("Corse")}
-                  containerStyle={styles.checkbox}
-                />
-                <CheckBox
-                  title="Grand Est"
-                  textStyle={styles.text2}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                  checkedIcon="dot-circle-o"
-                  uncheckedIcon="circle-o"
-                  checked={county === "Grand Est" ? true : false}
-                  onPress={() => setCounty("Grand Est")}
-                  containerStyle={styles.checkbox}
-                />
-                <CheckBox
-                  title="Hauts-de-France"
-                  textStyle={styles.text2}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                  checkedIcon="dot-circle-o"
-                  uncheckedIcon="circle-o"
-                  checked={county === "Hauts-de-France" ? true : false}
-                  onPress={() => setCounty("Hauts-de-France")}
-                  containerStyle={styles.checkbox}
-                />
-                <CheckBox
-                  title="Ile-de-France"
-                  textStyle={styles.text2}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                  checkedIcon="dot-circle-o"
-                  uncheckedIcon="circle-o"
-                  checked={county === "Ile-de-France" ? true : false}
-                  onPress={() => setCounty("Ile-de-France")}
-                  containerStyle={styles.checkbox}
-                />
-                <CheckBox
-                  title="Normandie"
-                  textStyle={styles.text2}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                  checkedIcon="dot-circle-o"
-                  uncheckedIcon="circle-o"
-                  checked={county === "Normandie" ? true : false}
-                  onPress={() => setCounty("Normandie")}
-                  containerStyle={styles.checkbox}
-                />
-                <CheckBox
-                  title="Nouvelle-Aquitaine"
-                  textStyle={styles.text2}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                  checkedIcon="dot-circle-o"
-                  uncheckedIcon="circle-o"
-                  checked={county === "Nouvelle-Aquitaine" ? true : false}
-                  onPress={() => setCounty("Nouvelle-Aquitaine")}
-                  containerStyle={styles.checkbox}
-                />
-                <CheckBox
-                  title="Occitanie"
-                  textStyle={styles.text2}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                  checkedIcon="dot-circle-o"
-                  uncheckedIcon="circle-o"
-                  checked={county === "Occitanie" ? true : false}
-                  onPress={() => setCounty("Occitanie")}
-                  containerStyle={styles.checkbox}
-                />
-                <CheckBox
-                  title="Pays de la Loire"
-                  textStyle={styles.text2}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                  checkedIcon="dot-circle-o"
-                  uncheckedIcon="circle-o"
-                  checked={county === "Pays de la Loire" ? true : false}
-                  onPress={() => setCounty("Pays de la Loire")}
-                  containerStyle={styles.checkbox}
-                />
-                <CheckBox
-                  title="Provence-Alpes-Cote d'Azur"
-                  textStyle={styles.text2}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                  checkedIcon="dot-circle-o"
-                  uncheckedIcon="circle-o"
-                  checked={county === "Provence-Alpes-Cote d'Azur" ? true : false}
-                  onPress={() => setCounty("Provence-Alpes-Cote d'Azur")}
-                  containerStyle={styles.checkbox}
-                />
-                <CheckBox
-                  title="DOM-TOM"
-                  textStyle={styles.text2}
-                  checkedColor="#0773A3"
-                  uncheckedColor="#4FA2C7"
-                  checkedIcon="dot-circle-o"
-                  uncheckedIcon="circle-o"
-                  checked={county === "DOM-TOM" ? true : false}
-                  onPress={() => setCounty("DOM-TOM")}
-                  containerStyle={styles.checkbox}
-                />
-                <Button buttonStyle={styles.button} onPress={toggleOverlay} title="OK" />
-              </View>
-            </ScrollView>
-          </Overlay>
+            <Overlay isVisible={overlayVisible} overlayStyle={styles.overlay}>
+              <ScrollView>
+                <View style={styles.regionview}>
+                  <Text style={styles.regiontitle}>Sélectionnez votre région</Text>
+                  <CheckBox
+                    title="Auvergne-Rhone-Alpes"
+                    textStyle={styles.text2}
+                    checkedColor="#0773A3"
+                    uncheckedColor="#4FA2C7"
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={county === "Auvergne-Rhone-Alpes" ? true : false}
+                    onPress={() => setCounty("Auvergne-Rhone-Alpes")}
+                    containerStyle={styles.checkbox}
+                  />
+                  <CheckBox
+                    title="Bourgogne-Franche-Comte"
+                    textStyle={styles.text2}
+                    checkedColor="#0773A3"
+                    uncheckedColor="#4FA2C7"
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={county === "Bourgogne-Franche-Comte" ? true : false}
+                    onPress={() => setCounty("Bourgogne-Franche-Comte")}
+                    containerStyle={styles.checkbox}
+                  />
+                  <CheckBox
+                    title="Bretagne"
+                    textStyle={styles.text2}
+                    checkedColor="#0773A3"
+                    uncheckedColor="#4FA2C7"
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={county === "Bretagne" ? true : false}
+                    onPress={() => setCounty("Bretagne")}
+                    containerStyle={styles.checkbox}
+                  />
+                  <CheckBox
+                    title="Centre-Val de Loire"
+                    textStyle={styles.text2}
+                    checkedColor="#0773A3"
+                    uncheckedColor="#4FA2C7"
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={county === "Centre-Val de Loire" ? true : false}
+                    onPress={() => setCounty("Centre-Val de Loire")}
+                    containerStyle={styles.checkbox}
+                  />
+                  <CheckBox
+                    title="Corse"
+                    textStyle={styles.text2}
+                    checkedColor="#0773A3"
+                    uncheckedColor="#4FA2C7"
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={county === "Corse" ? true : false}
+                    onPress={() => setCounty("Corse")}
+                    containerStyle={styles.checkbox}
+                  />
+                  <CheckBox
+                    title="Grand Est"
+                    textStyle={styles.text2}
+                    checkedColor="#0773A3"
+                    uncheckedColor="#4FA2C7"
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={county === "Grand Est" ? true : false}
+                    onPress={() => setCounty("Grand Est")}
+                    containerStyle={styles.checkbox}
+                  />
+                  <CheckBox
+                    title="Hauts-de-France"
+                    textStyle={styles.text2}
+                    checkedColor="#0773A3"
+                    uncheckedColor="#4FA2C7"
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={county === "Hauts-de-France" ? true : false}
+                    onPress={() => setCounty("Hauts-de-France")}
+                    containerStyle={styles.checkbox}
+                  />
+                  <CheckBox
+                    title="Ile-de-France"
+                    textStyle={styles.text2}
+                    checkedColor="#0773A3"
+                    uncheckedColor="#4FA2C7"
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={county === "Ile-de-France" ? true : false}
+                    onPress={() => setCounty("Ile-de-France")}
+                    containerStyle={styles.checkbox}
+                  />
+                  <CheckBox
+                    title="Normandie"
+                    textStyle={styles.text2}
+                    checkedColor="#0773A3"
+                    uncheckedColor="#4FA2C7"
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={county === "Normandie" ? true : false}
+                    onPress={() => setCounty("Normandie")}
+                    containerStyle={styles.checkbox}
+                  />
+                  <CheckBox
+                    title="Nouvelle-Aquitaine"
+                    textStyle={styles.text2}
+                    checkedColor="#0773A3"
+                    uncheckedColor="#4FA2C7"
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={county === "Nouvelle-Aquitaine" ? true : false}
+                    onPress={() => setCounty("Nouvelle-Aquitaine")}
+                    containerStyle={styles.checkbox}
+                  />
+                  <CheckBox
+                    title="Occitanie"
+                    textStyle={styles.text2}
+                    checkedColor="#0773A3"
+                    uncheckedColor="#4FA2C7"
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={county === "Occitanie" ? true : false}
+                    onPress={() => setCounty("Occitanie")}
+                    containerStyle={styles.checkbox}
+                  />
+                  <CheckBox
+                    title="Pays de la Loire"
+                    textStyle={styles.text2}
+                    checkedColor="#0773A3"
+                    uncheckedColor="#4FA2C7"
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={county === "Pays de la Loire" ? true : false}
+                    onPress={() => setCounty("Pays de la Loire")}
+                    containerStyle={styles.checkbox}
+                  />
+                  <CheckBox
+                    title="Provence-Alpes-Cote d'Azur"
+                    textStyle={styles.text2}
+                    checkedColor="#0773A3"
+                    uncheckedColor="#4FA2C7"
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={county === "Provence-Alpes-Cote d'Azur" ? true : false}
+                    onPress={() => setCounty("Provence-Alpes-Cote d'Azur")}
+                    containerStyle={styles.checkbox}
+                  />
+                  <CheckBox
+                    title="DOM-TOM"
+                    textStyle={styles.text2}
+                    checkedColor="#0773A3"
+                    uncheckedColor="#4FA2C7"
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={county === "DOM-TOM" ? true : false}
+                    onPress={() => setCounty("DOM-TOM")}
+                    containerStyle={styles.checkbox}
+                  />
+                  <Button buttonStyle={styles.button} onPress={toggleOverlay} title="OK" />
+                </View>
+              </ScrollView>
+            </Overlay>
 
-          <Button title={icop} onPress={toggleOverlayTwo} buttonStyle={styles.selectionbutton} />
+            <Button title={icop} onPress={toggleOverlayTwo} buttonStyle={styles.selectionbutton} />
 
-          <Overlay isVisible={overlayVisibleTwo} overlayStyle={styles.overlay}>
-            <ScrollView contentContainerStyle={styles.contentContainer}>
-              <Text style={styles.regiontitle}>Sélectionnez votre iCop</Text>
+            <Overlay isVisible={overlayVisibleTwo} overlayStyle={styles.overlay}>
+              <ScrollView contentContainerStyle={styles.contentContainer}>
+                <Text style={styles.regiontitle}>Sélectionnez votre iCop</Text>
 
-              <TouchableOpacity style={styles.contentContainer} onPress={() => setIcop("MikeChicken")}>
-                <Image
-                  source={imageMikeChicken}
-                  style={icop === "MikeChicken" ? styles.imageIcopSelected : styles.imageIcop}
-                />
-                <Text style={styles.text2}>Nom: Mike Chicken</Text>
-                <Text style={styles.text2}>Difficulté : Moyenne</Text>
-              </TouchableOpacity>
+                <TouchableOpacity style={styles.contentContainer} onPress={() => setIcop("MikeChicken")}>
+                  <Image
+                    source={imageMikeChicken}
+                    style={icop === "MikeChicken" ? styles.imageIcopSelected : styles.imageIcop}
+                  />
+                  <Text style={styles.text2}>Nom: Mike Chicken</Text>
+                  <Text style={styles.text2}>Difficulté : Moyenne</Text>
+                </TouchableOpacity>
 
-              <TouchableOpacity style={styles.contentContainer} onPress={() => setIcop("AgentTouf")}>
-                <Image
-                  source={imageAgentTouf}
-                  style={icop === "AgentTouf" ? styles.imageIcopSelected : styles.imageIcop}
-                />
-                <Text style={styles.text2}>Nom: Agent Touf</Text>
-                <Text style={styles.text2}>Difficulté : Élevée</Text>
-              </TouchableOpacity>
+                <TouchableOpacity style={styles.contentContainer} onPress={() => setIcop("AgentTouf")}>
+                  <Image
+                    source={imageAgentTouf}
+                    style={icop === "AgentTouf" ? styles.imageIcopSelected : styles.imageIcop}
+                  />
+                  <Text style={styles.text2}>Nom: Agent Touf</Text>
+                  <Text style={styles.text2}>Difficulté : Élevée</Text>
+                </TouchableOpacity>
 
-              <Button buttonStyle={styles.button} onPress={toggleOverlayTwo} title="OK" />
-            </ScrollView>
-          </Overlay>
-
-          <Text style={styles.text2}>{listErrorsNewInformation}</Text>
-
-          <Button
-            icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFE" />}
-            onPress={() => {
-              handleSubmitNewInformation();
-            }}
-            buttonStyle={styles.button}
-          />
-        </View>
-      </View>
+                <Button buttonStyle={styles.button} onPress={toggleOverlayTwo} title="OK" />
+              </ScrollView>
+            </Overlay>
+            <Text style={styles.text2}>{listErrorsNewInformation}</Text>
+            <Button
+              icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFE" />}
+              onPress={() => {
+                handleSubmitNewInformation();
+              }}
+              buttonStyle={styles.buttonnext}
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -374,7 +375,7 @@ const styles = StyleSheet.create({
     color: "#0773A3",
     fontFamily: "Montserrat_700Bold",
     fontSize: 22,
-    marginTop: 30,
+    marginTop: 10,
     textAlign: "center",
   },
   topbar: {
@@ -388,11 +389,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginRight: 20,
   },
-  button: {
-    marginTop: 20,
+  buttonnext: {
     backgroundColor: "#0773A3",
     borderRadius: 15,
     width: 60,
+  },
+  button: {
+    backgroundColor: "#0773A3",
+    borderRadius: 15,
+    width: 60,
+    marginTop: 10,
   },
   checkbox: {
     width: 250,

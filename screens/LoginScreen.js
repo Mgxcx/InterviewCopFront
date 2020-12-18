@@ -127,9 +127,7 @@ function LoginScreen({ navigation, onSubmitUsername }) {
             >
               Mot de passe oublié ?
             </Text>
-
             <Text style={styles.text2}>{listErrorsSignin}</Text>
-
             <Button
               title="Se connecter"
               titleStyle={styles.textbutton}
@@ -270,7 +268,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   button: {
-    marginTop: 10,
+    marginBottom: 10,
     backgroundColor: "#0773A3",
     borderRadius: 15,
     width: 140,
