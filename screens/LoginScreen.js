@@ -89,7 +89,7 @@ function LoginScreen({ navigation, onSubmitUsername }) {
     return <AppLoading />;
   } else {
     return (
-      <KeyboardAvoidingView behavior="padding" enabled style={styles.container}>
+      <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.container}>
         <Header
           barStyle="light-content"
           leftComponent={<Image source={logo} style={styles.logo} />}

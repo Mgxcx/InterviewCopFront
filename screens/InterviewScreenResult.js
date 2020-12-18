@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image, ScrollView } from "react-native";
 import { Button, Header, Overlay } from "react-native-elements";
 import { Rating } from "react-native-ratings";
 import AppLoading from "expo-app-loading";
@@ -168,181 +168,190 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
           centerComponent={<Text style={styles.title}>Résultat</Text>}
           containerStyle={styles.topbar}
         />
-        <Text style={styles.title2}>Mon score</Text>
-        <Rating
-          type="custom"
-          imageSize={38}
-          readonly
-          fractions={1}
-          startingValue={rating}
-          ratingBackgroundColor="#0773A3"
-          ratingColor="#E8C518"
-          tintColor="#FFFEFA"
-        />
-        {userPackage ? (
-          <>
-            <Button
-              title="Statistiques détaillées"
-              titleStyle={styles.textbutton}
-              buttonStyle={styles.button2}
-              onPress={() => {
-                (userPackage.name == "+" || userPackage.name == "Pro") && toggleOverlay();
-              }}
+        <ScrollView>
+          <View style={styles.scrollview}>
+            <Text style={styles.title2}>Mon score</Text>
+            <Rating
+              type="custom"
+              imageSize={38}
+              readonly
+              fractions={1}
+              startingValue={rating}
+              ratingBackgroundColor="#0773A3"
+              ratingColor="#E8C518"
+              tintColor="#FFFEFA"
             />
-            {userPackage.name == "Free" && TextNoStats}
-          </>
-        ) : (
-          <Text style={styles.text}>{listErrors}</Text>
-        )}
+            {userPackage ? (
+              <>
+                <Button
+                  title="Statistiques détaillées"
+                  titleStyle={styles.textbutton}
+                  buttonStyle={styles.button2}
+                  onPress={() => {
+                    (userPackage.name == "+" || userPackage.name == "Pro") && toggleOverlay();
+                  }}
+                />
+                {userPackage.name == "Free" && TextNoStats}
+              </>
+            ) : (
+              <Text style={styles.text}>{listErrors}</Text>
+            )}
 
-        <Overlay isVisible={overlayVisible} overlayStyle={styles.overlay}>
-          <View style={styles.overlay}>
-            <Text style={styles.title}>Résultats par question</Text>
-            <VictoryChart
-              padding={{ top: 5, bottom: 40, left: 50, right: 50 }}
-              domainPadding={20}
-              height={180}
-              width={340}
-            >
-              <VictoryBar
-                style={{
-                  data: { fill: "#E8C518", stroke: "#0773A3", strokeWidth: 1 },
+            <Overlay isVisible={overlayVisible} overlayStyle={styles.overlay}>
+              <View style={styles.overlay}>
+                <Text style={styles.title}>Résultats par question</Text>
+                <VictoryChart
+                  padding={{ top: 5, bottom: 40, left: 50, right: 50 }}
+                  domainPadding={20}
+                  height={180}
+                  width={340}
+                >
+                  <VictoryBar
+                    style={{
+                      data: { fill: "#E8C518", stroke: "#0773A3", strokeWidth: 1 },
+                    }}
+                    data={[
+                      { x: "q1", y: detailedscore.score[0] },
+                      { x: "q2", y: detailedscore.score[1] },
+                      { x: "q3", y: detailedscore.score[2] },
+                      { x: "q4", y: detailedscore.score[3] },
+                      { x: "q5", y: detailedscore.score[4] },
+                      { x: "q6", y: detailedscore.score[5] },
+                      { x: "q7", y: detailedscore.score[6] },
+                      { x: "q8", y: detailedscore.score[7] },
+                      { x: "q9", y: detailedscore.score[8] },
+                      { x: "q10", y: detailedscore.score[9] },
+                    ]}
+                    cornerRadius={5}
+                  />
+                </VictoryChart>
+                <Text style={styles.title}>Résultats par catégorie</Text>
+                <VictoryPie
+                  data={[
+                    {
+                      x: `Parler de soi \n ${categoriesScores[0].sumScoreCategory}/${categoriesScores[0].numberPointsMax}`,
+                      y: categoriesScores[0].sumScoreCategory,
+                    },
+                    {
+                      x: " ",
+                      y: categoriesScores[0].numberPointsFalse,
+                    },
+                    {
+                      x: `Storytelling \n ${categoriesScores[1].sumScoreCategory}/${categoriesScores[1].numberPointsMax}`,
+                      y: categoriesScores[1].sumScoreCategory,
+                    },
+                    {
+                      x: " ",
+                      y: categoriesScores[1].numberPointsFalse,
+                    },
+                    {
+                      x: `Préparatifs \n ${categoriesScores[2].sumScoreCategory}/${categoriesScores[2].numberPointsMax}`,
+                      y: categoriesScores[2].sumScoreCategory,
+                    },
+                    {
+                      x: " ",
+                      y: categoriesScores[2].numberPointsFalse,
+                    },
+                    {
+                      x: `Projection \n ${categoriesScores[3].sumScoreCategory}/${categoriesScores[3].numberPointsMax}`,
+                      y: categoriesScores[3].sumScoreCategory,
+                    },
+                    {
+                      x: " ",
+                      y: categoriesScores[3].numberPointsFalse,
+                    },
+                    {
+                      x: `Négociation \n ${categoriesScores[4].sumScoreCategory}/${categoriesScores[4].numberPointsMax}`,
+                      y: categoriesScores[4].sumScoreCategory,
+                    },
+                    {
+                      x: " ",
+                      y: categoriesScores[4].numberPointsFalse,
+                    },
+                  ]}
+                  height={210}
+                  padding={{ top: 50, bottom: 50, left: 40, right: 40 }}
+                  colorScale={[
+                    "#ED1C24",
+                    "#ED1C24B3",
+                    "#E8C518",
+                    "#E8C518B3",
+                    "#208C58",
+                    "#208C58B3",
+                    "#0773A3",
+                    "#0773A3B3",
+                    "#333333",
+                    "#333333B3",
+                  ]}
+                  cornerRadius={0}
+                />
+                <Button
+                  title="Ok"
+                  titleStyle={styles.textbutton2}
+                  buttonStyle={styles.button5}
+                  onPress={toggleOverlay}
+                />
+              </View>
+            </Overlay>
+            <Text style={styles.text}>Votre salaire d'embauche : {salary} bruts annuel</Text>
+            <View style={styles.icop}>
+              <Text style={styles.texticop}>Bravo {username} ! C'était un entretien rondement mené !</Text>
+
+              <Image source={image} style={styles.image} />
+            </View>
+
+            <Text style={styles.texticop}>Vous devriez vous perfectionner sur : </Text>
+            {categoriesScores.map(
+              (categoriescore) =>
+                categoriescore.numberPointsFalse >= 6 && <Text style={styles.texticop}>{categoriescore.category}</Text>
+            )}
+            <View style={styles.buttonsafterinterview}>
+              <Button
+                title="Voir les conseils"
+                titleStyle={styles.textbutton}
+                buttonStyle={styles.button2}
+                onPress={() => {
+                  navigation.navigate("Advices");
                 }}
-                data={[
-                  { x: "q1", y: detailedscore.score[0] },
-                  { x: "q2", y: detailedscore.score[1] },
-                  { x: "q3", y: detailedscore.score[2] },
-                  { x: "q4", y: detailedscore.score[3] },
-                  { x: "q5", y: detailedscore.score[4] },
-                  { x: "q6", y: detailedscore.score[5] },
-                  { x: "q7", y: detailedscore.score[6] },
-                  { x: "q8", y: detailedscore.score[7] },
-                  { x: "q9", y: detailedscore.score[8] },
-                  { x: "q10", y: detailedscore.score[9] },
-                ]}
-                cornerRadius={5}
               />
-            </VictoryChart>
-            <Text style={styles.title}>Résultats par catégorie</Text>
-            <VictoryPie
-              data={[
-                {
-                  x: `Parler de soi \n ${categoriesScores[0].sumScoreCategory}/${categoriesScores[0].numberPointsMax}`,
-                  y: categoriesScores[0].sumScoreCategory,
-                },
-                {
-                  x: " ",
-                  y: categoriesScores[0].numberPointsFalse,
-                },
-                {
-                  x: `Storytelling \n ${categoriesScores[1].sumScoreCategory}/${categoriesScores[1].numberPointsMax}`,
-                  y: categoriesScores[1].sumScoreCategory,
-                },
-                {
-                  x: " ",
-                  y: categoriesScores[1].numberPointsFalse,
-                },
-                {
-                  x: `Préparatifs \n ${categoriesScores[2].sumScoreCategory}/${categoriesScores[2].numberPointsMax}`,
-                  y: categoriesScores[2].sumScoreCategory,
-                },
-                {
-                  x: " ",
-                  y: categoriesScores[2].numberPointsFalse,
-                },
-                {
-                  x: `Projection \n ${categoriesScores[3].sumScoreCategory}/${categoriesScores[3].numberPointsMax}`,
-                  y: categoriesScores[3].sumScoreCategory,
-                },
-                {
-                  x: " ",
-                  y: categoriesScores[3].numberPointsFalse,
-                },
-                {
-                  x: `Négociation \n ${categoriesScores[4].sumScoreCategory}/${categoriesScores[4].numberPointsMax}`,
-                  y: categoriesScores[4].sumScoreCategory,
-                },
-                {
-                  x: " ",
-                  y: categoriesScores[4].numberPointsFalse,
-                },
-              ]}
-              height={210}
-              padding={{ top: 50, bottom: 50, left: 40, right: 40 }}
-              colorScale={[
-                "#ED1C24",
-                "#ED1C24B3",
-                "#E8C518",
-                "#E8C518B3",
-                "#208C58",
-                "#208C58B3",
-                "#0773A3",
-                "#0773A3B3",
-                "#333333",
-                "#333333B3",
-              ]}
-              cornerRadius={0}
-            />
-            <Button title="Ok" titleStyle={styles.textbutton2} buttonStyle={styles.button5} onPress={toggleOverlay} />
-          </View>
-        </Overlay>
-        <Text style={styles.text}>Votre salaire d'embauche : {salary} bruts annuel</Text>
-        <View style={styles.icop}>
-          <Text style={styles.texticop}>Bravo {username} ! C'était un entretien rondement mené !</Text>
 
-          <Image source={image} style={styles.image} />
-        </View>
-
-        <Text style={styles.texticop}>Vous devriez vous perfectionner sur : </Text>
-        {categoriesScores.map(
-          (categoriescore) =>
-            categoriescore.numberPointsFalse >= 6 && <Text style={styles.texticop}>{categoriescore.category}</Text>
-        )}
-        <View style={styles.buttonsafterinterview}>
-          <Button
-            title="Voir les conseils"
-            titleStyle={styles.textbutton}
-            buttonStyle={styles.button2}
-            onPress={() => {
-              navigation.navigate("Advices");
-            }}
-          />
-
-          <Button
-            title="Refaire un entretien !"
-            titleStyle={styles.textbutton}
-            buttonStyle={styles.button2}
-            onPress={() => {
-              navigation.navigate("InterviewScreen");
-            }}
-          />
-        </View>
-        <Button
-          icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFA" />}
-          buttonStyle={styles.button}
-          onPress={() => {
-            toggleOverlay2();
-            handleSubmitNewTrophy();
-          }}
-        />
-        <Overlay isVisible={overlayVisible2} overlayStyle={styles.overlay}>
-          <View style={styles.overlay}>
-            <Text style={styles.title}>
-              Vous avez gagné le trophée {"\n"} {lastTrophy.name}
-            </Text>
-            <Image source={trophy} style={styles.trophy} />
-            {tabErrorsNewTrophy}
+              <Button
+                title="Refaire un entretien !"
+                titleStyle={styles.textbutton}
+                buttonStyle={styles.button2}
+                onPress={() => {
+                  navigation.navigate("InterviewScreen");
+                }}
+              />
+            </View>
             <Button
-              title="Mon compte"
-              titleStyle={styles.textbutton2}
-              buttonStyle={styles.button4}
+              icon={<Ionicons name="ios-arrow-forward" size={24} color="#FFFEFA" />}
+              buttonStyle={styles.button}
               onPress={() => {
-                navigation.navigate("Account");
                 toggleOverlay2();
+                handleSubmitNewTrophy();
               }}
             />
+            <Overlay isVisible={overlayVisible2} overlayStyle={styles.overlay}>
+              <View style={styles.overlay}>
+                <Text style={styles.title}>
+                  Vous avez gagné le trophée {"\n"} {lastTrophy.name}
+                </Text>
+                <Image source={trophy} style={styles.trophy} />
+                {tabErrorsNewTrophy}
+                <Button
+                  title="Mon compte"
+                  titleStyle={styles.textbutton2}
+                  buttonStyle={styles.button4}
+                  onPress={() => {
+                    navigation.navigate("Account");
+                    toggleOverlay2();
+                  }}
+                />
+              </View>
+            </Overlay>
           </View>
-        </Overlay>
+        </ScrollView>
       </View>
     );
   }
@@ -368,10 +377,16 @@ const styles = StyleSheet.create({
   icop: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
   },
   buttonsafterinterview: {
     flexDirection: "row",
   },
+  scrollview: {
+    flex: 1,
+    alignItems: "center",
+  },
+
   title: {
     color: "#FFFEFA",
     fontFamily: "Montserrat_700Bold",

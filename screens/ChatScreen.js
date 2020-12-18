@@ -132,7 +132,7 @@ function ChatScreen({ username, navigation }) {
       />
       <ScrollView style={{ flex: 1 }}>{affichageMessages}</ScrollView>
 
-      <KeyboardAvoidingView behavior="padding" enabled>
+      <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
         <TextInput
           label="Tapez votre message ici"
           value={currentMessage}

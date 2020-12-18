@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, ScrollView, KeyboardAvoidingView } from "react-native";
 import { Button, Header } from "react-native-elements";
 import AppLoading from "expo-app-loading";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -85,7 +85,7 @@ function PasswordRecoveryScreen({ navigation, onSubmitUsername }) {
     const data = await fetch(`${urlBack}/new-password`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `usernameFromFront=${username}&newPasswordFromFront=${newPassword}`,
+      body: `usernameFromFront=${username}&newPasswordFromFront=${PasswordChange}`,
     });
 
     const body = await data.json();
@@ -113,74 +113,76 @@ function PasswordRecoveryScreen({ navigation, onSubmitUsername }) {
     return <AppLoading />;
   } else {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
         <Header
           barStyle="light-content"
           leftComponent={<Image source={logo} style={styles.logo} />}
           centerComponent={<Text style={styles.title}>InterviewCop</Text>}
           containerStyle={styles.topbar}
         />
-        <View style={styles.passwordrecovery}>
-          <Text style={styles.title2}>Récupération du mot de passe</Text>
+        <ScrollView>
+          <View style={styles.passwordrecovery}>
+            <Text style={styles.title2}>Récupération du mot de passe</Text>
 
-          <TextInput
-            placeholder="Username"
-            label="Username"
-            onChangeText={(username) => setUsername(username)}
-            value={username}
-            style={styles.input}
-            mode="outlined"
-          />
+            <TextInput
+              placeholder="Username"
+              label="Username"
+              onChangeText={(username) => setUsername(username)}
+              value={username}
+              style={styles.input}
+              mode="outlined"
+            />
 
-          <DropDownPicker
-            items={[
-              {
-                label: "Quel est le nom de votre premier animal de compagnie?",
-                value: "Quel est le nom de votre premier animal de compagnie?",
-              },
-              {
-                label: "Quelle est la date de naissance de votre mère?",
-                value: "Quelle est la date de naissance de votre mère?",
-              },
-              {
-                label: "Quel est votre plat favori?",
-                value: "Quel est votre plat favori?",
-              },
-            ]}
-            defaultIndex={0}
-            placeholder="Choisissez une question secrète"
-            style={styles.colordropdown}
-            dropDownStyle={styles.colordropdown}
-            containerStyle={styles.containerdropdown}
-            labelStyle={styles.labeldropdown}
-            onChangeItem={(item) => setSecretQuestion(item.value)}
-            value={secretQuestion}
-          />
+            <DropDownPicker
+              items={[
+                {
+                  label: "Quel est le nom de votre premier animal de compagnie?",
+                  value: "Quel est le nom de votre premier animal de compagnie?",
+                },
+                {
+                  label: "Quelle est la date de naissance de votre mère?",
+                  value: "Quelle est la date de naissance de votre mère?",
+                },
+                {
+                  label: "Quel est votre plat favori?",
+                  value: "Quel est votre plat favori?",
+                },
+              ]}
+              defaultIndex={0}
+              placeholder="Choisissez une question secrète"
+              style={styles.colordropdown}
+              dropDownStyle={styles.colordropdown}
+              containerStyle={styles.containerdropdown}
+              labelStyle={styles.labeldropdown}
+              onChangeItem={(item) => setSecretQuestion(item.value)}
+              value={secretQuestion}
+            />
 
-          <TextInput
-            placeholder="Réponse"
-            label="Réponse"
-            onChangeText={(answer) => setAnswer(answer)}
-            value={answer}
-            style={styles.input}
-            mode="outlined"
-          />
+            <TextInput
+              placeholder="Réponse"
+              label="Réponse"
+              onChangeText={(answer) => setAnswer(answer)}
+              value={answer}
+              style={styles.input}
+              mode="outlined"
+            />
 
-          {tabErrorsPasswordRecovery}
+            {tabErrorsPasswordRecovery}
 
-          <Button
-            title="Valider"
-            titleStyle={styles.textbutton}
-            type="solid"
-            buttonStyle={styles.button}
-            onPress={() => {
-              handleSubmitPasswordRecovery();
-            }}
-          />
-        </View>
-        {newPasswordView}
-        {tabErrorsNewPassword}
-      </View>
+            <Button
+              title="Valider"
+              titleStyle={styles.textbutton}
+              type="solid"
+              buttonStyle={styles.button}
+              onPress={() => {
+                handleSubmitPasswordRecovery();
+              }}
+            />
+          </View>
+          {newPasswordView}
+          {tabErrorsNewPassword}
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }
