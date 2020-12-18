@@ -37,7 +37,7 @@ function LoginScreen({ navigation, onSubmitUsername }) {
     Montserrat_700Bold,
   });
 
-  const urlBack = "https://interviewcoptest.herokuapp.com";
+  const urlBack = "https://interviewcopprod.herokuapp.com";
 
   //Process SignUp : se déclenche via le bouton connecter du "pas encore de compte?"
   //interroge la BDD via le Back, le Back vérifie que le user est bien créé dans la BDD et renvoie un message d'erreur le cas échéant

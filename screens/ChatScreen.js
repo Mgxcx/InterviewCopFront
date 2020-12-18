@@ -16,7 +16,7 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 
-const urlBack = "https://interviewcoptest.herokuapp.com";
+const urlBack = "https://interviewcopprod.herokuapp.com";
 
 const socket = socketIOClient(urlBack);
 

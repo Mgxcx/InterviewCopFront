@@ -23,7 +23,7 @@ function AdvicesScreen() {
     Montserrat_700Bold,
   });
 
-  const urlBack = "https://interviewcoptest.herokuapp.com";
+  const urlBack = "https://interviewcopprod.herokuapp.com";
 
   useEffect(() => {
     const getAdvices = async () => {

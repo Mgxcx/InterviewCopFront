@@ -35,7 +35,7 @@ function InterviewScreen({ navigation, username, onSubmitLastScore, onSubmitDeta
   const imageMikeChicken = require("../assets/MikeChickenSmall.png");
   const imageAgentTouf = require("../assets/AgentToufSmall.png");
 
-  const urlBack = "https://interviewcoptest.herokuapp.com";
+  const urlBack = "https://interviewcopprod.herokuapp.com";
 
   //pour gérer les polices expo-google-fonts
   let [fontsLoaded] = useFonts({

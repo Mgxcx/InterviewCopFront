@@ -38,7 +38,7 @@ function ShopScreen({ username, navigation }) {
   const [listErrors, setListErrors] = useState();
   const isFocused = useIsFocused();
 
-  const urlBack = "https://interviewcoptest.herokuapp.com";
+  const urlBack = "https://interviewcopprod.herokuapp.com";
 
   //charge le package du user via le Back (via la BDD)
   useEffect(() => {

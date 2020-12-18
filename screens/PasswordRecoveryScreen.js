@@ -33,7 +33,7 @@ function PasswordRecoveryScreen({ navigation, onSubmitUsername }) {
     Montserrat_700Bold,
   });
 
-  const urlBack = "https://interviewcoptest.herokuapp.com";
+  const urlBack = "https://interviewcopprod.herokuapp.com";
 
   //Process PasswordRecovery : se déclenche via le bouton valider de la récupération de mot de passe
   //interroge la BDD via le Back, le Back vérifie que la question secrète choisie et la réponse correspondent au User et renvoie un message d'erreur le cas échéant

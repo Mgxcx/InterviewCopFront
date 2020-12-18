@@ -36,7 +36,7 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
     Montserrat_700Bold,
   });
 
-  const urlBack = "https://interviewcoptest.herokuapp.com";
+  const urlBack = "https://interviewcopprod.herokuapp.com";
 
   useEffect(() => {
     //gestion des résultats par catégorie dans les statistiques détaillées
@@ -316,7 +316,7 @@ function InterviewScreenResult({ username, navigation, score, detailedscore, job
                 titleStyle={styles.textbutton}
                 buttonStyle={styles.button2}
                 onPress={() => {
-                  navigation.navigate("InterviewScreen");
+                  navigation.navigate("InterviewScreenHome");
                 }}
               />
             </View>

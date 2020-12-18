@@ -47,7 +47,7 @@ function InterviewScreenHome({ navigation, username, onSubmitJob, onSubmitCounty
     Montserrat_700Bold,
   });
 
-  const urlBack = "https://interviewcoptest.herokuapp.com";
+  const urlBack = "https://interviewcopprod.herokuapp.com";
 
   //Process NewInformation : se déclenche via le bouton "suivant" après les inputs des nouvelles informations
   //ajoute ou modifie les données du user relatives à son métier, son expérience, son salaire et son département dans la BDD via le Back

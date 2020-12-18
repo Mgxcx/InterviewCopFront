@@ -33,7 +33,7 @@ function AccountScreen({ username, navigation }) {
   const [listErrorsIcops, setListErrorsIcops] = useState();
   const isFocused = useIsFocused();
 
-  const urlBack = "https://interviewcoptest.herokuapp.com";
+  const urlBack = "https://interviewcopprod.herokuapp.com";
 
   //charge les scores, trophées, icops et package du user via le Back (via la BDD)
   useEffect(() => {
