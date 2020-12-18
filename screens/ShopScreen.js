@@ -4,6 +4,7 @@ import { Button, Header, CheckBox, Divider, Overlay } from "react-native-element
 import AppLoading from "expo-app-loading";
 import { TextInput } from "react-native-paper";
 import { connect } from "react-redux";
+import { useIsFocused } from "@react-navigation/native";
 
 import {
   useFonts,
@@ -32,10 +33,10 @@ function ShopScreen({ username, navigation }) {
   const [expirationMonth, setExpirationMonth] = useState();
   const [expirationYear, setExpirationYear] = useState();
   const [CVC, setCVC] = useState();
-  const [payment, setPayment] = useState(false);
   const [errorInformationPayment, setErrorInformationPayment] = useState();
   const [errorPayment, setErrorPayment] = useState();
   const [listErrors, setListErrors] = useState();
+  const isFocused = useIsFocused();
 
   const urlBack = "https://interviewcoptest.herokuapp.com";
 
@@ -51,7 +52,17 @@ function ShopScreen({ username, navigation }) {
       }
     };
     fetchData();
-  }, []);
+    setUsernameCard("");
+    setCreditCardNumbers("");
+    setExpirationMonth("");
+    setExpirationYear("");
+    setCVC("");
+  }, [isFocused]);
+
+  //se déclenche quand le user veut changer de package
+  useEffect(() => {
+    packageId && toggleOverlay();
+  }, [packageId]);
 
   const toggleOverlay = () => {
     setOverlayVisible(!overlayVisible);
@@ -62,6 +73,7 @@ function ShopScreen({ username, navigation }) {
   };
 
   const handleSubmitPay = () => {
+    let payment = false;
     const isCardValid = {
       cardnumbers: "4242424242424242",
       expMonth: 10,
@@ -69,11 +81,6 @@ function ShopScreen({ username, navigation }) {
       cvc: "888",
     };
     if (usernameCard && creditCardNumbers && expirationMonth && expirationYear && CVC) {
-      setUsernameCard("");
-      setCreditCardNumbers("");
-      setExpirationMonth("");
-      setExpirationYear("");
-      setCVC("");
       setErrorInformationPayment("");
 
       if (
@@ -84,13 +91,15 @@ function ShopScreen({ username, navigation }) {
       ) {
         toggleOverlay();
         toggleOverlay2();
-        setPayment(true);
+        payment = true;
         setErrorPayment("");
       } else {
         setErrorPayment("Le paiement a échoué");
       }
 
+      console.log("paiement true ou false", payment);
       if (payment == true) {
+        console.log("Paiement", username, packageId);
         const fetchData2 = async () => {
           const data = await fetch(
             `${urlBack}/shopupdate-package?usernameFromFront=${username}&packageIdFromFront=${packageId}`
@@ -178,9 +187,8 @@ function ShopScreen({ username, navigation }) {
                 title="Je la veux!"
                 titleStyle={styles.textbutton}
                 onPress={() => {
-                  setPrice("Payer 9,00 €");
-                  setPackageId("5fd777ddab2c4ddc51207488");
-                  userPackage.name == "Free" && toggleOverlay();
+                  userPackage.name == "Free" && setPrice("Payer 9,00 €");
+                  userPackage.name == "Free" && setPackageId("5fd777ddab2c4ddc51207488");
                   userPackage.name == "Pro" && handleSubmitChangePackage("5fd777ddab2c4ddc51207488");
                 }}
                 buttonStyle={styles.button}
@@ -219,7 +227,6 @@ function ShopScreen({ username, navigation }) {
                 onPress={() => {
                   setPrice("Payer 19,00 €");
                   setPackageId("5fd77864b6d0a5dc87b398db");
-                  toggleOverlay();
                 }}
                 buttonStyle={styles.button}
               />
@@ -297,8 +304,8 @@ function ShopScreen({ username, navigation }) {
               titleStyle={styles.textbutton2}
               buttonStyle={styles.button}
               onPress={() => {
-                navigation.navigate("Account");
                 toggleOverlay2();
+                navigation.navigate("Account");
               }}
             />
           </View>

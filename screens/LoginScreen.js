@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Image, KeyboardAvoidingView } from "react-native";
 import { Button, Header } from "react-native-elements";
 import { TextInput } from "react-native-paper";
 import AppLoading from "expo-app-loading";
@@ -89,123 +89,128 @@ function LoginScreen({ navigation, onSubmitUsername }) {
     return <AppLoading />;
   } else {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView behavior="padding" enabled style={styles.container}>
         <Header
           barStyle="light-content"
           leftComponent={<Image source={logo} style={styles.logo} />}
           centerComponent={<Text style={styles.title}>InterviewCop</Text>}
           containerStyle={styles.topbar}
         />
-        <View style={styles.signin}>
-          <Text style={styles.text}>Déjà un compte ?</Text>
-          <TextInput
-            placeholder="Username"
-            label="Username"
-            onChangeText={(username) => setSignInUsername(username)}
-            value={signInUsername}
-            style={styles.input}
-            mode="outlined"
-          />
+        <ScrollView>
+          <View style={styles.signin}>
+            <Text style={styles.text}>Déjà un compte ?</Text>
 
-          <TextInput
-            placeholder="Mot de passe"
-            label="Mot de passe"
-            value={signInPassword}
-            onChangeText={(password) => setSignInPassword(password)}
-            style={styles.input}
-            mode="outlined"
-          />
+            <TextInput
+              placeholder="Username"
+              label="Username"
+              onChangeText={(username) => setSignInUsername(username)}
+              value={signInUsername}
+              style={styles.input}
+              mode="outlined"
+            />
 
-          <Text
-            style={styles.smalltext}
-            onPress={() => {
-              navigation.navigate("PasswordRecovery");
-            }}
-          >
-            Mot de passe oublié ?
-          </Text>
+            <TextInput
+              placeholder="Mot de passe"
+              label="Mot de passe"
+              value={signInPassword}
+              onChangeText={(password) => setSignInPassword(password)}
+              style={styles.input}
+              mode="outlined"
+              secureTextEntry={true}
+            />
 
-          <Text style={styles.text2}>{listErrorsSignin}</Text>
+            <Text
+              style={styles.smalltext}
+              onPress={() => {
+                navigation.navigate("PasswordRecovery");
+              }}
+            >
+              Mot de passe oublié ?
+            </Text>
 
-          <Button
-            title="Se connecter"
-            titleStyle={styles.textbutton}
-            type="solid"
-            buttonStyle={styles.button}
-            onPress={() => {
-              handleSubmitSignin();
-            }}
-          />
-        </View>
+            <Text style={styles.text2}>{listErrorsSignin}</Text>
 
-        <View style={styles.signup}>
-          <Text style={styles.text}>Pas encore de compte ?</Text>
+            <Button
+              title="Se connecter"
+              titleStyle={styles.textbutton}
+              type="solid"
+              buttonStyle={styles.button}
+              onPress={() => {
+                handleSubmitSignin();
+              }}
+            />
+          </View>
 
-          <TextInput
-            placeholder="Username"
-            label="Username"
-            onChangeText={(username) => setSignUpUsername(username)}
-            value={signUpUsername}
-            style={styles.input}
-            mode="outlined"
-          />
+          <View style={styles.signup}>
+            <Text style={styles.text}>Pas encore de compte ?</Text>
 
-          <TextInput
-            placeholder="Mot de passe"
-            label="Mot de passe"
-            onChangeText={(password) => setSignUpPassword(password)}
-            value={signUpPassword}
-            style={styles.input}
-            mode="outlined"
-          />
+            <TextInput
+              placeholder="Username"
+              label="Username"
+              onChangeText={(username) => setSignUpUsername(username)}
+              value={signUpUsername}
+              style={styles.input}
+              mode="outlined"
+            />
 
-          <DropDownPicker
-            items={[
-              {
-                label: "Quel est le nom de votre premier animal de compagnie?",
-                value: "Quel est le nom de votre premier animal de compagnie?",
-              },
-              {
-                label: "Quelle est la date de naissance de votre mère?",
-                value: "Quelle est la date de naissance de votre mère?",
-              },
-              {
-                label: "Quel est votre plat favori?",
-                value: "Quel est votre plat favori?",
-              },
-            ]}
-            defaultIndex={0}
-            placeholder="Choisissez une question secrète"
-            style={styles.colordropdown}
-            dropDownStyle={styles.colordropdown}
-            containerStyle={styles.containerdropdown}
-            labelStyle={styles.labeldropdown}
-            onChangeItem={(item) => setSecretQuestion(item.value)}
-            value={secretQuestion}
-          />
+            <TextInput
+              placeholder="Mot de passe"
+              label="Mot de passe"
+              onChangeText={(password) => setSignUpPassword(password)}
+              value={signUpPassword}
+              style={styles.input}
+              mode="outlined"
+              secureTextEntry={true}
+            />
 
-          <TextInput
-            placeholder="Réponse"
-            label="Réponse"
-            onChangeText={(answer) => setAnswer(answer)}
-            value={answer}
-            style={styles.input}
-            mode="outlined"
-          />
+            <DropDownPicker
+              items={[
+                {
+                  label: "Quel est le nom de votre premier animal de compagnie?",
+                  value: "Quel est le nom de votre premier animal de compagnie?",
+                },
+                {
+                  label: "Quelle est la date de naissance de votre mère?",
+                  value: "Quelle est la date de naissance de votre mère?",
+                },
+                {
+                  label: "Quel est votre plat favori?",
+                  value: "Quel est votre plat favori?",
+                },
+              ]}
+              defaultIndex={0}
+              placeholder="Choisissez une question secrète"
+              style={styles.colordropdown}
+              dropDownStyle={styles.colordropdown}
+              containerStyle={styles.containerdropdown}
+              labelStyle={styles.labeldropdown}
+              onChangeItem={(item) => setSecretQuestion(item.value)}
+              value={secretQuestion}
+            />
 
-          <Text style={styles.text2}>{listErrorsSignup}</Text>
+            <TextInput
+              placeholder="Réponse"
+              label="Réponse"
+              onChangeText={(answer) => setAnswer(answer)}
+              value={answer}
+              style={styles.input}
+              mode="outlined"
+            />
 
-          <Button
-            title="Se connecter"
-            titleStyle={styles.textbutton}
-            type="solid"
-            buttonStyle={styles.button}
-            onPress={() => {
-              handleSubmitSignup();
-            }}
-          />
-        </View>
-      </View>
+            <Text style={styles.text2}>{listErrorsSignup}</Text>
+
+            <Button
+              title="Se connecter"
+              titleStyle={styles.textbutton}
+              type="solid"
+              buttonStyle={styles.button}
+              onPress={() => {
+                handleSubmitSignup();
+              }}
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }

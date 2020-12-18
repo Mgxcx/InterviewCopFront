@@ -280,7 +280,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#FFFEFE",
     textAlign: "center",
-    padding: 5,
   },
   adviceokbutton: {
     color: "#FFFEFE",

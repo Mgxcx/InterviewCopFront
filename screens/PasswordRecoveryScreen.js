@@ -24,7 +24,7 @@ function PasswordRecoveryScreen({ navigation, onSubmitUsername }) {
   const [listErrorsNewPassword, setListErrorsNewPassword] = useState([]); //les messages d'erreur sont transmis par le Back
 
   const [userQuestionAndAnswer, setUserQuestionAndAnswer] = useState(false); //état lié à la vérification de la question secrète choisie et la réponse du user dans la BDD
-  const [newPassword, setNewPassword] = useState("");
+  const [PasswordChange, setPasswordChange] = useState("");
 
   //pour gérer les polices expo-google-fonts
   let [fontsLoaded] = useFonts({
@@ -58,12 +58,13 @@ function PasswordRecoveryScreen({ navigation, onSubmitUsername }) {
     newPasswordView = (
       <View style={styles.newpassword}>
         <TextInput
-          placeholder="New Password"
-          label="New Password"
-          onChangeText={(newPassword) => setNewPassword(newPassword)}
-          value={newPassword}
+          placeholder="Nouveau mot de passe"
+          label="Nouveau mot de passe"
+          onChangeText={(PasswordChange) => setPasswordChange(PasswordChange)}
+          value={PasswordChange}
           style={styles.input}
           mode="outlined"
+          secureTextEntry={true}
         />
         <Button
           title="Valider"
